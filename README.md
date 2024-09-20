@@ -1,4 +1,13 @@
 
+//개발완료후 배포신청
+
+//package.json에 빌드 스크립트를 추가해서, 빌드 시 자동으로 Tailwind CSS를 컴파일할 수 있다
+//"scripts": {
+  "build": "npx tailwindcss -i ./src/assets/main.css -o ./src/output.css && npm run other-build-commands"
+}
+//이렇게 하면 npm run build 명령어를 실행할 때 Tailwind CSS 파일도 같이 빌드된다.
+
+
 ## 기술스택
 
 - 언어 : html, css, javascript
@@ -15,6 +24,8 @@
 
 
 ## 푸쉬하기전 아래 tailwind명령어로 tailwind클래스가 포함된 새로운 파일 생성해야 된다.
+(사실 빌드전에만 해주면 된다)
+
 - npx tailwindcss -i ./src/assets/main.css -o ./src/output.css
 
 
@@ -104,6 +115,10 @@ ex)
 - 전역컴포넌트는 케밥케이스 사용
 - 공통컴포넌트는 common폴더에 배치
 - 개별컴포넌트는 views폴더에 배치
+
+
+
+
 
 
 

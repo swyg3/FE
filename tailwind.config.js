@@ -1,7 +1,11 @@
 module.exports = {
 	content: ['./src/**/*.{html,js,ts,jsx,tsx,vue}'],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				sans: ['Pretendard', 'sans-serif'],
+			},
+		},
 	},
 	plugins: [],
 };

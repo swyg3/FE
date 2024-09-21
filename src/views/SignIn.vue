@@ -9,7 +9,7 @@
 				<img src="/signIn/kakaoIcon.png" />
 				<span>카카오로 시작하기</span>
 			</button>
-			<GoogleLogin :callback="googleOnSuccess" :onError="googleoOnError">
+			<google-login :callback="googleOnSuccess" :onError="googleoOnError">
 				<button
 					type="button"
 					class="bg-[#FFF] border border-[var(--Primary,#031F34)] signin-btn"
@@ -17,7 +17,7 @@
 					<img src="/signIn/googleIcon.png" />
 					<span>구글로 시작하기</span>
 				</button>
-			</GoogleLogin>
+			</google-login>
 		</div>
 	</div>
 </template>
@@ -66,7 +66,6 @@ const googleoOnError = error => {
 .signin-bg {
 	height: 100%;
 	background-image: url('/signIn/signInBg.png');
-	margin: 0 auto;
 }
 
 .signin-btn-container {

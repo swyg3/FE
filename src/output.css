@@ -713,6 +713,16 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-hoverWhite {
+  --tw-bg-opacity: 1;
+  background-color: rgb(242 242 242 / var(--tw-bg-opacity));
+}
+
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(3 31 52 / var(--tw-bg-opacity));
+}
+
 .p-\[20px\] {
   padding: 20px;
 }
@@ -784,6 +794,12 @@ video {
   font-size: 80px;
 }
 
+.text-smB {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 700;
+}
+
 .font-black {
   font-weight: 900;
 }
@@ -839,11 +855,6 @@ video {
 html,
 body {
   margin: 0;
-  /* 1 */
-  line-height: inherit;
-  /* 2 */
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
 }

@@ -5,11 +5,7 @@
 html,
 body {
   margin: 0;
-  /* 1 */
-  line-height: inherit;
-  /* 2 */
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  
 }

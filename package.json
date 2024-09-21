@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "serve": "vite --mode development",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
@@ -17,6 +17,7 @@
     "tailwindcss": "^3.4.10",
     "vue": "^3.4.29",
     "vue-router": "^4.4.3",
+    "vue3-google-login": "^2.0.33",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "prettier": "^3.2.5",
+    "sass-embedded": "^1.79.2",
     "vite": "^5.3.1"
   }
 }

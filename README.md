@@ -1,4 +1,13 @@
 
+//개발완료후 배포신청
+
+//package.json에 빌드 스크립트를 추가해서, 빌드 시 자동으로 Tailwind CSS를 컴파일할 수 있다
+//"scripts": {
+  "build": "npx tailwindcss -i ./src/assets/main.css -o ./src/output.css && npm run other-build-commands"
+}
+//이렇게 하면 npm run build 명령어를 실행할 때 Tailwind CSS 파일도 같이 빌드된다.
+
+
 ## 기술스택
 
 - 언어 : html, css, javascript
@@ -15,36 +24,13 @@
 
 
 ## 푸쉬하기전 아래 tailwind명령어로 tailwind클래스가 포함된 새로운 파일 생성해야 된다.
+(사실 빌드전에만 해주면 된다)
+
 - npx tailwindcss -i ./src/assets/main.css -o ./src/output.css
 
 
 
 
-## 세미님이 해주실부분
-1. 클론받고 npm install 하기
-2. vsCode확장기능에서 ESLint설치
-3. eslint 설정적용하기
-(파일을 저장시 ESLint 설정에 따라 자동으로 파일을 수정해주는 설정)
-(ctrl + , 눌러주고---> eslint입력 ---> 작업영역클릭 ---> settings.json에서 편집클릭 --> 아래내용으로 수정후 저장)
-{
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "html",  
-    "vue",
-    "markdown"
-  ], 
-  
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  } 
-
-}
-4. vscode extention에서 Vue VSCode Snippets설치
-(vbase-3-setup 명령어를 사용하면
-'setup' 속성을 활용하여 Vue 3 컴포넌트에 대해 미리 정의된 템플릿을 쉽게 삽입할 수 있다.)
 
 
 
@@ -101,9 +87,13 @@ ex)
 - 여러곳에서 재사용되는 카드, 버튼과 같은 컴포넌트는 "App", "V" 접두어 사용
 - 페이지에서 한번만 사용되는 헤더, 사이드바, 푸터와 같은 컴포넌트는 "The" 접두어 사용
 - 자식요소가 없는 컴포넌트는 셀프 클로징 태그를 사용 <MyComponent />
-- 전역컴포넌트는 케밥케이스 사용
+- 전역컴포넌트사용은 케밥케이스 사용
 - 공통컴포넌트는 common폴더에 배치
 - 개별컴포넌트는 views폴더에 배치
+
+
+
+
 
 
 

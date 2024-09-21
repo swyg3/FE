@@ -1,11 +1,17 @@
 <template>
-	<div class="myPage-bg">myPage</div>
+	<div class="mypage-bg">
+		<div class="bg-white h-[48px]">header위치</div>
+		<AppButton btnText="닫기"></AppButton>
+	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import AppButton from '@/components/common/AppButton.vue';
+import { ref } from 'vue';
+</script>
 
 <style lang="scss" scoped>
-.myPage-bg {
+.mypage-bg {
 	background-image: url('/myPage/myPageBg.png');
 }
 </style>

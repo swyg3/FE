@@ -64,13 +64,14 @@ const googleoOnError = error => {
 
 <style lang="scss" scoped>
 .signin-bg {
+	position: relative;
 	height: 100%;
 	background-image: url('/signIn/signInBg.png');
 }
 
 .signin-btn-container {
-	position: fixed;
-	bottom: 4cm;
+	position: absolute;
+	bottom: 3cm;
 	left: 50%;
 	transform: translateX(-50%);
 }

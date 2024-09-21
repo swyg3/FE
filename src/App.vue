@@ -6,12 +6,17 @@
 		]"
 	>
 		<div :class="{ 'app-container': $route.name !== 'Randing' }">
-			<router-view></router-view>
+			<router-view class="p-[16px] h-[764px]"></router-view>
+			<Footer
+				v-if="$route.name !== 'Randing' && $route.name !== 'SignIn'"
+			></Footer>
 		</div>
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import Footer from '@/components/common/TheFooter.vue';
+</script>
 
 <style lang="scss" scoped>
 .app-background {
@@ -28,5 +33,6 @@
 .app-container {
 	width: 375px;
 	height: 812px;
+	overflow: auto;
 }
 </style>

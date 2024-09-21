@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SignIn from '@/views/SignIn.vue';
 import Randing from '@/views/RandingView.vue';
+import MainPage from '@/views/MainPageView.vue';
+import Explore from '@/views/ExploreView.vue';
+import OrderDetails from '@/views/OrderDetailsView.vue';
 import MyPage from '@/views/MyPageView.vue';
 
 const router = createRouter({
@@ -15,6 +18,21 @@ const router = createRouter({
 			path: '/randing',
 			name: 'Randing',
 			component: Randing,
+		},
+		{
+			path: '/mainPage',
+			name: 'MainPage',
+			component: MainPage,
+		},
+		{
+			path: '/explore',
+			name: 'Explore',
+			component: Explore,
+		},
+		{
+			path: '/orderDetails',
+			name: 'OrderDetails',
+			component: OrderDetails,
 		},
 		{
 			path: '/myPage',

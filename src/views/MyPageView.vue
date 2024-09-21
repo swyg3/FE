@@ -6,7 +6,6 @@
 
 <style lang="scss" scoped>
 .myPage-bg {
-	height: 100%;
 	background-image: url('/myPage/myPageBg.png');
 }
 </style>

@@ -9,12 +9,7 @@ module.exports = {
 					fontWeight: '500',
 				},
 			],
-			sm: [
-				'14px',
-				{
-					lineHeight: '22px',
-				},
-			],
+			sm: ['14px'],
 			base: [
 				'16px',
 				{

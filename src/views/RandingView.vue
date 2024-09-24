@@ -95,7 +95,7 @@
 		</main>
 
 		<!--카드 리스트-->
-		<article class="text-center grid content-between">
+		<article class="text-center grid content-between bg-white">
 			<div class="w-[1000px] py-20 flex justify-between mx-auto">
 				<div>
 					<img

@@ -42,7 +42,7 @@
 		</div>
 
 		<!--문코 추천 리스트-->
-		<div class="px-4 pt-6 pb-4 flex justify-between">
+		<div class="px-4 pt-6 pb-4 flex justify-between bg-white">
 			<p class="text-baseB">문코의 추천</p>
 			<div class="flex">
 				<p>더보기</p>
@@ -60,19 +60,19 @@
 				</svg>
 			</div>
 		</div>
-		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
+		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar bg-white">
 			<ItemCard></ItemCard>
 			<ItemCard></ItemCard>
 			<ItemCard></ItemCard>
 		</div>
 
 		<!--border-->
-		<div class="py-6">
+		<div class="py-6 bg-white">
 			<hr class="w-full border-solid border-4 border-disabledGray" />
 		</div>
 
 		<!--뉴스레터 환경퀴즈 음식판매-->
-		<div class="grid gap-1 pb-6">
+		<div class="grid gap-1 pb-6 bg-white">
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 

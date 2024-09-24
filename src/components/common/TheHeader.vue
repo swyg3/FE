@@ -7,7 +7,7 @@
 <style lang="scss" scoped>
 .header-container {
 	display: flex;
-	width: 375px;
+
 	height: 48px;
 	padding: 12px 16px;
 	justify-content: space-between;

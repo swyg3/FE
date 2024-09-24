@@ -6,8 +6,11 @@
 		]"
 	>
 		<div :class="{ 'app-container': $route.name !== 'Randing' }">
-			<router-view class="p-[16px] h-[764px]"></router-view>
+			<router-view
+				:class="{ 'p-[16px] h-[764px]': $route.name !== 'Randing' }"
+			></router-view>
 			<Footer
+				class="fixed"
 				v-if="$route.name !== 'Randing' && $route.name !== 'SignIn'"
 			></Footer>
 		</div>

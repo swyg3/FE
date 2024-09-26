@@ -76,14 +76,14 @@
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 
-				<p class="text-xs">
+				<p class="text-sm">
 					문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 					문코가 매달 전하는 세상의 환경 소식을 들어보세요.
 				</p>
 			</div>
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">환경 퀴즈 참여하기</p>
-				<div class="text-xs">
+				<div class="text-sm">
 					<p>
 						문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 						환경 퀴즈에 참여해보세요!
@@ -92,7 +92,7 @@
 			</div>
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">판매자로 음식 판매하기</p>
-				<div class="text-xs">
+				<div class="text-sm">
 					<p>
 						지금 이용하는 계정을 판매자 계정으로 바꿀 수 있어요.<br />
 						문코에서 음식을 판매하고 재고를 관리하세요.
@@ -100,6 +100,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="h-12"></div>
 	</div>
 </template>
 

@@ -1,33 +1,40 @@
 <template>
-	<div class="min-w-[1366px] text-[#031F34] mx-auto">
-		<header class="bg-[#031F34] text-center grid content-between">
+	<div class="min-w-[1366px] text-primary mx-auto">
+		<header class="bg-primary text-center grid content-between">
 			<!--헤더 로고-->
 			<div class="text-center">
 				<img
 					src="/randingPage/randingHeaderLogo.png"
 					alt="MooncoLogo"
-					width="304"
-					height="124"
-					class="mx-auto pb-[100px]"
+					class="mx-auto pb-[180px]"
 				/>
 			</div>
 			<!--달 위-->
-			<div
-				class="w-[1000px] h-[500px] mx-auto pt-20 pb-8 bg-moonYellow rounded-t-[1000px] grid content-between"
-			>
-				<div class="leading-[90px]">
-					<p class="text-[40px] font-semibold">문코에서</p>
-					<h1 class="text-[60px] font-black">
-						세상에 버려질 <br />
-						음식 구출하기
-					</h1>
+			<div>
+				<div
+					class="w-[950px] h-[475px] relative mx-auto pt-20 pb-8 bg-moonYellow rounded-t-[1000px] grid content-between"
+				>
+					<div class="pt-12">
+						<p class="text-[40px] font-semibold leading-56">문코에서</p>
+						<h1 class="text-[60px] font-black leading-[90px]">
+							세상에 버려질 <br />
+							음식 구출하기
+						</h1>
+					</div>
+					<div>
+						<button
+							class="w-[230px] h-[58px] bg-[#1CB08C] rounded-[10px] text-[20px] text-white font-black"
+						>
+							문코 시작하기
+						</button>
+					</div>
 				</div>
 				<div>
-					<button
-						class="w-[240px] h-[58px] bg-[#1CB08C] rounded-[10px] text-[20px] text-white font-black"
-					>
-						문코 시작하기
-					</button>
+					<img
+						src="/randingPage/randingLeaf.png"
+						alt="randingLeaf"
+						class="w-[120px] h-[80px] absolute top-[23%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+					/>
 				</div>
 			</div>
 		</header>
@@ -35,18 +42,18 @@
 		<main class="bg-[#F2F2F2]">
 			<!--달 아래 + 이유 1-->
 			<div
-				class="w-[1000px] h-[500px] mx-auto pt-20 pb-16 bg-moonYellow rounded-b-[500px] grid content-between"
+				class="w-[950px] h-[475px] mx-auto pt-20 pb-12 bg-moonYellow rounded-b-[500px] grid content-between"
 			>
-				<h2 class="text-[48px] font-bold leading-[90px]">
+				<h2 class="text-[40px] font-black leading-[90px]">
 					<span class="text-[#1CB08C]">문코</span>여야 하는 이유
 				</h2>
 				<div class="main-card">
 					<img
 						src="/randingPage/main01.png"
 						alt="MooncoMain01"
-						class="rounded-[20px] h-[230px]"
+						class="main-card-img"
 					/>
-					<div class="pl-20 my-auto">
+					<div class="pt-4">
 						<h3 class="main-card-title">
 							가치 소비로 <span class="text-[#1CB08C]">환경</span> 지키기
 						</h3>
@@ -58,9 +65,9 @@
 				</div>
 			</div>
 			<!--이유2 + 이유3-->
-			<div class="w-[1000px] mx-auto">
-				<div class="main-card pb-16">
-					<div class="my-auto pl-20">
+			<div class="w-[950px] mx-auto">
+				<div class="main-card pb-12">
+					<div class="pl-16 pt-4">
 						<h3 class="main-card-title">
 							마감할인으로 <span class="text-[#1CB08C]">지갑</span> 지키기
 						</h3>
@@ -72,16 +79,16 @@
 					<img
 						src="/randingPage/main02.png"
 						alt="MooncoMain02"
-						class="rounded-[20px] h-[230px] ml-auto"
+						class="main-card-img ml-16"
 					/>
 				</div>
-				<div class="main-card pb-16">
+				<div class="main-card pb-28">
 					<img
 						src="/randingPage/main03.png"
 						alt="MooncoMain03"
-						class="rounded-[20px] h-[230px]"
+						class="main-card-img"
 					/>
-					<div class="my-auto pl-20">
+					<div class="pt-4">
 						<h3 class="main-card-title">
 							새로운 도전의 <span class="text-[#1CB08C]">재미</span>
 						</h3>
@@ -95,13 +102,13 @@
 		</main>
 
 		<!--카드 리스트-->
-		<article class="text-center grid content-between bg-white">
-			<div class="w-[1000px] py-20 flex justify-between mx-auto">
+		<article class="text-center bg-white">
+			<div class="w-[1000px] px-16 py-20 grid grid-cols-3 mx-auto">
 				<div>
 					<img
 						src="/randingPage/card01.jpg"
 						alt="Card01"
-						class="article-card"
+						class="article-card-img"
 					/>
 					<div>
 						<p class="article-card-title">
@@ -118,7 +125,7 @@
 					<img
 						src="/randingPage/card02.jpg"
 						alt="Card02"
-						class="article-card"
+						class="article-card-img"
 					/>
 					<div>
 						<p class="article-card-title">
@@ -135,7 +142,7 @@
 					<img
 						src="/randingPage/card03.jpg"
 						alt="Card03"
-						class="article-card"
+						class="article-card-img"
 					/>
 					<div>
 						<p class="article-card-title">
@@ -150,12 +157,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="py-20">
-				<p class="text-[34px] font-black leading-[51px] p-[20px]">
+			<div class="pt-20 pb-16">
+				<p class="text-[32px] font-black leading-[50px] p-4">
 					문코에서 세상에 버려질 음식 구출하기
 				</p>
 				<button
-					class="w-[260px] h-[64px] bg-[#1CB08C] rounded-[10px] text-[24px] text-white"
+					class="w-[230px] h-[58px] bg-[#1CB08C] rounded-[10px] text-[20px] text-white font-black"
 				>
 					문코 시작하기
 				</button>
@@ -181,26 +188,38 @@
 	font-size: 34px;
 	font-weight: 900;
 	line-height: 70px;
+	padding-bottom: 10px;
 }
 .main-card-body {
 	font-size: 16px;
-	font-weight: 700;
-	line-height: 30px;
+	font-weight: 500;
+	line-height: 26px;
+	color: var(--Text_body, #555);
 }
-.article-card {
-	width: 300px;
-	height: 200px;
+.main-card-img {
 	border-radius: 20px;
+	width: 400px;
+	height: 240px;
+	border: 1px solid var(--Primary, #031f34);
+}
+.article-card-img {
+	width: 280px;
+	height: 220px;
+	border-radius: 20px;
+	margin: 0 auto;
+	border: 1px solid var(--Primary, #031f34);
 }
 .article-card-title {
-	font-size: 30px;
+	font-size: 22px;
 	font-weight: 900;
-	line-height: 51px;
-	padding: 30px 0;
+	line-height: 32px;
+	padding-top: 26px;
+	padding-bottom: 10px;
 }
 .article-card-body {
 	font-size: 16px;
-	font-weight: 700;
-	line-height: 36px;
+	font-weight: 400;
+	line-height: 26px;
+	color: var(--Text_body, #555);
 }
 </style>

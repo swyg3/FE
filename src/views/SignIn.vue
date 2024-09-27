@@ -4,7 +4,7 @@
 			<button
 				type="button"
 				class="bg-[#FEE500] text-[#1D1D1D] signin-btn"
-				@click="handleCallback"
+				@click="kakaoSignIn"
 			>
 				<img src="/signIn/kakaoIcon.png" />
 				<span>카카오로 시작하기</span>
@@ -37,53 +37,50 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 onMounted(() => {
-	// handleCallback();
+	handleCallback();
 });
 
-// const kakaoSignIn = async () => {
-// 	if (!Kakao.isInitialized()) {
-// 		Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
-// 	}
+const kakaoSignIn = async () => {
+	if (!Kakao.isInitialized()) {
+		Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+	}
 
-// 	Kakao.Auth.authorize({
-// 		redirectUri: 'http://localhost:5174',
-// 	});
-// };
+	Kakao.Auth.authorize({
+		redirectUri: 'https://swypmooncofe.vercel.app',
+	});
+};
 
-// const googleSignIn = async () => {
-// 	const clientId = import.meta.env.VITE_APP_GOOGLE_KEY;
+const googleSignIn = async () => {
+	const clientId = import.meta.env.VITE_APP_GOOGLE_KEY;
 
-// 	const redirectUri = 'http://localhost:5174';
+	const redirectUri = 'https://swypmooncofe.vercel.app';
 
-// 	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
+	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
 
-// 	window.location.href = googleAuthUrl;
-// };
+	window.location.href = googleAuthUrl;
+};
 
 // 인증 코드 처리
 const handleCallback = async () => {
-	// const urlParams = new URLSearchParams(window.location.search);
+	const urlParams = new URLSearchParams(window.location.search);
 
-	// const code = urlParams.get('code'); // 인증 코드 추출
-	// console.log('code', code);
+	const code = urlParams.get('code'); // 인증 코드 추출
+	console.log('code', code);
 
-	// if (code) {
-	// 	const provider = window.location.href.includes('google')
-	// 		? 'google'
-	// 		: 'kakao';
-	// 	console.log(`${provider} 인증 코드:`, code);
+	if (code) {
+		const provider = window.location.href.includes('google')
+			? 'google'
+			: 'kakao';
+		console.log(`${provider} 인증 코드:`, code);
 
-	store.dispatch(
-		'auth/socialLogin',
-		// {
-		// 	provider,
-		// 	code,
-		// 	userType: 'user',
-		// }
-	);
-	// } else {
-	// 	console.error('인증 코드가 없습니다.');
-	// }
+		store.dispatch('auth/socialLogin', {
+			provider,
+			code,
+			userType: 'user',
+		});
+	} else {
+		console.error('인증 코드가 없습니다.');
+	}
 };
 
 // const handleKakaoCallback = async () => {

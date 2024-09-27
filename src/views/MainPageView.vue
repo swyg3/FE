@@ -14,7 +14,7 @@
 			<p>수연님</p>
 		</div>
 		<div class="flex my-6 justify-center text-center">
-			<UserCard :foodCount="30"></UserCard>
+			<UserCard></UserCard>
 			<!-- <div class="mr-1.5 mainpage-userCard">
 				<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 				<p>문코를 통해</p>
@@ -46,7 +46,7 @@
 		<div class="px-4 pt-6 pb-4 flex justify-between bg-white">
 			<p class="text-baseB">문코의 추천</p>
 			<div class="flex">
-				<p>더보기</p>
+				<p class="text-sm">더보기</p>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
@@ -114,6 +114,7 @@ import UserCard from '@/components/common/UserCard.vue';
 
 <style lang="scss" scoped>
 .mainpage-bg {
+	width: 375px;
 	height: 716px;
 	background-image: url('/mainPage/mainPageBg.png');
 	background-color: white;
@@ -153,7 +154,7 @@ import UserCard from '@/components/common/UserCard.vue';
 .mainpage-bottomCard-body {
 	font-size: 14px;
 	color: #555;
-	font-weight: 100;
+	font-weight: 500;
 	line-height: 22px;
 }
 </style>

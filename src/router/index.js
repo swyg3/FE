@@ -4,6 +4,7 @@ import Randing from '@/views/RandingView.vue';
 import MainPage from '@/views/MainPageView.vue';
 import Explore from '@/views/ExploreView.vue';
 import Category from '@/views/CategoryView.vue';
+import Detail from '@/views/DetailView.vue';
 import OrderDetails from '@/views/OrderDetailsView.vue';
 import MyPage from '@/views/MyPageView.vue';
 
@@ -34,6 +35,11 @@ const router = createRouter({
 			path: '/category',
 			name: 'Category',
 			component: Category,
+		},
+		{
+			path: '/detail',
+			name: 'Detail',
+			component: Detail,
 		},
 		{
 			path: '/orderDetails',

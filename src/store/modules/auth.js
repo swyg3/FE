@@ -7,10 +7,12 @@ export default {
 	getters: {},
 	mutations: {},
 	actions: {
-		async socialLogin(context) {
-			// console.log('payload', payload);
+		async socialLogin(context, payload) {
+			console.log('payload', payload);
 
-			const response = await socialLoginApi();
+			const { provider, code, userType } = payload;
+
+			const response = await socialLoginApi(provider, code, userType);
 			console.log('Response', response);
 		},
 	},

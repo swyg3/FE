@@ -6,8 +6,11 @@ import App from '@/App.vue';
 import store from '@/store';
 import router from '@/router';
 import GoogleLogin from 'vue3-google-login';
+import BottomSheet from '@/components/common/AppBottomSheet.vue';
 
 const app = createApp(App);
+
+app.component('BottomSheet', BottomSheet);
 
 app.use(store);
 app.use(router);

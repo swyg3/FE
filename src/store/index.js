@@ -2,7 +2,10 @@ import { createStore } from 'vuex';
 import auth from './modules/auth';
 
 export default createStore({
-	state: {},
+	state: {
+		isVisible: false,
+		popupType: '',
+	},
 	getters: {},
 	mutations: {},
 	actions: {},

@@ -10,7 +10,10 @@ export default {
 		async socialLogin(context, payload) {
 			console.log('payload', payload);
 
-			const response = await socialLoginApi(payload);
+			const { provider, code, userType } = payload;
+
+			const response = await socialLoginApi(provider, code, userType);
+			console.log('Response', response);
 		},
 	},
 };

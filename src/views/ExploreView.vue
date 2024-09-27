@@ -109,13 +109,11 @@
 			<ItemCard></ItemCard>
 		</div>
 	</div>
-	<TheFooter></TheFooter>
 </template>
 
 <script setup>
 import ItemCard from '@/components/common/ItemCard.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
-import TheFooter from '@/components/common/TheFooter.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
 </script>
 

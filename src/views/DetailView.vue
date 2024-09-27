@@ -41,10 +41,13 @@
                 <div class="w-full h-36 rounded-lg bg-bodyBlack">지도</div>
             </div>
         </div>
-        <button class="order-btn">주문하기</button>
+        <button @click="$router.push('/orderDetails')" class="order-btn">주문하기</button>
     </div>
 </template>
-<script setup></script>
+<script setup>
+    import { useRouter } from "vue-router";
+    const router = useRouter();
+</script>
 <style lang="scss" scoped>
 .refresh-icon {
 	background: var(--20, #d2efe8);
@@ -81,6 +84,5 @@
     color: white;
     text-align: center;
     display: block;
-    
 }
 </style>

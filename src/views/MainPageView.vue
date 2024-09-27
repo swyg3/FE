@@ -37,7 +37,7 @@
 			</p>
 		</div>
 		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-			<ItemCard></ItemCard>
+			<ItemCard ></ItemCard>
 			<ItemCard></ItemCard>
 			<ItemCard></ItemCard>
 		</div>
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar bg-white">
-			<ItemCard></ItemCard>
+			<ItemCard @click="$router.push('/orderDetails')"></ItemCard>
 			<ItemCard></ItemCard>
 			<ItemCard></ItemCard>
 		</div>
@@ -110,6 +110,9 @@
 import ItemCard from '@/components/common/ItemCard.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
 import UserCard from '@/components/common/UserCard.vue';
+
+import { useRouter } from "vue-router";
+const router = useRouter();
 </script>
 
 <style lang="scss" scoped>

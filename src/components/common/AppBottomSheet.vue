@@ -1,10 +1,10 @@
 <template>
 	<div
 		v-if="visible"
-		class="flex items-center justify-center fixed h-full top-0 w-full z-50 bg-opacity-50 bg-gray-900"
+		class="absolute h-full top-0 w-full z-50 bg-opacity-50 bg-gray-900"
 		@click="closeSheet"
 	>
-		<div class="p-7 buttomSheet" @click.stop>
+		<div class="p-7 bottomSheet" @click.stop>
 			<div v-if="type === 'Terms'">
 				<div>sdsddsadd</div>
 				<div>asfd</div>
@@ -37,7 +37,7 @@ const closeSheet = () => {
 </script>
 
 <style lang="scss" scoped>
-.buttomSheet {
+.bottomSheet {
 	position: absolute;
 	bottom: 0;
 	width: 100%;

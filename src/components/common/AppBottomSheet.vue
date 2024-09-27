@@ -1,24 +1,39 @@
 <template>
-	<div v-if="visible" class="buttomSheet">
-		<div>sdsddsadd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
-		<div>asfd</div>
+	<div
+		v-if="visible"
+		class="flex items-center justify-center fixed h-full top-0 w-full z-50 bg-opacity-50 bg-gray-900"
+		@click="closeSheet"
+	>
+		<div class="p-7 buttomSheet" @click.stop>
+			<div v-if="type === 'Terms'">
+				<div>sdsddsadd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+				<div>asfd</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script setup>
+import { useStore } from 'vuex';
+
+const store = useStore();
 const props = defineProps(['visible', 'type']);
+
+const closeSheet = () => {
+	store.state.isVisible = false;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -26,7 +41,9 @@ const props = defineProps(['visible', 'type']);
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	background-color: red;
-	border-radius: 25px 25px 0 0;
+	background-color: #ffffff;
+	border-radius: 26px 26px 0px 0px;
+	background: var(--White, #fff);
+	z-index: 12;
 }
 </style>

@@ -51,20 +51,20 @@
 			</div>
 		</div>
 	</div>
-
-	<BottomSheet :visible="isVisible" :type="popupType"></BottomSheet>
 </template>
 
 <script setup>
 import AppButton from '@/components/common/AppButton.vue';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 
-const isVisible = ref(false);
-const popupType = ref('Terms');
+const store = useStore();
 
 const terms = () => {
 	console.log('terms');
-	isVisible.value = true;
+	// isVisible.value = true;
+	store.state.isVisible = true;
+	store.state.popupType = 'Terms';
 };
 </script>
 

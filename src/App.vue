@@ -13,6 +13,10 @@
 				class="footer"
 				v-if="$route.name !== 'Randing' && $route.name !== 'SignIn'"
 			></Footer>
+			<BottomSheet
+				:visible="store.state.isVisible"
+				:type="store.state.popupType"
+			></BottomSheet>
 		</div>
 	</div>
 </template>
@@ -20,6 +24,9 @@
 <script setup>
 import Footer from '@/components/common/TheFooter.vue';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 </script>
 
 <style lang="scss" scoped>

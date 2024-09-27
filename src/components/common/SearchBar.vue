@@ -38,7 +38,7 @@
 	padding: 9px 13px 9px 16px;
 	display: flex;
 	margin: 0 auto;
-    background: var(--White, #FFF);
+	background: var(--White, #fff);
 }
 .search-bar-input {
 	width: 100%;

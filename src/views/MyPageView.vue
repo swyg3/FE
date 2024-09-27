@@ -46,7 +46,7 @@
 					<div>예약금 관리</div>
 					<div class="text-sm text-bodyBlack">서비스가 추가될 예정이에요</div>
 				</div>
-				<div class="mypage-text-s-box">약관</div>
+				<div class="mypage-text-s-box" @click="terms">약관</div>
 				<div class="mypage-text-s-box">개인정보 처리방침</div>
 			</div>
 		</div>
@@ -56,6 +56,16 @@
 <script setup>
 import AppButton from '@/components/common/AppButton.vue';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const terms = () => {
+	console.log('terms');
+	// isVisible.value = true;
+	store.state.isVisible = true;
+	store.state.popupType = 'Terms';
+};
 </script>
 
 <style lang="scss" scoped>
@@ -70,16 +80,16 @@ import { ref } from 'vue';
 	justify-content: center;
 	align-items: center;
 	height: 48px;
-	position: sticky; /* sticky로 변경 */
-	top: 0; /* 화면의 맨 위에 고정 */
-	background-color: white; /* 배경색 설정, 투명하지 않게 하기 위해 */
+	position: sticky;
+	top: 0;
+	background-color: white;
 	z-index: 10;
 }
 .mypage-phone {
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 500;
-	line-height: 22px; /* 157.143% */
+	line-height: 22px;
 }
 .mypage-box {
 	display: flex;
@@ -96,7 +106,7 @@ import { ref } from 'vue';
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 500;
-	line-height: 24px; /* 150% */
+	line-height: 24px;
 }
 
 .mypage-text-b-box {

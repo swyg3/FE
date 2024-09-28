@@ -20,6 +20,7 @@ module.exports = {
 				'16px',
 				{
 					lineHeight: '24px',
+					fontWeight: '500px',
 				},
 			],
 			lg: [

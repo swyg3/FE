@@ -6,7 +6,7 @@
 			src="/mainPage/welcome.png"
 			width="194px"
 			height="auto"
-			class="mx-auto py-8 mainpage-welcome"
+			class="mx-auto py-10 mainpage-welcome"
 		/>
 		<div class="text-lgB text-center pb-10">
 			<p>어서오세요</p>
@@ -14,12 +14,13 @@
 			<p>수연님</p>
 		</div>
 		<div class="flex my-6 justify-center text-center">
-			<div class="mr-1.5 mainpage-userCard">
+			<UserCard></UserCard>
+			<!-- <div class="mr-1.5 mainpage-userCard">
 				<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 				<p>문코를 통해</p>
 				<p class="text-baseB">30끼의 음식을</p>
 				<p>구출했어요!</p>
-			</div>
+			</div> -->
 			<div class="mainpage-userCard">
 				<img src="/mainPage/mainPig.svg" class="w-6 h-4 mx-auto mb-1" />
 				<p>지금까지</p>
@@ -36,16 +37,16 @@
 			</p>
 		</div>
 		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-			<ItemCard></ItemCard>
+			<ItemCard ></ItemCard>
 			<ItemCard></ItemCard>
 			<ItemCard></ItemCard>
 		</div>
 
 		<!--문코 추천 리스트-->
-		<div class="px-4 pt-6 pb-4 flex justify-between">
+		<div class="px-4 pt-6 pb-4 flex justify-between bg-white">
 			<p class="text-baseB">문코의 추천</p>
 			<div class="flex">
-				<p>더보기</p>
+				<p class="text-sm">더보기</p>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
@@ -60,30 +61,31 @@
 				</svg>
 			</div>
 		</div>
-		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-			<ItemCard></ItemCard>
+		<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar bg-white">
+			<ItemCard @click="$router.push('/orderDetails')"></ItemCard>
 			<ItemCard></ItemCard>
 			<ItemCard></ItemCard>
 		</div>
 
-		<!--border-->
-		<div class="py-6">
-			<hr class="w-full border-solid border-4 border-disabledGray" />
-		</div>
+		<!--border
+			<div class="py-6 bg-white">
+				<hr class="w-full border-solid border-4 border-disabledGray" />
+			</div>
+		-->
 
 		<!--뉴스레터 환경퀴즈 음식판매-->
-		<div class="grid gap-1 pb-6">
+		<div class="grid gap-1 gap-y-2 pt-14 pb-4 px-4 bg-white">
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 
-				<p class="text-xs">
+				<p class="mainpage-bottomCard-body">
 					문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 					문코가 매달 전하는 세상의 환경 소식을 들어보세요.
 				</p>
 			</div>
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">환경 퀴즈 참여하기</p>
-				<div class="text-xs">
+				<div class="mainpage-bottomCard-body">
 					<p>
 						문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 						환경 퀴즈에 참여해보세요!
@@ -92,7 +94,7 @@
 			</div>
 			<div class="mainpage-bottomCard">
 				<p class="text-baseB">판매자로 음식 판매하기</p>
-				<div class="text-xs">
+				<div class="mainpage-bottomCard-body">
 					<p>
 						지금 이용하는 계정을 판매자 계정으로 바꿀 수 있어요.<br />
 						문코에서 음식을 판매하고 재고를 관리하세요.
@@ -100,20 +102,27 @@
 				</div>
 			</div>
 		</div>
+		<div class="h-12"></div>
 	</div>
 </template>
 
 <script setup>
 import ItemCard from '@/components/common/ItemCard.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
+import UserCard from '@/components/common/UserCard.vue';
+
+import { useRouter } from "vue-router";
+const router = useRouter();
 </script>
 
 <style lang="scss" scoped>
 .mainpage-bg {
+	width: 375px;
 	height: 716px;
 	background-image: url('/mainPage/mainPageBg.png');
 	background-color: white;
-	background-attachment: fixed; //배경고정 스크롤
+	color: var(--Text, #1d1d1d);
+	/* background-attachment: fixed; //배경고정 스크롤 */
 }
 .mainpage-userCard {
 	width: 168px;
@@ -139,10 +148,16 @@ import TheHeader from '@/components/common/TheHeader.vue';
 	width: 343px;
 	height: 104px;
 	background: var(--White, #fff);
-	padding-left: 16px;
+	padding: 16px;
 	border-radius: 10px;
 	border: 1px solid var(--Primary, #031f34);
 	margin: auto;
 	align-content: center;
+}
+.mainpage-bottomCard-body {
+	font-size: 14px;
+	color: #555;
+	font-weight: 500;
+	line-height: 22px;
 }
 </style>

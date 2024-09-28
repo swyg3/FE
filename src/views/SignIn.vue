@@ -4,7 +4,7 @@
 			<button
 				type="button"
 				class="bg-[#FEE500] text-[#1D1D1D] signin-btn"
-				@click="kakaoSignIn"
+				@click="a"
 			>
 				<img src="/signIn/kakaoIcon.png" />
 				<span>카카오로 시작하기</span>
@@ -37,8 +37,12 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 onMounted(() => {
-	handleCallback();
+	// handleCallback();
 });
+
+const a = () => {
+	store.dispatch('auth/socialLogin');
+};
 
 const kakaoSignIn = async () => {
 	if (!Kakao.isInitialized()) {

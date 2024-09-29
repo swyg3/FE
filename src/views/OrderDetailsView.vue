@@ -68,7 +68,9 @@
 				</label>
 			</div>
 		</div>
-		<button @click="$router.push('/orderDetails')" class="order-btn">주문하기</button>
+		<button @click="$router.push('/orderDetails')" class="order-btn">
+			주문하기
+		</button>
 	</div>
 </template>
 
@@ -81,22 +83,22 @@ import TheHeader from '@/components/common/TheHeader.vue';
 	width: 80px;
 	height: 80px;
 	border-radius: 6px;
-	border: 1px solid var(--Border_, #C6C6C6);
+	border: 1px solid var(--Border_, #c6c6c6);
 	object-fit: cover;
 }
 .pay-box {
 	width: 342px;
 	height: 137px;
 	border-radius: 10px;
-	border: 1px solid var(--Border_, #C6C6C6);
-	background: var(--White, #FFF);
+	border: 1px solid var(--Border_, #c6c6c6);
+	background: var(--White, #fff);
 	padding: 16px;
 	margin: 16px 17px 24px 16px;
 }
 input {
 	width: 20px;
 	height: 20px;
-	accent-color: #1CB08C;
+	accent-color: #1cb08c;
 	color: white;
 }
 .time-box {
@@ -104,21 +106,21 @@ input {
 	height: 30px;
 	padding: 3px 6px;
 	border-radius: 6px;
-	border: 1px solid var(--Primary, #031F34);
-	background: var(--Point, #1CB08C);
+	border: 1px solid var(--Primary, #031f34);
+	background: var(--Point, #1cb08c);
 	align-items: center;
 	display: flex;
 	color: white;
 }
 .order-btn {
-    width: 342px;
-    height: 48px;
-    border-radius: 10px;
-    background: var(--Point, #1CB08C);
-    padding: 12px 84px;
-    margin: 0 auto;
-    color: white;
-    text-align: center;
-    display: block;
+	width: 342px;
+	height: 48px;
+	border-radius: 10px;
+	background: var(--Point, #1cb08c);
+	padding: 12px 84px;
+	margin: 0 auto;
+	color: white;
+	text-align: center;
+	display: block;
 }
 </style>

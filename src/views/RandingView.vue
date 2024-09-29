@@ -14,6 +14,13 @@
 				<div
 					class="w-[950px] h-[475px] relative mx-auto pt-20 pb-8 bg-moonYellow rounded-t-[1000px] grid content-between"
 				>
+					<div>
+						<img
+							src="/randingPage/randingLeaf.png"
+							alt="randingLeaf"
+							class="w-[120px] h-[80px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+						/>
+					</div>
 					<div class="pt-12">
 						<p class="text-[40px] font-semibold leading-56">문코에서</p>
 						<h1 class="text-[60px] font-black leading-[90px]">
@@ -28,13 +35,6 @@
 							문코 시작하기
 						</button>
 					</div>
-				</div>
-				<div>
-					<img
-						src="/randingPage/randingLeaf.png"
-						alt="randingLeaf"
-						class="w-[120px] h-[80px] absolute top-[23%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-					/>
 				</div>
 			</div>
 		</header>

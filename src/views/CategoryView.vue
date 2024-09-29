@@ -1,6 +1,6 @@
 <template>
-	<TheHeader></TheHeader>
 	<div class="category-bg">
+		<TheHeader></TheHeader>
 		<div class="category-list">
 			<button>주소</button>
 			<button>한식</button>
@@ -51,7 +51,6 @@ import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
 <style lang="scss" scoped>
 .category-bg {
 	width: 375px;
-	height: 716px;
 	background-image: url('/mainPage/mainPageBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);
@@ -60,6 +59,7 @@ import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
 	display: flex;
 	font-size: 16px;
 	color: #555555;
+    background-color: white;
 	font-weight: 500;
 	line-height: 24px;
 	padding: 12px 16px;

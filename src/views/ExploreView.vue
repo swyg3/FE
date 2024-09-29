@@ -1,10 +1,8 @@
 <template>
-	<TheHeader></TheHeader>
 	<div class="explore-bg">
+		<TheHeader></TheHeader>
 		<SearchBar></SearchBar>
-		<div
-			class="min-w-[500px] flex px-2 py-4 whitespace-nowrap overflow-x-auto noScrollBar"
-		>
+		<div class="category-scroll noScrollBar">
 			<div class="px-2">
 				<div class="category-all">ALL</div>
 				<p class="category-text">전체</p>
@@ -120,7 +118,6 @@ import TheHeader from '@/components/common/TheHeader.vue';
 <style lang="scss" scoped>
 .explore-bg {
 	width: 375px;
-	height: 716px;
 	background-image: url('/mainPage/mainPageBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);
@@ -155,6 +152,13 @@ import TheHeader from '@/components/common/TheHeader.vue';
 	white-space: nowrap;
 	overflow-x: auto;
 	padding: 0 12px;
+}
+.category-scroll {
+	min-width: 375px;
+	display: flex;
+	padding: 16px 8px;
+	white-space: nowrap;
+	overflow-x: auto;
 }
 .noScrollBar {
 	//scroll bar 가리기

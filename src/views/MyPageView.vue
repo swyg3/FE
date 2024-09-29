@@ -1,7 +1,7 @@
 <template>
 	<div class="mypage-bg">
 		<div class="text-baseB mypage-header">마이페이지</div>
-		<!-- <AppButton btnText="닫기"></AppButton> -->
+
 		<div class="px-[16px]">
 			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
 			<div class="text-lgB">수연님</div>
@@ -46,25 +46,30 @@
 					<div>예약금 관리</div>
 					<div class="text-sm text-bodyBlack">서비스가 추가될 예정이에요</div>
 				</div>
-				<div class="mypage-text-s-box" @click="terms">약관</div>
-				<div class="mypage-text-s-box">개인정보 처리방침</div>
+				<div class="mypage-text-s-box" @click="openBottomSheet('Terms')">
+					약관
+				</div>
+				<div
+					class="mypage-text-s-box"
+					@click="openBottomSheet('PrivacyPolicy')"
+				>
+					개인정보 처리방침
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import AppButton from '@/components/common/AppButton.vue';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
-const terms = () => {
-	console.log('terms');
-	// isVisible.value = true;
+const openBottomSheet = contentType => {
+	console.log('contentType', contentType);
 	store.state.isVisible = true;
-	store.state.popupType = 'Terms';
+	store.state.popupType = contentType;
 };
 </script>
 

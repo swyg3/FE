@@ -40,16 +40,13 @@ onMounted(() => {
 	handleCallback();
 });
 
-const a = () => {
-	store.dispatch('auth/socialLogin');
-};
-
 const kakaoSignIn = async () => {
 	if (!Kakao.isInitialized()) {
 		Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
 	}
 
 	Kakao.Auth.authorize({
+		// redirectUri: 'http://localhost:5174',
 		redirectUri: 'https://swypmooncofe.vercel.app',
 	});
 };
@@ -57,6 +54,7 @@ const kakaoSignIn = async () => {
 const googleSignIn = async () => {
 	const clientId = import.meta.env.VITE_APP_GOOGLE_KEY;
 
+	// const redirectUri = 'http://localhost:5174';
 	const redirectUri = 'https://swypmooncofe.vercel.app';
 
 	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;

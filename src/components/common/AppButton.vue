@@ -1,5 +1,7 @@
 <template>
-	<button type="button" class="button-container">{{ btnText }}</button>
+	<button type="button" class="button-container" @click="closeBtn">
+		{{ btnText }}
+	</button>
 </template>
 
 <script setup>

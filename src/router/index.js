@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SignIn from '@/views/SignIn.vue';
-import Randing from '@/views/RandingView.vue';
+import Landing from '@/views/LandingView.vue';
 import MainPage from '@/views/MainPageView.vue';
 import Explore from '@/views/ExploreView.vue';
 import Category from '@/views/CategoryView.vue';
@@ -17,9 +17,9 @@ const router = createRouter({
 			component: SignIn,
 		},
 		{
-			path: '/randing',
-			name: 'Randing',
-			component: Randing,
+			path: '/landing',
+			name: 'Landing',
+			component: Landing,
 		},
 		{
 			path: '/mainPage',

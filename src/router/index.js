@@ -6,6 +6,7 @@ import Explore from '@/views/ExploreView.vue';
 import Category from '@/views/CategoryView.vue';
 import Details from '@/views/DetailsView.vue';
 import OrderDetails from '@/views/OrderDetailsView.vue';
+import Receipt from '@/views/ReceiptView.vue';
 import MyPage from '@/views/MyPageView.vue';
 
 const router = createRouter({
@@ -22,8 +23,8 @@ const router = createRouter({
 			component: Landing,
 		},
 		{
-			path: '/mainPage',
-			name: 'MainPage',
+			path: '/main',
+			name: 'Main',
 			component: MainPage,
 		},
 		{
@@ -45,6 +46,11 @@ const router = createRouter({
 			path: '/orderDetails',
 			name: 'OrderDetails',
 			component: OrderDetails,
+		},
+		{
+			path: '/receipt',
+			name: 'Receipt',
+			component: Receipt,
 		},
 		{
 			path: '/myPage',

@@ -10,31 +10,29 @@
 				/>
 			</div>
 			<!--달 위-->
-			<div>
-				<div
-					class="w-[950px] h-[475px] relative mx-auto pt-20 pb-8 bg-moonYellow rounded-t-[1000px] grid content-between"
-				>
-					<div>
-						<img
-							src="/landingPage/landingLeaf.png"
-							alt="landingLeaf"
-							class="w-[120px] h-[80px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-						/>
-					</div>
-					<div class="pt-12">
-						<p class="text-[40px] font-semibold leading-56">문코에서</p>
-						<h1 class="text-[60px] font-black leading-[90px]">
-							세상에 버려질 <br />
-							음식 구출하기
-						</h1>
-					</div>
-					<div>
-						<button
-							class="w-[230px] h-[58px] bg-[#1CB08C] rounded-[10px] text-[20px] text-white font-black"
-						>
-							문코 시작하기
-						</button>
-					</div>
+			<div
+				class="w-[950px] h-[475px] relative mx-auto pt-20 pb-4 bg-moonYellow rounded-t-[1000px] grid"
+			>
+				<div>
+					<img
+						src="/landingPage/landingLeaf.png"
+						alt="landingLeaf"
+						class="w-[120px] h-[80px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+					/>
+				</div>
+				<div class="pt-8">
+					<p class="text-[40px] font-semibold leading-56">문코에서</p>
+					<h1 class="text-[54px] font-black leading-[80px]">
+						세상에 버려질 <br />
+						음식 구출하기
+					</h1>
+				</div>
+				<div class="pt-4">
+					<button
+						class="w-[220px] h-[50px] bg-[#1CB08C] rounded-[10px] text-[18px] text-white font-black"
+					>
+						문코 시작하기
+					</button>
 				</div>
 			</div>
 		</header>

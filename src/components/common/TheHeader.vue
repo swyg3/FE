@@ -1,7 +1,17 @@
 <template>
-	<div>header</div>
+	<div class="bg-white text-base header-container">주소</div>
 </template>
 
 <script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.header-container {
+	display: flex;
+
+	height: 48px;
+	padding: 12px 16px;
+	justify-content: space-between;
+	align-items: center;
+	flex-shrink: 0;
+}
+</style>

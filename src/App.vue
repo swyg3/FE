@@ -6,16 +6,27 @@
 		]"
 	>
 		<div :class="{ 'app-container': $route.name !== 'Randing' }">
-			<router-view class="p-[16px] h-[764px]"></router-view>
+			<router-view
+				:class="{ 'router-view-content': $route.name !== 'Randing' }"
+			></router-view>
 			<Footer
+				class="footer"
 				v-if="$route.name !== 'Randing' && $route.name !== 'SignIn'"
 			></Footer>
+			<BottomSheet
+				:visible="store.state.isVisible"
+				:type="store.state.popupType"
+			></BottomSheet>
 		</div>
 	</div>
 </template>
 
 <script setup>
 import Footer from '@/components/common/TheFooter.vue';
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 </script>
 
 <style lang="scss" scoped>
@@ -33,6 +44,24 @@ import Footer from '@/components/common/TheFooter.vue';
 .app-container {
 	width: 375px;
 	height: 812px;
-	overflow: auto;
+	position: relative;
+}
+
+.router-view-content {
+	height: calc(100% - 48px);
+	overflow-y: scroll;
+	overflow-x: hidden;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	-ms-overflow-style: none;
+
+	scrollbar-width: none;
+}
+
+.footer {
+	position: absolute;
 }
 </style>

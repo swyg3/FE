@@ -1,155 +1,168 @@
-<template class="min-w-[1980px] h-[1080px] text-[#031F34]">
-	<div>
-		<header class="h-[1080px] bg-[#031F34] text-center grid content-between">
-			<section class="text-center">
+<template>
+	<div class="min-w-[1366px] text-primary mx-auto">
+		<header class="bg-primary text-center grid content-between">
+			<!--헤더 로고-->
+			<div class="text-center">
 				<img
-					src="@/assets/images/randing/randingHeaderLogo.png"
+					src="/randingPage/randingHeaderLogo.png"
 					alt="MooncoLogo"
-					width="304"
-					height="124"
-					class="mx-auto"
+					class="mx-auto pb-[180px]"
 				/>
-			</section>
-			<section
-				class="w-[1436px] h-[718px] mb-0 mx-auto pt-[176px] pb-[80px] bg-[#FFFDC3] rounded-t-[1436px] grid content-between"
-			>
-				<div class="leading-[120px]">
-					<p class="text-[60px] font-semibold">문코에서</p>
-					<h1 class="text-[80px] font-black">
-						세상에 버려질 <br />
-						음식 구출하기
-					</h1>
+			</div>
+			<!--달 위-->
+			<div>
+				<div
+					class="w-[950px] h-[475px] relative mx-auto pt-20 pb-8 bg-moonYellow rounded-t-[1000px] grid content-between"
+				>
+					<div>
+						<img
+							src="/randingPage/randingLeaf.png"
+							alt="randingLeaf"
+							class="w-[120px] h-[80px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+						/>
+					</div>
+					<div class="pt-12">
+						<p class="text-[40px] font-semibold leading-56">문코에서</p>
+						<h1 class="text-[60px] font-black leading-[90px]">
+							세상에 버려질 <br />
+							음식 구출하기
+						</h1>
+					</div>
+					<div>
+						<button
+							class="w-[230px] h-[58px] bg-[#1CB08C] rounded-[10px] text-[20px] text-white font-black"
+						>
+							문코 시작하기
+						</button>
+					</div>
 				</div>
-				<div>
-					<button
-						class="w-[260px] h-[64px] bg-[#1CB08C] rounded-[10px] text-[24px] text-white"
-					>
-						문코 시작하기
-					</button>
-				</div>
-			</section>
+			</div>
 		</header>
 
-		<main class="h-[1660px] bg-[#F2F2F2] px-[242px] pb-[160px]">
+		<main class="bg-[#F2F2F2]">
+			<!--달 아래 + 이유 1-->
 			<div
-				class="w-[1436px] h-[718px] mb-0 mx-auto pt-[140px] pb-[60px] bg-[#FFFDC3] rounded-b-[1436px] grid content-between"
+				class="w-[950px] h-[475px] mx-auto pt-20 pb-12 bg-moonYellow rounded-b-[500px] grid content-between"
 			>
-				<h2 class="text-[60px] font-semibold leading-[90px] pb-[30px]">
+				<h2 class="text-[40px] font-black leading-[90px]">
 					<span class="text-[#1CB08C]">문코</span>여야 하는 이유
 				</h2>
-				<section class="mb-0 grid grid-cols-2">
+				<div class="main-card">
 					<img
-						src="@/assets/images/randing/main01.png"
+						src="/randingPage/main01.png"
 						alt="MooncoMain01"
-						class="rounded-[20px] w-[606px] h-[360px]"
+						class="main-card-img"
 					/>
-					<div class="p-[60px]">
-						<h3 class="text-[50px] font-black leading-[75px]">
+					<div class="pt-4">
+						<h3 class="main-card-title">
 							가치 소비로 <span class="text-[#1CB08C]">환경</span> 지키기
 						</h3>
-						<p class="text-[24px] font-medium leading-[36px]">
+						<p class="main-card-body">
 							오늘이 지나면 버려지는 음식을 구매하고 <br />
 							음식물 쓰레기를 줄여 환경을 지키세요
 						</p>
 					</div>
-				</section>
+				</div>
 			</div>
-			<div class="w-[1436px] mx-auto">
-				<section class="mb-[60px] grid grid-cols-2">
-					<div class="p-[60px]">
-						<h3 class="text-[50px] font-black leading-[75px]">
+			<!--이유2 + 이유3-->
+			<div class="w-[950px] mx-auto">
+				<div class="main-card pb-12">
+					<div class="pl-16 pt-4">
+						<h3 class="main-card-title">
 							마감할인으로 <span class="text-[#1CB08C]">지갑</span> 지키기
 						</h3>
-						<p class="text-[24px] font-medium leading-[36px]">
+						<p class="main-card-body">
 							마감할인 가격으로 판매되는 음식을<br />
 							저렴한 가격에 구매하고 지갑을 지키세요
 						</p>
 					</div>
 					<img
-						src="@/assets/images/randing/main02.png"
+						src="/randingPage/main02.png"
 						alt="MooncoMain02"
-						class="rounded-[20px] w-[606px] h-[360px]"
+						class="main-card-img ml-16"
 					/>
-				</section>
-				<section class="grid grid-cols-2">
+				</div>
+				<div class="main-card pb-28">
 					<img
-						src="@/assets/images/randing/main03.png"
+						src="/randingPage/main03.png"
 						alt="MooncoMain03"
-						class="rounded-[20px] w-[606px] h-[360px]"
+						class="main-card-img"
 					/>
-					<div class="p-[60px]">
-						<h3 class="text-[50px] font-black leading-[75px]">
+					<div class="pt-4">
+						<h3 class="main-card-title">
 							새로운 도전의 <span class="text-[#1CB08C]">재미</span>
 						</h3>
-						<p class="text-[24px] font-medium leading-[36px]">
+						<p class="main-card-body">
 							문코에 올라오는 새로운 동네의 카페와 음식점을 발견하고<br />
 							부담 없이 새로운 음식에 도전해 보세요
 						</p>
 					</div>
-				</section>
+				</div>
 			</div>
 		</main>
 
-		<article class="h-[1200px] text-center py-[100px] grid content-between">
-			<div class="flex justify-center">
-				<section>
+		<!--카드 리스트-->
+		<article class="text-center bg-white">
+			<div class="w-[1000px] px-16 py-20 grid grid-cols-3 mx-auto">
+				<div>
 					<img
-						src="@/assets/images/randing/card01.jpg"
+						src="/randingPage/card01.jpg"
 						alt="Card01"
-						class="rounded-[20px] w-[464px] h-[360px] m-[10px]"
+						class="article-card-img"
 					/>
 					<div>
-						<p class="text-[34px] font-black leading-[51px] py-[30px]">
+						<p class="article-card-title">
 							마감할인으로<br />
 							음식 구매하기
 						</p>
-						<p class="text-[24px] font-medium leading-[36px]">
+						<p class="article-card-body">
 							문코에서 음식을 저렴하게 구매하고<br />
 							환경과 지갑을 지키세요
 						</p>
 					</div>
-				</section>
-				<section>
+				</div>
+				<div>
 					<img
-						src="@/assets/images/randing/card02.jpg"
+						src="/randingPage/card02.jpg"
 						alt="Card02"
-						class="rounded-[20px] w-[464px] h-[360px] m-[10px]"
+						class="article-card-img"
 					/>
 					<div>
-						<p class="text-[34px] font-black leading-[51px] py-[30px]">
-							마감할인으로<br />
-							음식 구매하기
+						<p class="article-card-title">
+							사장님으로<br />
+							마감할인 음식 판매하기
 						</p>
-						<p class="text-[24px] font-medium leading-[36px]">
-							문코에서 음식을 저렴하게 구매하고<br />
-							환경과 지갑을 지키세요
+						<p class="article-card-body">
+							버려지는 음식점 재고를<br />
+							문코에서 판매하고 매출을 올리세요
 						</p>
 					</div>
-				</section>
-				<section>
+				</div>
+				<div>
 					<img
-						src="@/assets/images/randing/card03.jpg"
+						src="/randingPage/card03.jpg"
 						alt="Card03"
-						class="rounded-[20px] w-[464px] h-[360px] m-[10px]"
+						class="article-card-img"
 					/>
 					<div>
-						<p class="text-[34px] font-black leading-[51px] py-[30px]">
-							마감할인으로<br />
-							음식 구매하기
+						<p class="article-card-title">
+							문코<br />
+							스토리 보러가기
 						</p>
-						<p class="text-[24px] font-medium leading-[36px]">
-							문코에서 음식을 저렴하게 구매하고<br />
-							환경과 지갑을 지키세요
+						<p class="article-card-body">
+							문코는 음식물 쓰레기로 인한 환경오염을<br />
+							해결하기 위해 만들어졌어요.<br />
+							문코의 이야기를 들어보세요.
 						</p>
 					</div>
-				</section>
+				</div>
 			</div>
-			<div>
-				<p class="text-[34px] font-black leading-[51px] p-[20px]">
+			<div class="pt-20 pb-16">
+				<p class="text-[32px] font-black leading-[50px] p-4">
 					문코에서 세상에 버려질 음식 구출하기
 				</p>
 				<button
-					class="w-[260px] h-[64px] bg-[#1CB08C] rounded-[10px] text-[24px] text-white"
+					class="w-[230px] h-[58px] bg-[#1CB08C] rounded-[10px] text-[20px] text-white font-black"
 				>
 					문코 시작하기
 				</button>
@@ -158,10 +171,55 @@
 
 		<footer class="h-[440px] bg-[#031F34]">
 			<img
-				src="@/assets/images/randing/randingFooterLogo.png"
+				src="/randingPage/randingFooterLogo.png"
 				alt="MooncoLogo"
 				class="mx-auto h-[440px]"
 			/>
 		</footer>
 	</div>
 </template>
+<script></script>
+<style>
+.main-card {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.main-card-title {
+	font-size: 34px;
+	font-weight: 900;
+	line-height: 70px;
+	padding-bottom: 10px;
+}
+.main-card-body {
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 26px;
+	color: var(--Text_body, #555);
+}
+.main-card-img {
+	border-radius: 20px;
+	width: 400px;
+	height: 240px;
+	border: 1px solid var(--Primary, #031f34);
+}
+.article-card-img {
+	width: 280px;
+	height: 220px;
+	border-radius: 20px;
+	margin: 0 auto;
+	border: 1px solid var(--Primary, #031f34);
+}
+.article-card-title {
+	font-size: 22px;
+	font-weight: 900;
+	line-height: 32px;
+	padding-top: 26px;
+	padding-bottom: 10px;
+}
+.article-card-body {
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 26px;
+	color: var(--Text_body, #555);
+}
+</style>

@@ -1,4 +1,5 @@
-// import socialLoginApi from '@/api/auth';
+import { getItem, setItem, clear } from '@/utils/localStorage.js';
+import { socialLoginApi } from '@/api/auth';
 
 export default {
 	namespaced: true,
@@ -6,11 +7,17 @@ export default {
 	getters: {},
 	mutations: {},
 	actions: {
+		// async socialLogin(context) {
+		// 	const response = await socialLoginApi();
+		// 	console.log('Response', response);
+		// },
 		async socialLogin(context, payload) {
-			// const { authObj, social } = payload;
-			// console.log('authObj', authObj);
-			// console.log('social', social);
-			// const response = await socialLoginApi(payload);
+			console.log('payload', payload);
+
+			const { provider, code, userType } = payload;
+
+			const response = await socialLoginApi(provider, code, userType);
+			console.log('Response', response);
 		},
 	},
 };

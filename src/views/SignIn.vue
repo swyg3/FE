@@ -9,7 +9,7 @@
 				<img src="/signIn/kakaoIcon.png" />
 				<span>카카오로 시작하기</span>
 			</button>
-			<google-login :callback="googleOnSuccess" :onError="googleoOnError">
+			<!-- <google-login :callback="googleOnSuccess" :onError="googleoOnError">
 				<button
 					type="button"
 					class="bg-[#FFF] border border-[var(--Primary,#031F34)] signin-btn"
@@ -17,55 +17,110 @@
 					<img src="/signIn/googleIcon.png" />
 					<span>구글로 시작하기</span>
 				</button>
-			</google-login>
+			</google-login> -->
+			<button
+				type="button"
+				class="bg-[#FFF] border border-[var(--Primary,#031F34)] signin-btn"
+				@click="googleSignIn"
+			>
+				<img src="/signIn/googleIcon.png" />
+				<span>구글로 시작하기</span>
+			</button>
 		</div>
 	</div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
+onMounted(() => {
+	handleCallback();
+});
+
 const kakaoSignIn = async () => {
 	if (!Kakao.isInitialized()) {
-		console.log('초기화안됨');
 		Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
 	}
 
-	Kakao.Auth.login({
-		success: function (authObj) {
-			console.log('성공', authObj);
-
-			store.dispatch('auth/socialLogin', {
-				authObj,
-				social: 'kakao',
-			});
-		},
-		fail: function (err) {
-			console.log(err);
-		},
+	Kakao.Auth.authorize({
+		// redirectUri: 'http://localhost:5174',
+		redirectUri: 'https://swypmooncofe.vercel.app',
 	});
 };
 
-const googleOnSuccess = async authObj => {
-	console.log('구글로그인 성공', authObj);
+const googleSignIn = async () => {
+	const clientId = import.meta.env.VITE_APP_GOOGLE_KEY;
 
-	store.dispatch('auth/socialLogin', {
-		authObj,
-		social: 'google',
-	});
+	// const redirectUri = 'http://localhost:5174';
+	const redirectUri = 'https://swypmooncofe.vercel.app';
+
+	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
+
+	window.location.href = googleAuthUrl;
 };
 
-const googleoOnError = error => {
-	alert('구글로그인이 실패하였습니다', error);
+// 인증 코드 처리
+const handleCallback = async () => {
+	const urlParams = new URLSearchParams(window.location.search);
+
+	const code = urlParams.get('code'); // 인증 코드 추출
+	console.log('code', code);
+
+	if (code) {
+		const provider = window.location.href.includes('google')
+			? 'google'
+			: 'kakao';
+		console.log(`${provider} 인증 코드:`, code);
+
+		store.dispatch('auth/socialLogin', {
+			provider,
+			code,
+			userType: 'user',
+		});
+	} else {
+		console.error('인증 코드가 없습니다.');
+	}
 };
+
+// const handleKakaoCallback = async () => {
+// 	// URL에서 인증 코드 추출
+// 	const urlParams = new URLSearchParams(window.location.search);
+// 	const code = urlParams.get('code'); // 카카오로부터 전달된 인증 코드
+// 	console.log('code', code);
+
+// 	if (code) {
+// 		store.dispatch('auth/socialLogin', {
+// 			provider: 'kakao',
+// 			code,
+// 			userType: 'user',
+// 		});
+// 	} else {
+// 		console.error('No authorization code found');
+// 	}
+// };
+
+// const googleOnSuccess = async authObj => {
+// 	console.log('구글로그인 성공', authObj);
+
+// 	store.dispatch('auth/socialLogin', {
+// 		provider: 'google',
+// 		code: authObj.code,
+// 		userType: 'user',
+// 	});
+// };
+
+// const googleoOnError = error => {
+// 	alert('구글로그인이 실패하였습니다', error);
+// };
 </script>
 
 <style lang="scss" scoped>
 .signin-bg {
-	position: relative;
 	height: 100%;
+	position: relative;
 	background-image: url('/signIn/signInBg.png');
 }
 

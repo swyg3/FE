@@ -77,6 +77,7 @@ const movePage = page => {
 	align-items: center;
 	gap: 2px;
 	flex-shrink: 0;
+	z-index: 10;
 }
 .footer-icon {
 	display: flex;

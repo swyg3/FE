@@ -9,15 +9,6 @@
 				<img src="/signIn/kakaoIcon.png" />
 				<span>카카오로 시작하기</span>
 			</button>
-			<!-- <google-login :callback="googleOnSuccess" :onError="googleoOnError">
-				<button
-					type="button"
-					class="bg-[#FFF] border border-[var(--Primary,#031F34)] signin-btn"
-				>
-					<img src="/signIn/googleIcon.png" />
-					<span>구글로 시작하기</span>
-				</button>
-			</google-login> -->
 			<button
 				type="button"
 				class="bg-[#FFF] border border-[var(--Primary,#031F34)] signin-btn"
@@ -46,16 +37,16 @@ const kakaoSignIn = async () => {
 	}
 
 	Kakao.Auth.authorize({
-		// redirectUri: 'http://localhost:5174',
-		redirectUri: 'https://swypmooncofe.vercel.app',
+		redirectUri: 'http://localhost:5174',
+		// redirectUri: 'https://swypmooncofe.vercel.app',
 	});
 };
 
 const googleSignIn = async () => {
 	const clientId = import.meta.env.VITE_APP_GOOGLE_KEY;
 
-	// const redirectUri = 'http://localhost:5174';
-	const redirectUri = 'https://swypmooncofe.vercel.app';
+	const redirectUri = 'http://localhost:5174';
+	// const redirectUri = 'https://swypmooncofe.vercel.app';
 
 	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
 

@@ -12,10 +12,12 @@
 			<Footer
 				class="footer"
 				v-if="
+
 					$route.name !== 'Landing' &&
 					$route.name !== 'SignIn' &&
-					$route.name !== 'Details' &&
-					$route.name !== 'Receipt'
+					$route.name !== 'Detail' &&
+					$route.name !== 'OrderDetails' &&
+					$route.name !== 'Deciept'
 				"
 			></Footer>
 			<BottomSheet

@@ -11,7 +11,13 @@
 			></router-view>
 			<Footer
 				class="footer"
-				v-if="$route.name !== 'Randing' && $route.name !== 'SignIn'"
+				v-if="
+					$route.name !== 'Randing' &&
+					$route.name !== 'SignIn' &&
+					$route.name !== 'detail' &&
+					$route.name !== 'orderDetails' &&
+					$route.name !== 'reciept'
+				"
 			></Footer>
 			<BottomSheet
 				:visible="store.state.isVisible"

@@ -72,9 +72,20 @@
 				</div>
 				<!--지도-->
 				<div class="w-[342px] h-[180px] ml-[1px] rounded-lg bg-bodyBlack">
-					지도sdfsdf
+					<KakaoMap
+						:lat="coordinate.lat"
+						:lng="coordinate.lng"
+						:draggable="true"
+					>
+						<KakaoMapMarker
+							:lat="coordinate.lat"
+							:lng="coordinate.lng"
+						></KakaoMapMarker>
+					</KakaoMap>
 				</div>
+				<!-- <div ref="mapContainer" class="w-[100px] h-[100px]"></div> -->
 			</div>
+			<div id="map"></div>
 			<div class="order-btn-div">
 				<button @click="$router.push('/orderDetails')" class="order-btn">
 					주문하기
@@ -85,7 +96,72 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
+import { useKakao } from 'vue3-kakao-maps/@utils';
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 const router = useRouter();
+
+//kakaoMap
+useKakao(import.meta.env.VITE_APP_KAKAO_JavaScript_KEY);
+
+const coordinate = {
+	lat: 37.566826,
+	lng: 126.9786567,
+};
+
+//test1
+// import { ref, onMounted } from 'vue';
+// const mapContainer = ref(null);
+
+// onMounted(() => {
+// 	loadKakaoMap(mapContainer.value);
+// });
+
+// const loadKakaoMap = container => {
+// 	const script = document.createElement('script');
+// 	script.src = `https://dapi.kakao.com/v2/map/sdk.js?appkey=${import.meta.env.VITE_APP_KAKAO_JavaScript_KEY}&autoload=false`;
+// 	document.head.appendChild(script);
+
+// 	script.onload = () => {
+// 		window.kakao.maps.load(() => {
+// 			const options = {
+// 				center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+// 				level: 3,
+// 				maxLevel: 5,
+// 			};
+
+// 			const mapInstance = new window.kakao.maps.Map(container, options);
+// 		});
+// 	};
+// };
+
+//test2
+// import { ref, onMounted } from 'vue';
+
+// let map = null;
+
+// onMounted(() => {
+// 	if (window.kakao && window.kakao.maps) {
+// 		initMap();
+// 	} else {
+// 		const script = document.createElement('script');
+// 		/* global kakao */
+// 		script.onload = () => kakao.maps.load(initMap);
+// 		script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_APP_KAKAO_JavaScript_KEY}`;
+// 		document.head.appendChild(script);
+// 	}
+// });
+
+// const initMap = () => {
+// 	const container = document.getElementById('map');
+// 	const options = {
+// 		center: new kakao.maps.LatLng(33.450701, 126.570667),
+// 		level: 5,
+// 	};
+
+// 	// 지도 객체를 등록합니다.
+// 	// 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
+// 	map = new kakao.maps.Map(container, options);
+// };
 </script>
 <style lang="scss" scoped>
 .back-absolute-style {
@@ -124,8 +200,8 @@ const router = useRouter();
 	display: flex;
 	align-items: center;
 	padding-bottom: 32px;
-	/* background-color: white; */
-	position: fixed;
+	background-color: white;
+	position: absolute;
 }
 .order-btn {
 	width: 342px;
@@ -137,4 +213,8 @@ const router = useRouter();
 	color: white;
 	text-align: center;
 }
+/* #map {
+	width: 400px;
+	height: 400px;
+} */
 </style>

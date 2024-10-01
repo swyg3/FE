@@ -1,7 +1,7 @@
 <template>
 	<div class="item-card">
 		<div class="relative">
-			<img src="/randingPage/card01.jpg" class="item-card-img" />
+			<img src="/landingPage/card01.jpg" class="item-card-img" />
 			<div class="remaining">2개 남음</div>
 		</div>
 		<div class="py-2 px-3">

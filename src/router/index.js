@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SignIn from '@/views/SignIn.vue';
-import Randing from '@/views/RandingView.vue';
+import Landing from '@/views/LandingView.vue';
 import MainPage from '@/views/MainPageView.vue';
 import Explore from '@/views/ExploreView.vue';
 import Category from '@/views/CategoryView.vue';
-import Detail from '@/views/DetailView.vue';
+import Details from '@/views/DetailsView.vue';
 import OrderDetails from '@/views/OrderDetailsView.vue';
+import Receipt from '@/views/ReceiptView.vue';
 import MyPage from '@/views/MyPageView.vue';
 
 const router = createRouter({
@@ -17,13 +18,13 @@ const router = createRouter({
 			component: SignIn,
 		},
 		{
-			path: '/randing',
-			name: 'Randing',
-			component: Randing,
+			path: '/landing',
+			name: 'Landing',
+			component: Landing,
 		},
 		{
-			path: '/mainPage',
-			name: 'MainPage',
+			path: '/main',
+			name: 'Main',
 			component: MainPage,
 		},
 		{
@@ -37,14 +38,19 @@ const router = createRouter({
 			component: Category,
 		},
 		{
-			path: '/detail',
-			name: 'Detail',
-			component: Detail,
+			path: '/details',
+			name: 'Details',
+			component: Details,
 		},
 		{
 			path: '/orderDetails',
 			name: 'OrderDetails',
 			component: OrderDetails,
+		},
+		{
+			path: '/receipt',
+			name: 'Receipt',
+			component: Receipt,
 		},
 		{
 			path: '/myPage',

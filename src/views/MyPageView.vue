@@ -37,7 +37,7 @@
 			</div>
 			<div>
 				<div class="text-baseB mypage-text-b-box">계정 관리</div>
-				<div class="mypage-text-s-box">로그아웃</div>
+				<div class="mypage-text-s-box" @click="signOut">로그아웃</div>
 				<div class="mypage-text-s-box">탈퇴하기</div>
 			</div>
 			<div>
@@ -63,13 +63,24 @@
 <script setup>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import { signOutApi } from '@/api/auth.js';
 
 const store = useStore();
 
 const openBottomSheet = contentType => {
-	console.log('contentType', contentType);
 	store.state.isVisible = true;
 	store.state.popupType = contentType;
+};
+
+const signOut = async () => {
+	console.log('로그아웃');
+
+	const response = await signOutApi();
+	console.log('response', response);
+
+	// if(response.data.success ===true){
+	// 	console.log("성공")
+	// }
 };
 </script>
 

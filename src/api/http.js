@@ -41,6 +41,7 @@ instance.interceptors.response.use(
 		console.log('errorRes.status', errorRes.status);
 		console.log('errCount', store.state.errorCount);
 		console.log('originalRequest', originalRequest);
+		console.log('store.state.auth.refreshToken', store.state.auth.refreshToken);
 		if (
 			store.state.errorCount < 3 &&
 			errorRes.status === 401 &&

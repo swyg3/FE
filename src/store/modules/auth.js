@@ -16,6 +16,7 @@ export default {
 	getters: {},
 	mutations: {
 		SET_CLEAR_TOKEN(state) {
+			console.log('토큰 clear');
 			state.userEmail = '';
 			state.userId = '';
 			state.userType = '';
@@ -75,8 +76,7 @@ export default {
 				const { provider, code, userType } = payload;
 
 				const response = await socialLoginApi(provider, code, userType);
-				console.log('Response', response);
-
+				console.log('response', response);
 				if (response && response.data && response.data.success === true) {
 					const data = response.data.data;
 					context.commit('SET_USER_EMAIL', data.email);

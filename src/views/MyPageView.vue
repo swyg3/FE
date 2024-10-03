@@ -1,5 +1,5 @@
 <template>
-	<div class="mypage-bg">
+	<div class="h-full mypage-bg">
 		<div class="text-baseB mypage-header">마이페이지</div>
 
 		<div class="px-[16px]">
@@ -76,7 +76,6 @@ const openBottomSheet = contentType => {
 
 const signOut = async () => {
 	const response = await signOutApi();
-	console.log('Response', response);
 
 	if (response.data.success === true) {
 		store.commit('auth/SET_CLEAR_TOKEN');
@@ -85,14 +84,10 @@ const signOut = async () => {
 };
 
 const cancelMembership = async () => {
-	console.log('회원탈퇴');
 	const uid = store.state.auth.userId;
-	console.log('uid', uid);
 	const response = await cancelMembershipApi(uid);
-	console.log('response', response);
 
 	if (response.data.success === true) {
-		console.log('회원탈퇴성공');
 		store.commit('auth/SET_CLEAR_TOKEN');
 		router.push('/');
 	}

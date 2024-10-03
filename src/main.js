@@ -7,11 +7,13 @@ import store from '@/store';
 import router from '@/router';
 import GoogleLogin from 'vue3-google-login';
 import BottomSheet from '@/components/common/AppBottomSheet.vue';
+import Modal from '@/components/Modal/index.vue';
 import AppButton from '@/components/common/AppButton.vue';
 
 const app = createApp(App);
 
 app.component('BottomSheet', BottomSheet);
+app.component('Modal', Modal);
 app.component('AppButton', AppButton);
 
 app.use(store);

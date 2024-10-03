@@ -1,14 +1,11 @@
 import http from '@/api/http.js';
 
-export const socialLoginApi = (provider, code, userType) => {
-	console.log('login');
-	return http.get(
+export const socialLoginApi = (provider, code, userType) =>
+	http.get(
 		`/api/auth/login-oauth/${provider}/callback?code=${encodeURIComponent(code)}&userType=${userType}`,
 	);
-};
 
-// export const socialLoginApi = (provider, code, userType) => {
-// 	console.log('11');
+export const signOutApi = () => http.post('/api/auth/logout');
 
-// 	return http.get('/api');
-// };
+export const cancelMembershipApi = payload =>
+	http.delete(`/api/users/deactivate/${payload}`);

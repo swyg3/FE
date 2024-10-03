@@ -2,16 +2,23 @@
 	<div
 		:class="[
 			$route.name === 'SignIn' ? 'bg-hoverWhite' : 'bg-primary',
-			$route.name !== 'Randing' ? 'app-background' : '',
+			$route.name !== 'Landing' ? 'app-background' : '',
 		]"
 	>
-		<div :class="{ 'app-container': $route.name !== 'Randing' }">
+		<div :class="{ 'app-container': $route.name !== 'Landing' }">
 			<router-view
-				:class="{ 'router-view-content': $route.name !== 'Randing' }"
+				:class="{ 'router-view-content': $route.name !== 'Landing' }"
 			></router-view>
 			<Footer
 				class="footer"
-				v-if="$route.name !== 'Randing' && $route.name !== 'SignIn'"
+				v-if="
+
+					$route.name !== 'Landing' &&
+					$route.name !== 'SignIn' &&
+					$route.name !== 'Detail' &&
+					$route.name !== 'OrderDetails' &&
+					$route.name !== 'Deciept'
+				"
 			></Footer>
 			<BottomSheet
 				:visible="store.state.isVisible"

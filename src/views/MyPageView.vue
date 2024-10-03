@@ -37,8 +37,8 @@
 			</div>
 			<div>
 				<div class="text-baseB mypage-text-b-box">계정 관리</div>
-				<div class="mypage-text-s-box">로그아웃</div>
-				<div class="mypage-text-s-box">탈퇴하기</div>
+				<div class="mypage-text-s-box" @click="signOut">로그아웃</div>
+				<div class="mypage-text-s-box" @click="cancelMembership">탈퇴하기</div>
 			</div>
 			<div>
 				<div class="text-baseB mypage-text-b-box">서비스 정보</div>
@@ -63,13 +63,39 @@
 <script setup>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
 
 const store = useStore();
+const router = useRouter();
 
 const openBottomSheet = contentType => {
-	console.log('contentType', contentType);
 	store.state.isVisible = true;
 	store.state.popupType = contentType;
+};
+
+const signOut = async () => {
+	const response = await signOutApi();
+	console.log('Response', response);
+
+	if (response.data.success === true) {
+		store.commit('auth/SET_CLEAR_TOKEN');
+		router.push('/');
+	}
+};
+
+const cancelMembership = async () => {
+	console.log('회원탈퇴');
+	const uid = store.state.auth.userId;
+	console.log('uid', uid);
+	const response = await cancelMembershipApi(uid);
+	console.log('response', response);
+
+	if (response.data.success === true) {
+		console.log('회원탈퇴성공');
+		store.commit('auth/SET_CLEAR_TOKEN');
+		router.push('/');
+	}
 };
 </script>
 

@@ -11,7 +11,6 @@ export default createStore({
 	mutations: {
 		SET_ERROR_COUNT(state) {
 			state.errorCount += 1;
-			console.log('store', state.errorCount);
 		},
 		RESET_ERROR_COUNT(state) {
 			state.errorCount = 0;

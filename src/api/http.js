@@ -34,14 +34,10 @@ instance.interceptors.response.use(
 		return response;
 	},
 	async error => {
-		console.log('error', error);
 		const errorRes = error.response;
 		const originalRequest = error.config;
 		store.commit('SET_ERROR_COUNT');
-		console.log('errorRes.status', errorRes.status);
-		console.log('errCount', store.state.errorCount);
-		console.log('originalRequest', originalRequest);
-		console.log('store.state.auth.refreshToken', store.state.auth.refreshToken);
+
 		if (
 			store.state.errorCount < 3 &&
 			errorRes.status === 401 &&
@@ -49,18 +45,15 @@ instance.interceptors.response.use(
 			store.state.auth.refreshToken !== ''
 		) {
 			try {
-				console.log('요청');
 				const res = await instance.post('/api/auth/refresh-token', {
 					refreshToken: store.state.auth.refreshToken,
 				});
-				console.log('res', res);
+
 				if (res.data.success === true) {
-					console.log('true');
 					store.commit('auth/SET_ACCESS_TOKEN', res.data.data.access);
 
 					originalRequest.headers.Authorization = `Bearer ${res.data.data.access.token}`;
 
-					console.log('111', originalRequest);
 					return instance(originalRequest);
 				}
 			} catch (err) {

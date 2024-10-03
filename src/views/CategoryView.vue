@@ -55,6 +55,7 @@ import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
 <style lang="scss" scoped>
 .category-bg {
 	width: 375px;
+	min-height: 715px;
 	background-image: url('/category/categoryBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);

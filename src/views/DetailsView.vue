@@ -43,36 +43,39 @@
 			<!--text-->
 			<div class="p-4">
 				<div>
-					<p class="text-black text-lgB pb-1">범수의 연어 베이글</p>
+					<p class="text-black text-lgB pb-1">{{ product.name }}</p>
 					<p>
-						범수의 베이글 가게의 특별한 비법으로 매장에서 직접 숙성시킨 연어와
-						매일 들어오는 신선한 채소로 만든 연어 샌드위치
+						{{ product.description }}
 					</p>
 				</div>
 				<div class="pt-2">
 					<div class="flex">
-						<p class="text-sm text-[#1CB08C] pr-1">50%</p>
-						<p class="text-sm text-disabledTextGray line-through">10,000원</p>
+						<p class="text-sm text-[#1CB08C] pr-1">
+							{{ product.discountRate }}%
+						</p>
+						<p class="text-sm text-disabledTextGray line-through">
+							{{ product.originalPrice }}원
+						</p>
 					</div>
-					<p class="text-lgB text-[#1CB08C]">5,000</p>
+					<p class="text-lgB text-[#1CB08C]">{{ product.discountPrice }}</p>
 				</div>
 			</div>
 			<!--픽업 시간-->
 			<div class="px-4 py-[13px] flex border-y border-disabledGray">
 				<p class="text-baseB pr-6">픽업가능시간</p>
-				<p class="text-base text-bodyBlack">오후 6::00 ~ 오후 8:30</p>
+				<p class="text-base text-bodyBlack">오후 6:00 ~ 오후 8:30</p>
 			</div>
 			<!--가게 정보-->
 			<div class="px-4 pt-4 pb-3">
 				<p class="text-baseB pb-1">가게 정보</p>
 				<!--주소도-->
 				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: 범수의 베이글 가게</p>
-					<p class="pb-2">가게 위치: 서울시 종로구 자하문로 44 청민 11층 304</p>
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
 				</div>
 				<!--지도-->
 				<div class="w-[342px] h-[180px] ml-[1px] rounded-lg bg-bodyBlack">
-					<KakaoMap
+					<!-- <KakaoMap
 						:lat="coordinate.lat"
 						:lng="coordinate.lng"
 						:draggable="true"
@@ -81,11 +84,12 @@
 							:lat="coordinate.lat"
 							:lng="coordinate.lng"
 						></KakaoMapMarker>
-					</KakaoMap>
+					</KakaoMap> -->
 				</div>
 				<!-- <div ref="mapContainer" class="w-[100px] h-[100px]"></div> -->
 			</div>
 			<div id="map"></div>
+			<div class="bg-white h-12"></div>
 			<div class="order-btn-div">
 				<button @click="$router.push('/orderDetails')" class="order-btn">
 					주문하기
@@ -94,74 +98,49 @@
 		</div>
 	</div>
 </template>
-<script setup>
+<script>
+import http from '@/api/http.js';
 import { useRouter } from 'vue-router';
 import { useKakao } from 'vue3-kakao-maps/@utils';
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+// import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 const router = useRouter();
 
-//kakaoMap
-useKakao(import.meta.env.VITE_APP_KAKAO_JavaScript_KEY);
+// //kakaoMap
+// useKakao(import.meta.env.VITE_APP_KAKAO_JavaScript_KEY);
 
-const coordinate = {
-	lat: 37.566826,
-	lng: 126.9786567,
+// const coordinate = {
+// 	lat: 37.566826,
+// 	lng: 126.9786567,
+// };
+
+export default {
+	data() {
+		return {
+			product: [], // API에서 받아올 상품 정보
+		};
+	},
+	mounted() {
+		// URL 파라미터에서 id를 가져와 상품 정보 요청
+		const productId = this.$route.params.productId;
+		this.fetchProductDetail(productId);
+		console.log(productId);
+	},
+	methods: {
+		// API 호출로 상품 상세 정보 가져오기
+		fetchProductDetail(id) {
+			http
+				.get(`/api/products/get/60933cd2-9630-42c8-9af9-3190cb847faa`)
+				.then(res => {
+					this.product = res.data.data;
+					console.log(this.product);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+			console.log('id:', id);
+		},
+	},
 };
-
-//test1
-// import { ref, onMounted } from 'vue';
-// const mapContainer = ref(null);
-
-// onMounted(() => {
-// 	loadKakaoMap(mapContainer.value);
-// });
-
-// const loadKakaoMap = container => {
-// 	const script = document.createElement('script');
-// 	script.src = `https://dapi.kakao.com/v2/map/sdk.js?appkey=${import.meta.env.VITE_APP_KAKAO_JavaScript_KEY}&autoload=false`;
-// 	document.head.appendChild(script);
-
-// 	script.onload = () => {
-// 		window.kakao.maps.load(() => {
-// 			const options = {
-// 				center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-// 				level: 3,
-// 				maxLevel: 5,
-// 			};
-
-// 			const mapInstance = new window.kakao.maps.Map(container, options);
-// 		});
-// 	};
-// };
-
-//test2
-// import { ref, onMounted } from 'vue';
-
-// let map = null;
-
-// onMounted(() => {
-// 	if (window.kakao && window.kakao.maps) {
-// 		initMap();
-// 	} else {
-// 		const script = document.createElement('script');
-// 		/* global kakao */
-// 		script.onload = () => kakao.maps.load(initMap);
-// 		script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_APP_KAKAO_JavaScript_KEY}`;
-// 		document.head.appendChild(script);
-// 	}
-// });
-
-// const initMap = () => {
-// 	const container = document.getElementById('map');
-// 	const options = {
-// 		center: new kakao.maps.LatLng(33.450701, 126.570667),
-// 		level: 5,
-// 	};
-
-// 	// 지도 객체를 등록합니다.
-// 	// 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-// 	map = new kakao.maps.Map(container, options);
-// };
 </script>
 <style lang="scss" scoped>
 .back-absolute-style {
@@ -200,7 +179,7 @@ const coordinate = {
 	display: flex;
 	align-items: center;
 	padding-bottom: 32px;
-	background-color: white;
+
 	position: absolute;
 }
 .order-btn {

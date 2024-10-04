@@ -112,7 +112,6 @@
 	align-items: center;
 	flex-shrink: 0;
 	top: 0;
-	background-color: gray;
 }
 .back-absolute-style {
 	position: absolute;

@@ -44,6 +44,7 @@
 						v-for="(product, index) in products"
 						:key="index"
 						:product="product"
+						@click="goToDetailPage(product.name)"
 					/>
 				</div>
 			</div>
@@ -128,6 +129,13 @@ export default {
 			this.currentSort = option.label;
 			this.sortBy = option.value;
 			this.fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+		},
+		goToDetailPage(productName) {
+			this.$router.push(`/details/${productName}`); // 상품 id 대신 name으로 routing
+			this.$emit('product-selected', {
+				id: this.product.productId,
+				name: this.product.name,
+			});
 		},
 	},
 };

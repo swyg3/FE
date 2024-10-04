@@ -38,9 +38,10 @@ const router = createRouter({
 			component: Category,
 		},
 		{
-			path: '/details',
+			path: '/details/:name',
 			name: 'Details',
 			component: Details,
+			props: true,
 		},
 		{
 			path: '/orderDetails',

@@ -4,7 +4,7 @@
 
 		<div class="px-[16px]">
 			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
-			<div class="text-lgB">수연님</div>
+			<div class="text-lgB">{{ getUserName }}</div>
 			<div class="text-bodyBlack mypage-phone">010-1111-1111</div>
 			<div class="flex gap-2">
 				<div class="mt-5 mypage-box">
@@ -30,7 +30,10 @@
 		<div class="mt-7">
 			<div>
 				<div class="text-baseB mypage-text-b-box">내 정보 관리</div>
-				<div class="flex justify-between mypage-text-s-box">
+				<div
+					class="flex justify-between mypage-text-s-box"
+					@click="() => router.push('/addressBook')"
+				>
 					<div>주소 관리</div>
 					<div class="text-sm text-bodyBlack">서울시 종로구 율곡로</div>
 				</div>
@@ -61,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
@@ -69,27 +72,44 @@ import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
 const store = useStore();
 const router = useRouter();
 
+const getUserName = computed(() => store.state.auth.userName);
+
 const openBottomSheet = contentType => {
 	store.state.isVisible = true;
 	store.state.popupType = contentType;
 };
 
 const signOut = async () => {
-	const response = await signOutApi();
+	store.commit('SET_IS_LOADING', true);
+	try {
+		const response = await signOutApi();
 
-	if (response.data.success === true) {
-		store.commit('auth/SET_CLEAR_TOKEN');
-		router.push('/');
+		if (response.data.success === true) {
+			store.commit('auth/SET_CLEAR_TOKEN');
+			router.push('/');
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
 const cancelMembership = async () => {
-	const uid = store.state.auth.userId;
-	const response = await cancelMembershipApi(uid);
+	store.commit('SET_IS_LOADING', true);
 
-	if (response.data.success === true) {
-		store.commit('auth/SET_CLEAR_TOKEN');
-		router.push('/');
+	try {
+		const uid = store.state.auth.userId;
+		const response = await cancelMembershipApi(uid);
+
+		if (response.data.success === true) {
+			store.commit('auth/SET_CLEAR_TOKEN');
+			router.push('/');
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 </script>

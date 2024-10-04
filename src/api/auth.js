@@ -1,11 +1,15 @@
 import http from '@/api/http.js';
 
+//로그인,회원가입
 export const socialLoginApi = (provider, code, userType) =>
 	http.get(
 		`/api/auth/login-oauth/${provider}/callback?code=${encodeURIComponent(code)}&userType=${userType}`,
 	);
-
+//로그아웃
 export const signOutApi = () => http.post('/api/auth/logout');
-
+//회원탈퇴
 export const cancelMembershipApi = payload =>
 	http.delete(`/api/users/deactivate/${payload}`);
+//gps동의
+export const gpsConsentApi = payload =>
+	http.patch(`/api/users/settings/gps/${payload}`, { agree: true });

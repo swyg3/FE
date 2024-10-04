@@ -2,13 +2,14 @@
 	<div>
 		<TheHeader></TheHeader>
 		<div class="category-list">
-			<button>전체</button>
-			<button>한식</button>
-			<button>일식</button>
-			<button>중식</button>
-			<button>분식</button>
-			<button>양식</button>
-			<button>디저트</button>
+			<CategoryListButton
+				v-for="(cat, index) in categories"
+				:key="index"
+				:categoryName="cat.name"
+				:categoryValue="cat.value"
+				:isActive="category === cat.value"
+				@categoryChanged="changeCategory"
+			/>
 		</div>
 		<div class="h-[48px]"></div>
 		<hr class="w-full bg-disabledGray" />
@@ -16,9 +17,13 @@
 			<div class="h-[48px]"></div>
 			<!--category item card list-->
 			<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">
-				<p class="">총 20개</p>
+				<p class="">총 {{ products.length }}개</p>
 				<div class="flex">
-					<p class="pr-1">할인순</p>
+					<button @click="openSortModal">{{ currentSort }}</button>
+					<CategorySortModal
+						@changeSort="changeSort"
+						ref="sortModal"
+					></CategorySortModal>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -33,23 +38,99 @@
 					</svg>
 				</div>
 			</div>
-			<div class="">
-				<div class="px-4 flex justify-between">
-					<CategoryItemCard></CategoryItemCard>
-					<CategoryItemCard></CategoryItemCard>
-				</div>
-				<div class="px-4 flex justify-between">
-					<CategoryItemCard></CategoryItemCard>
-					<CategoryItemCard></CategoryItemCard>
+			<div>
+				<div class="px-4 grid grid-cols-2 gap-[7px]">
+					<CategoryItemCard
+						v-for="(product, index) in products"
+						:key="index"
+						:product="product"
+					/>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script setup>
+<script>
 import TheHeader from '@/components/common/TheHeader.vue';
 import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
+import http from '@/api/http.js';
+import CategorySortModal from '@/components/Modal/categorySortModal.vue';
+import CategoryListButton from '@/components/common/CategoryListButton.vue';
+
+export default {
+	components: {
+		TheHeader,
+		CategoryListButton,
+		CategorySortModal,
+		CategoryItemCard,
+	},
+	data() {
+		return {
+			products: [],
+			currentSort: '문코 추천 순', // 기본 정렬 기준
+			category: 'ALL', // 기본 카테고리
+			sortBy: 'distanceDiscountScore', // 기본 정렬 방식
+			categories: [
+				{ name: '전체', value: 'ALL' },
+				{ name: '한식', value: 'KOREAN' },
+				{ name: '일식', value: 'JAPANESE' },
+				{ name: '중식', value: 'CHINESE' },
+				{ name: '분식', value: 'SNACK' },
+				{ name: '양식', value: 'WESTERN' },
+				{ name: '디저트', value: 'DESSERT' },
+			],
+		};
+	},
+	mounted() {
+		this.fetchCategoryProducts(); // 페이지 로드 시 기본 데이터 요청
+	},
+	methods: {
+		// 임의 위치 설정
+		updateLocation() {
+			const locationData = {
+				longitude: 126.9779692, // 경도
+				latitude: 37.5662952, // 위도
+			};
+			http
+				.put('/api/locations/current/insert', locationData)
+				.then(response => {
+					console.log('Location updated successfully:', response.data);
+				})
+				.catch(error => {
+					console.error('Error updating location:', error);
+				});
+		},
+		// api 연동하여 상품 가져오기
+		fetchCategoryProducts() {
+			const apiUrl = `/api/products/category?category=${this.category}&sortBy=${this.sortBy}&order=asc&limit=8`;
+			http
+				.get(apiUrl)
+				.then(res => {
+					this.products = res.data.data;
+					console.log(this.products);
+					console.log(apiUrl);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		// 카테고리 변경 메소드
+		changeCategory(newCategory) {
+			this.category = newCategory; // 카테고리 값 업데이트
+			this.fetchCategoryProducts(); // 새 카테고리에 맞는 상품 재요청
+		},
+		// 정렬 기준 변경 메소드
+		openSortModal() {
+			this.$refs.sortModal.openModal();
+		},
+		changeSort(option) {
+			this.currentSort = option.label;
+			this.sortBy = option.value;
+			this.fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -77,5 +158,8 @@ import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
 	z-index: 8;
 	background: white;
 	position: absolute;
+}
+.category-list button.active {
+	color: #1cb08c;
 }
 </style>

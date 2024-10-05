@@ -94,10 +94,7 @@ export default {
 				roadAddress: '서울특별시 강남구 테헤란로 152',
 			};
 			http
-				.post('/api/locations/address/insert', {
-					searchTerm: '테헤란로 152',
-					roadAddress: '서울특별시 강남구 테헤란로 152',
-				})
+				.post('/api/locations/address/insert', locationData)
 				.then(response => {
 					console.log('Location updated successfully:', response.data);
 				})

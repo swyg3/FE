@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="min-h-[812px]">
 		<!--header-->
 		<div class="bg-white text-base absolute header-container">
 			<button onclick="history.back()" class="back-absolute-style">
@@ -77,7 +77,11 @@
 			<!--픽업시간-->
 			<div class="pt-4 pb-6 pl-4">
 				<p class="text-baseB pb-2">픽업시간</p>
-				<div class="text-baseB time-box">오후 6:00</div>
+				<div class="flex">
+					<button class="time-box">오후 1:10</button>
+					<button class="time-box">오후 6:20</button>
+					<button class="time-box">오후 12:30</button>
+				</div>
 			</div>
 			<hr class="w-full bg-disabledGray" />
 			<!--결제-->
@@ -200,15 +204,20 @@ input {
 	margin: auto 0;
 }
 .time-box {
-	width: 80px;
 	height: 30px;
-	padding: 3px 6px;
 	border-radius: 6px;
 	border: 1px solid var(--Primary, #031f34);
 	background: var(--Point, #1cb08c);
-	align-items: center;
 	display: flex;
 	color: white;
+	justify-content: center;
+	align-items: center;
+	font-family: Pretendard;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 24px;
+	margin-right: 8px;
+	padding: 3px 6px;
 }
 .order-btn {
 	width: 342px;

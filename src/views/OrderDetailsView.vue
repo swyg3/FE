@@ -204,6 +204,7 @@ input {
 	margin: auto 0;
 }
 .time-box {
+	width: 90px;
 	height: 30px;
 	border-radius: 6px;
 	border: 1px solid var(--Primary, #031f34);
@@ -217,7 +218,6 @@ input {
 	font-weight: 700;
 	line-height: 24px;
 	margin-right: 8px;
-	padding: 3px 6px;
 }
 .order-btn {
 	width: 342px;

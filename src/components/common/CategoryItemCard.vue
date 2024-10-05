@@ -38,7 +38,7 @@ export default {
 	methods: {
 		// 이미지 경로 변환
 		fullImageUrl(imagePath) {
-			const baseUrl = import.meta.env.VITE_APP_API_IMAGE_URL;
+			const baseUrl = import.meta.env.VITE_APP_API_URL;
 			const imagePathUrl = `${baseUrl}${imagePath}`;
 			return imagePathUrl;
 		},

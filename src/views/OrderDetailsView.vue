@@ -25,7 +25,11 @@
 			<div>
 				<p class="text-baseB px-4 pt-4 pb-2">주문 상품</p>
 				<div class="flex pl-4">
-					<img :src="product.productImageUrl" alt="FoodImg" class="order-img" />
+					<img
+						:src="fullImageUrl(product.productImageUrl)"
+						alt="FoodImg"
+						class="order-img"
+					/>
 					<div class="pt-2 pl-4 pb-[22]">
 						<p class="text-baseB pb-0.5">{{ product.name }}</p>
 						<P class="text-base">{{ product.availableStock }}개</P>
@@ -158,6 +162,12 @@ export default {
 					console.log(err);
 				});
 		},
+		// 이미지 경로 변환
+		fullImageUrl(imagePath) {
+			const baseUrl = import.meta.env.VITE_APP_API_URL;
+			const imagePathUrl = `${baseUrl}${imagePath}`;
+			return imagePathUrl;
+		},
 	},
 };
 </script>
@@ -229,7 +239,7 @@ input {
 	transform: translate(-50%, 0);
 	align-items: center;
 	padding-bottom: 32px;
-	background: var(--White, #FFF);
+	background: var(--White, #fff);
 	position: absolute;
 }
 .order-btn {

@@ -8,6 +8,8 @@ import Details from '@/views/DetailsView.vue';
 import OrderDetails from '@/views/OrderDetailsView.vue';
 import Receipt from '@/views/ReceiptView.vue';
 import MyPage from '@/views/MyPageView.vue';
+import AddressBook from '@/views/AddressBookView.vue';
+import AddressSearch from '@/views/AddressSearchView.vue';
 
 const router = createRouter({
 	history: createWebHistory('/'),
@@ -38,14 +40,16 @@ const router = createRouter({
 			component: Category,
 		},
 		{
-			path: '/details',
+			path: '/details/:name/:id',
 			name: 'Details',
 			component: Details,
+			props: true,
 		},
 		{
-			path: '/orderDetails',
+			path: '/orderdetails/:name/:id',
 			name: 'OrderDetails',
 			component: OrderDetails,
+			props: true,
 		},
 		{
 			path: '/receipt',
@@ -56,6 +60,16 @@ const router = createRouter({
 			path: '/myPage',
 			name: 'MyPage',
 			component: MyPage,
+		},
+		{
+			path: '/addressBook',
+			name: 'AddressBook',
+			component: AddressBook,
+		},
+		{
+			path: '/addressSearch',
+			name: 'AddressSearch',
+			component: AddressSearch,
 		},
 	],
 });

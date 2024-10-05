@@ -1,11 +1,13 @@
 <template>
-	<div class="mypage-bg">
+	<div class="h-full mypage-bg">
 		<div class="text-baseB mypage-header">마이페이지</div>
 
 		<div class="px-[16px]">
 			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
-			<div class="text-lgB">수연님</div>
-			<div class="text-bodyBlack mypage-phone">010-1111-1111</div>
+			<div class="text-lgB">{{ getUserName }}</div>
+			<div class="text-bodyBlack mypage-period-activity">
+				2024년 9월 17일부터
+			</div>
 			<div class="flex gap-2">
 				<div class="mt-5 mypage-box">
 					<img src="/myPage/umbrage.png" class="p-1" />
@@ -30,7 +32,10 @@
 		<div class="mt-7">
 			<div>
 				<div class="text-baseB mypage-text-b-box">내 정보 관리</div>
-				<div class="flex justify-between mypage-text-s-box">
+				<div
+					class="flex justify-between mypage-text-s-box"
+					@click="() => router.push('/addressBook')"
+				>
 					<div>주소 관리</div>
 					<div class="text-sm text-bodyBlack">서울시 종로구 율곡로</div>
 				</div>
@@ -61,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
@@ -69,32 +74,44 @@ import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
 const store = useStore();
 const router = useRouter();
 
+const getUserName = computed(() => store.state.auth.userName);
+
 const openBottomSheet = contentType => {
 	store.state.isVisible = true;
 	store.state.popupType = contentType;
 };
 
 const signOut = async () => {
-	const response = await signOutApi();
-	console.log('Response', response);
+	store.commit('SET_IS_LOADING', true);
+	try {
+		const response = await signOutApi();
 
-	if (response.data.success === true) {
-		store.commit('auth/SET_CLEAR_TOKEN');
-		router.push('/');
+		if (response.data.success === true) {
+			store.commit('auth/SET_CLEAR_TOKEN');
+			router.push('/');
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
 const cancelMembership = async () => {
-	console.log('회원탈퇴');
-	const uid = store.state.auth.userId;
-	console.log('uid', uid);
-	const response = await cancelMembershipApi(uid);
-	console.log('response', response);
+	store.commit('SET_IS_LOADING', true);
 
-	if (response.data.success === true) {
-		console.log('회원탈퇴성공');
-		store.commit('auth/SET_CLEAR_TOKEN');
-		router.push('/');
+	try {
+		const uid = store.state.auth.userId;
+		const response = await cancelMembershipApi(uid);
+
+		if (response.data.success === true) {
+			store.commit('auth/SET_CLEAR_TOKEN');
+			router.push('/');
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 </script>
@@ -116,7 +133,7 @@ const cancelMembership = async () => {
 	background-color: white;
 	z-index: 10;
 }
-.mypage-phone {
+.mypage-period-activity {
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 500;

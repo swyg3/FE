@@ -25,26 +25,26 @@
 			<div>
 				<p class="text-baseB px-4 pt-4 pb-2">주문 상품</p>
 				<div class="flex pl-4">
-					<img scr="/randingPage/card01.jpg" alt="FoodImg" class="order-img" />
+					<img :src="product.productImageUrl" alt="FoodImg" class="order-img" />
 					<div class="pt-2 pl-4 pb-[22]">
-						<p class="text-baseB pb-0.5">범수의 연어 베이글</p>
-						<P class="text-base">2개</P>
+						<p class="text-baseB pb-0.5">{{ product.name }}</p>
+						<P class="text-base">{{ product.availableStock }}개</P>
 					</div>
 				</div>
 				<!--결제금액-->
 				<div class="pay-box text-base">
 					<div class="flex justify-between pb-2">
 						<p>상품가</p>
-						<p>20,000원</p>
+						<p>{{ product.originalPrice }}원</p>
 					</div>
 					<div class="flex justify-between">
 						<p>상품 할인</p>
-						<p>- 10,000원</p>
+						<p>- {{ discount }}원</p>
 					</div>
 					<hr class="w-[310px] bg-disabledGray my-3" />
 					<div class="flex justify-between text-baseB">
 						<p>결제금액</p>
-						<p>10,000원</p>
+						<p>{{ product.discountedPrice }}원</p>
 					</div>
 				</div>
 			</div>
@@ -57,12 +57,12 @@
 						<input type="checkbox" id="check1" class="checkbox" />
 						<p class="pl-2 text-base">개인 용기를 가져갈래요</p>
 					</label>
-					<label for="check1" class="flex pb-2">
-						<input type="checkbox" id="check1" class="checkbox" />
+					<label for="check2" class="flex pb-2">
+						<input type="checkbox" id="check2" class="checkbox" />
 						<p class="pl-2 text-base">개인 장바구니를 가져갈래요</p>
 					</label>
-					<label for="check1" class="flex">
-						<input type="checkbox" id="check1" class="checkbox" />
+					<label for="check3" class="flex">
+						<input type="checkbox" id="check3" class="checkbox" />
 						<div class="w-full pr-6 flex justify-between">
 							<p class="pl-2 text-base">일회용 수저는 필요 없어요</p>
 							<img
@@ -89,19 +89,72 @@
 				</p>
 				<div>
 					<label for="radio1" class="flex">
-						<input type="radio" id="radio1" />
+						<input type="radio" id="radio1" disabled="disabled" />
 						<p class="pl-2 text-base text-disabledTextGray">현장결제</p>
 					</label>
 				</div>
 			</div>
-			<button @click="$router.push('/orderDetails')" class="order-btn">
+			<button @click="$router.push('/orderdetails')" class="order-btn">
 				주문하기
 			</button>
 		</div>
 	</div>
 </template>
 
-<script setup></script>
+<script>
+import http from '@/api/http.js';
+
+export default {
+	props: {
+		name: {
+			type: String,
+			required: true,
+		},
+		id: {
+			type: String,
+			required: true,
+		},
+	},
+	computed: {
+		discount() {
+			// 할인된 금액 연산
+			return this.product.originalPrice - this.product.discountedPrice;
+		},
+	},
+	data() {
+		return {
+			product: {}, // API에서 받아올 상품 정보
+		};
+	},
+	mounted() {
+		// URL 파라미터에서 id를 가져와 상품 정보 요청
+		const productId = this.$route.params.productId;
+		this.fetchProductDetail(productId);
+		console.log(productId);
+	},
+	created() {
+		// Router의 state에서 productId 가져오기
+		if (this.$route.state && this.$route.state.productId) {
+			this.productId = this.$route.state.productId;
+		} else {
+			console.error('상품 ID를 찾을 수 없습니다.');
+		}
+	},
+	methods: {
+		fetchProductDetail() {
+			http
+				.get(`/api/products/get/${this.id}`)
+				.then(res => {
+					this.product = res.data.data;
+					console.log(this.product);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+	},
+};
+</script>
 
 <style lang="scss" scoped>
 .header-container {
@@ -112,7 +165,6 @@
 	align-items: center;
 	flex-shrink: 0;
 	top: 0;
-	background-color: gray;
 }
 .back-absolute-style {
 	position: absolute;

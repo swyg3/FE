@@ -14,7 +14,7 @@
 				v-if="
 					$route.name !== 'Landing' &&
 					$route.name !== 'SignIn' &&
-					$route.name !== 'Detail' &&
+					$route.name !== 'Details' &&
 					$route.name !== 'OrderDetails' &&
 					$route.name !== 'Deciept'
 				"

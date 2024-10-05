@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<TheHeader></TheHeader>
+		<TheHeader @click="() => router.push('/addressBook')"></TheHeader>
 		<div class="mainpage-bg">
 			<div class="h-[64px]"></div>
 			<!--welcome + 문구 + 카드-->
@@ -13,7 +13,7 @@
 			<div class="text-lgB text-center pb-10">
 				<p>어서오세요</p>
 				<p class="py-2">'친환경 우주 활동가'</p>
-				<p>수연님</p>
+				<p>{{ getUserName }}</p>
 			</div>
 			<div class="flex my-6 justify-center text-center">
 				<UserCard></UserCard>
@@ -98,42 +98,104 @@
 				</div>
 			</div>
 		</div>
+		<Modal
+			:visible="isVisible"
+			:popupType="popupType"
+			:text="text"
+			@gpsCancle="gpsCancle"
+			@gpsConsent="gpsConsent"
+		/>
 	</div>
-	<Modal
-		:visible="isVisible"
-		:popupType="popupType"
-		:text="text"
-		@gpsCancle="gpsCancle"
-		@gpsConsent="gpsConsent"
-	/>
 </template>
 
 <script setup>
 import ItemCard from '@/components/common/ItemCard.vue';
-import TheHeader from '@/components/common/TheHeader.vue';
 import UserCard from '@/components/common/UserCard.vue';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { ref, onMounted, computed } from 'vue';
+import { gpsConsentApi } from '@/api/auth.js';
 
 const router = useRouter();
+const store = useStore();
 
-//<modal>
-const isVisible = ref(true);
+const isVisible = ref(false);
 const popupType = ref('gps');
 const text = ref('');
 
-const gpsConsent = () => {
-	console.log('동의했니?');
+const getUserName = computed(() => store.state.auth.userName);
+
+onMounted(() => {
+	if (store.state.auth.gpsConsent === false) {
+		isVisible.value = true;
+	} else {
+		isVisible.value = false;
+	}
+});
+
+const gpsConsent = async () => {
+	store.commit('SET_IS_LOADING', true);
+
+	try {
+		const response = await gpsConsentApi(store.state.auth.userId);
+		console.log('response', response);
+
+		if (response.status === 200) {
+			store.commit('auth/SET_GPS_CONSENT', true);
+			isVisible.value = false;
+		}
+
+		// if (navigator.geolocation) {
+		// 	// GPS 위치 요청
+		// 	navigator.geolocation.getCurrentPosition(
+		// 		async position => {
+		// 			// 성공 시: 위도와 경도 설정
+
+		// 			if (position.coords.latitude && position.coords.longitude) {
+		// 				const response = await gpsConsentApi({
+		// 					longitude: position.coords.latitude,
+		// 					latitude: position.coords.longitude,
+		// 				});
+		// 				console.log('response', response);
+
+		// 				if (response.status === 200) {
+		// 					store.commit('auth/SET_GPS_CONSENT', true);
+		// 					isVisible.value = false;
+		// 				}
+		// 			}
+		// 			store.commit('SET_IS_LOADING', false);
+		// 		},
+
+		// 		error => {
+		// 			switch (error.code) {
+		// 				case error.PERMISSION_DENIED:
+		// 					alert('위치 권한이 거부되었습니다.');
+		// 					break;
+		// 				case error.POSITION_UNAVAILABLE:
+		// 					alert('위치 정보를 사용할 수 없습니다.');
+		// 					break;
+		// 				case error.TIMEOUT:
+		// 					alert('위치 요청 시간이 초과되었습니다.');
+		// 					break;
+		// 				default:
+		// 					alert('알 수 없는 오류가 발생했습니다.');
+		// 			}
+		// 		},
+		// 	);
+		// } else {
+		// 	alert('GPS를 지원하지 않는 브라우저입니다.');
+		// }
+	} catch (error) {
+		console.log('Erro', error);
+		alert('error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
+	}
 };
 
 const gpsCancle = () => {
-	console.log('취소했니?');
-
-	isVisible.value = false;
-
-	// isVisible.value = true;
-	// popupType.value = 'service';
-	// text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
+	popupType.value = 'service';
+	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
 };
 </script>
 

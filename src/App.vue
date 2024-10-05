@@ -7,8 +7,19 @@
 	>
 		<div :class="{ 'app-container': $route.name !== 'Landing' }">
 			<router-view
-				:class="{ 'router-view-content': $route.name !== 'Landing' }"
+				:class="
+					$route.name !== 'Landing' &&
+					$route.name !== 'SignIn' &&
+					$route.name !== 'Detail' &&
+					$route.name !== 'OrderDetails' &&
+					$route.name !== 'Deciept' &&
+					$route.name !== 'AddressBook' &&
+					$route.name !== 'AddressSearch'
+						? 'router-view-content'
+						: 'router-view-content2'
+				"
 			></router-view>
+
 			<Footer
 				class="footer"
 				v-if="
@@ -16,7 +27,9 @@
 					$route.name !== 'SignIn' &&
 					$route.name !== 'Details' &&
 					$route.name !== 'OrderDetails' &&
-					$route.name !== 'Deciept'
+					$route.name !== 'Deciept' &&
+					$route.name !== 'AddressBook' &&
+					$route.name !== 'AddressSearch'
 				"
 			></Footer>
 			<BottomSheet
@@ -24,15 +37,18 @@
 				:type="store.state.popupType"
 			></BottomSheet>
 		</div>
+		<Spinner v-if="isLoading"></Spinner>
 	</div>
 </template>
 
 <script setup>
 import Footer from '@/components/common/TheFooter.vue';
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
+
+const isLoading = computed(() => store.state.isLoading);
 </script>
 
 <style lang="scss" scoped>
@@ -67,7 +83,34 @@ const store = useStore();
 	scrollbar-width: none;
 }
 
+.router-view-content2 {
+	height: calc(100%);
+	overflow-y: scroll;
+	overflow-x: hidden;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	-ms-overflow-style: none;
+
+	scrollbar-width: none;
+}
+
 .footer {
 	position: absolute;
+}
+
+.spinner {
+	position: fixed; /* 또는 부모 요소에 상대적으로 위치하게 하려면 'absolute' 사용 */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(255, 255, 255, 0.5); /* 반투명 배경 */
+	z-index: 1000; /* 다른 콘텐츠 위에 보이도록 함 */
 }
 </style>

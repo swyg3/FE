@@ -6,6 +6,7 @@ export default createStore({
 		isVisible: false,
 		popupType: '',
 		errorCount: 0,
+		isLoading: false,
 	},
 	getters: {},
 	mutations: {
@@ -14,6 +15,9 @@ export default createStore({
 		},
 		RESET_ERROR_COUNT(state) {
 			state.errorCount = 0;
+		},
+		SET_IS_LOADING(state, loading) {
+			state.isLoading = loading;
 		},
 	},
 	actions: {},

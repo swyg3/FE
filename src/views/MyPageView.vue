@@ -5,7 +5,9 @@
 		<div class="px-[16px]">
 			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
 			<div class="text-lgB">{{ getUserName }}</div>
-			<div class="text-bodyBlack mypage-phone">010-1111-1111</div>
+			<div class="text-bodyBlack mypage-period-activity">
+				2024년 9월 17일부터
+			</div>
 			<div class="flex gap-2">
 				<div class="mt-5 mypage-box">
 					<img src="/myPage/umbrage.png" class="p-1" />
@@ -131,7 +133,7 @@ const cancelMembership = async () => {
 	background-color: white;
 	z-index: 10;
 }
-.mypage-phone {
+.mypage-period-activity {
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 500;

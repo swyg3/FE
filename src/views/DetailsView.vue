@@ -1,11 +1,11 @@
 <template>
-	<div>
-		<div class="w-[375px] pb-8 bg-white color-black">
+	<div class="min-h-[812px]">
+		<div class="w-[375px] pb-[88px] bg-white color-black">
 			<!--img-->
-			<div class="w-[375px] h-[240px] relative">
+			<div class="w-full h-[240px] relative">
 				<img
 					:src="product.productImageUrl"
-					class="w-[375px] h-[240px] object-cover"
+					class="w-full h-[240px] object-cover"
 				/>
 				<!--뒤로가기버튼-->
 				<button @click="this.$router.go(-1)" class="back-absolute-style">
@@ -68,9 +68,33 @@
 				<p class="text-base text-bodyBlack">오후 6:00 ~ 오후 8:30</p>
 			</div>
 			<!--가게 정보-->
-			<div class="px-4 pt-4 pb-3">
+			<div class="px-4 py-4">
 				<p class="text-baseB pb-1">가게 정보</p>
 				<!--주소도-->
+				<div class="text-base text-bodyBlack">
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+				</div>
+				<div class="text-base text-bodyBlack">
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+				</div>
+				<div class="text-base text-bodyBlack">
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+				</div>
+				<div class="text-base text-bodyBlack">
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+				</div>
+				<div class="text-base text-bodyBlack">
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+				</div>
+				<div class="text-base text-bodyBlack">
+					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
+					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+				</div>
 				<div class="text-base text-bodyBlack">
 					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
 					<p class="pb-2">가게 위치: 이후 구현 예정</p>
@@ -91,7 +115,6 @@
 				<!-- <div ref="mapContainer" class="w-[100px] h-[100px]"></div> -->
 			</div>
 			<div id="map"></div>
-			<div class="bg-white h-12"></div>
 			<div class="order-btn-div">
 				<button @click="goToOrderDetails(product)" class="order-btn">
 					주문하기
@@ -192,16 +215,18 @@ export default {
 	padding: 4px 2px;
 }
 .order-btn-div {
-	width: 100%;
+	width: 343px;
+	border-radius: 10px 10px 0 0;
 	bottom: 0;
-	display: flex;
+	left: 50%;
+	transform: translate(-50%, 0);
 	align-items: center;
 	padding-bottom: 32px;
-
+	background: var(--White, #FFF);
 	position: absolute;
 }
 .order-btn {
-	width: 342px;
+	width: 343px;
 	height: 48px;
 	border-radius: 10px;
 	background: var(--Point, #1cb08c);

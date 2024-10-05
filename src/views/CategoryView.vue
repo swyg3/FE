@@ -90,11 +90,14 @@ export default {
 		// 임의 위치 설정
 		updateLocation() {
 			const locationData = {
-				longitude: 126.9779692, // 경도
-				latitude: 37.5662952, // 위도
+				searchTerm: '테헤란로 152',
+				roadAddress: '서울특별시 강남구 테헤란로 152',
 			};
 			http
-				.put('/api/locations/current/insert', locationData)
+				.post('/api/locations/address/insert', {
+					searchTerm: '테헤란로 152',
+					roadAddress: '서울특별시 강남구 테헤란로 152',
+				})
 				.then(response => {
 					console.log('Location updated successfully:', response.data);
 				})

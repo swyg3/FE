@@ -95,7 +95,7 @@
 				</div>
 			</div>
 			<button @click="$router.push('/orderdetails')" class="order-btn">
-				주문하기
+				{{ product.discountedPrice }}원 주문하기
 			</button>
 		</div>
 	</div>

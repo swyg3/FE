@@ -4,11 +4,11 @@
 			<!--img-->
 			<div class="w-[375px] h-[240px] relative">
 				<img
-					src="/landingPage/card01.jpg"
+					:src="product.productImageUrl"
 					class="w-[375px] h-[240px] object-cover"
 				/>
 				<!--뒤로가기버튼-->
-				<button onclick="history.back()" class="back-absolute-style">
+				<button @click="this.$router.go(-1)" class="back-absolute-style">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -24,20 +24,22 @@
 					</svg>
 				</button>
 				<div class="absolute-style">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						class="refresh-icon"
-					>
-						<path
-							d="M9.825 20.7C8.10833 20.2167 6.70833 19.2708 5.625 17.8625C4.54167 16.4542 4 14.8333 4 13C4 12.05 4.15833 11.1458 4.475 10.2875C4.79167 9.42915 5.24167 8.64165 5.825 7.92499C6.00833 7.72499 6.23333 7.62082 6.5 7.61249C6.76667 7.60416 7.00833 7.70832 7.225 7.92499C7.40833 8.10832 7.50417 8.33332 7.5125 8.59999C7.52083 8.86665 7.43333 9.11665 7.25 9.34999C6.85 9.86665 6.54167 10.4333 6.325 11.05C6.10833 11.6667 6 12.3167 6 13C6 14.35 6.39583 15.5542 7.1875 16.6125C7.97917 17.6708 9 18.3917 10.25 18.775C10.4667 18.8417 10.6458 18.9667 10.7875 19.15C10.9292 19.3333 11 19.5333 11 19.75C11 20.0833 10.8833 20.3458 10.65 20.5375C10.4167 20.7292 10.1417 20.7833 9.825 20.7ZM14.175 20.7C13.8583 20.7833 13.5833 20.725 13.35 20.525C13.1167 20.325 13 20.0583 13 19.725C13 19.525 13.0708 19.3333 13.2125 19.15C13.3542 18.9667 13.5333 18.8417 13.75 18.775C15 18.375 16.0208 17.65 16.8125 16.6C17.6042 15.55 18 14.35 18 13C18 11.3333 17.4167 9.91666 16.25 8.74999C15.0833 7.58332 13.6667 6.99999 12 6.99999H11.925L12.325 7.39999C12.5083 7.58332 12.6 7.81665 12.6 8.09999C12.6 8.38332 12.5083 8.61665 12.325 8.79999C12.1417 8.98332 11.9083 9.07499 11.625 9.07499C11.3417 9.07499 11.1083 8.98332 10.925 8.79999L8.825 6.69999C8.725 6.59999 8.65417 6.49165 8.6125 6.37499C8.57083 6.25832 8.55 6.13332 8.55 5.99999C8.55 5.86665 8.57083 5.74165 8.6125 5.62499C8.65417 5.50832 8.725 5.39999 8.825 5.29999L10.925 3.19999C11.1083 3.01665 11.3417 2.92499 11.625 2.92499C11.9083 2.92499 12.1417 3.01665 12.325 3.19999C12.5083 3.38332 12.6 3.61665 12.6 3.89999C12.6 4.18332 12.5083 4.41665 12.325 4.59999L11.925 4.99999H12C14.2333 4.99999 16.125 5.77499 17.675 7.32499C19.225 8.87499 20 10.7667 20 13C20 14.8167 19.4583 16.4333 18.375 17.85C17.2917 19.2667 15.8917 20.2167 14.175 20.7Z"
-							fill="#1CB08C"
-						/>
-					</svg>
-					<div class="remaining">2개 남음</div>
+					<button @click="this.$router.go(0)">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							class="refresh-icon"
+						>
+							<path
+								d="M9.825 20.7C8.10833 20.2167 6.70833 19.2708 5.625 17.8625C4.54167 16.4542 4 14.8333 4 13C4 12.05 4.15833 11.1458 4.475 10.2875C4.79167 9.42915 5.24167 8.64165 5.825 7.92499C6.00833 7.72499 6.23333 7.62082 6.5 7.61249C6.76667 7.60416 7.00833 7.70832 7.225 7.92499C7.40833 8.10832 7.50417 8.33332 7.5125 8.59999C7.52083 8.86665 7.43333 9.11665 7.25 9.34999C6.85 9.86665 6.54167 10.4333 6.325 11.05C6.10833 11.6667 6 12.3167 6 13C6 14.35 6.39583 15.5542 7.1875 16.6125C7.97917 17.6708 9 18.3917 10.25 18.775C10.4667 18.8417 10.6458 18.9667 10.7875 19.15C10.9292 19.3333 11 19.5333 11 19.75C11 20.0833 10.8833 20.3458 10.65 20.5375C10.4167 20.7292 10.1417 20.7833 9.825 20.7ZM14.175 20.7C13.8583 20.7833 13.5833 20.725 13.35 20.525C13.1167 20.325 13 20.0583 13 19.725C13 19.525 13.0708 19.3333 13.2125 19.15C13.3542 18.9667 13.5333 18.8417 13.75 18.775C15 18.375 16.0208 17.65 16.8125 16.6C17.6042 15.55 18 14.35 18 13C18 11.3333 17.4167 9.91666 16.25 8.74999C15.0833 7.58332 13.6667 6.99999 12 6.99999H11.925L12.325 7.39999C12.5083 7.58332 12.6 7.81665 12.6 8.09999C12.6 8.38332 12.5083 8.61665 12.325 8.79999C12.1417 8.98332 11.9083 9.07499 11.625 9.07499C11.3417 9.07499 11.1083 8.98332 10.925 8.79999L8.825 6.69999C8.725 6.59999 8.65417 6.49165 8.6125 6.37499C8.57083 6.25832 8.55 6.13332 8.55 5.99999C8.55 5.86665 8.57083 5.74165 8.6125 5.62499C8.65417 5.50832 8.725 5.39999 8.825 5.29999L10.925 3.19999C11.1083 3.01665 11.3417 2.92499 11.625 2.92499C11.9083 2.92499 12.1417 3.01665 12.325 3.19999C12.5083 3.38332 12.6 3.61665 12.6 3.89999C12.6 4.18332 12.5083 4.41665 12.325 4.59999L11.925 4.99999H12C14.2333 4.99999 16.125 5.77499 17.675 7.32499C19.225 8.87499 20 10.7667 20 13C20 14.8167 19.4583 16.4333 18.375 17.85C17.2917 19.2667 15.8917 20.2167 14.175 20.7Z"
+								fill="#1CB08C"
+							/>
+						</svg>
+					</button>
+					<div class="remaining">{{ product.availableStock }}개 남음</div>
 				</div>
 			</div>
 			<!--text-->
@@ -57,7 +59,7 @@
 							{{ product.originalPrice }}원
 						</p>
 					</div>
-					<p class="text-lgB text-[#1CB08C]">{{ product.discountPrice }}</p>
+					<p class="text-lgB text-[#1CB08C]">{{ product.discountedPrice }}</p>
 				</div>
 			</div>
 			<!--픽업 시간-->
@@ -91,7 +93,7 @@
 			<div id="map"></div>
 			<div class="bg-white h-12"></div>
 			<div class="order-btn-div">
-				<button @click="$router.push('/orderDetails')" class="order-btn">
+				<button @click="goToOrderDetails(product)" class="order-btn">
 					주문하기
 				</button>
 			</div>
@@ -100,23 +102,30 @@
 </template>
 <script>
 import http from '@/api/http.js';
-import { useRouter } from 'vue-router';
-import { useKakao } from 'vue3-kakao-maps/@utils';
+import { mapActions } from 'vuex';
+// import { useKakao } from 'vue3-kakao-maps/@utils';
 // import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-const router = useRouter();
-
 // //kakaoMap
 // useKakao(import.meta.env.VITE_APP_KAKAO_JavaScript_KEY);
-
 // const coordinate = {
 // 	lat: 37.566826,
 // 	lng: 126.9786567,
 // };
 
 export default {
+	props: {
+		name: {
+			type: String,
+			required: true,
+		},
+		id: {
+			type: String,
+			required: true,
+		},
+	},
 	data() {
 		return {
-			product: [], // API에서 받아올 상품 정보
+			product: {}, // API에서 받아올 상품 정보
 		};
 	},
 	mounted() {
@@ -125,11 +134,19 @@ export default {
 		this.fetchProductDetail(productId);
 		console.log(productId);
 	},
+	created() {
+		// Router의 state에서 productId 가져오기
+		if (this.$route.state && this.$route.state.productId) {
+			this.productId = this.$route.state.productId;
+		} else {
+			console.error('상품 ID를 찾을 수 없습니다.');
+		}
+	},
 	methods: {
 		// API 호출로 상품 상세 정보 가져오기
-		fetchProductDetail(id) {
+		fetchProductDetail() {
 			http
-				.get(`/api/products/get/60933cd2-9630-42c8-9af9-3190cb847faa`)
+				.get(`/api/products/get/${this.id}`)
 				.then(res => {
 					this.product = res.data.data;
 					console.log(this.product);
@@ -137,7 +154,9 @@ export default {
 				.catch(err => {
 					console.log(err);
 				});
-			console.log('id:', id);
+		},
+		goToOrderDetails(product) {
+			this.$router.push(`/orderdetails/${product.name}/${product.productId}`); // /name/id로 라우팅
 		},
 	},
 };
@@ -160,7 +179,6 @@ export default {
 	bottom: 12px;
 }
 .remaining {
-	width: 60px;
 	height: 24px;
 	align-items: center;
 	display: flex;

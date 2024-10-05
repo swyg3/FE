@@ -35,19 +35,6 @@ export default {
 			required: true,
 		},
 	},
-	methods: {
-		// // 상품 상세 페이지로 이동하는 메소드
-		// goToDetailsPage() {
-		// 	// router를 사용해 /details/{id} 경로로 이동
-		// 	this.$router.push(`/details/${this.product.name}`);
-		// },
-		// goToDetailPage() {
-		// 	this.$emit('product-selected', {
-		// 		id: this.product.productId,
-		// 		name: this.product.name,
-		// 	});
-		// },
-	},
 };
 </script>
 <style lang="scss" scoped>
@@ -68,7 +55,7 @@ export default {
 	position: absolute;
 	right: 8px;
 	bottom: 8px;
-	width: 66px;
+
 	height: 24px;
 	align-items: center;
 	display: flex;

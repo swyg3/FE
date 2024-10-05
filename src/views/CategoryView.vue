@@ -44,7 +44,7 @@
 						v-for="(product, index) in products"
 						:key="index"
 						:product="product"
-						@click="goToDetailPage(product.name)"
+						@click="goToDetailPage(product)"
 					/>
 				</div>
 			</div>
@@ -109,8 +109,6 @@ export default {
 				.get(apiUrl)
 				.then(res => {
 					this.products = res.data.data;
-					console.log(this.products);
-					console.log(apiUrl);
 				})
 				.catch(err => {
 					console.log(err);
@@ -130,12 +128,13 @@ export default {
 			this.sortBy = option.value;
 			this.fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
 		},
-		goToDetailPage(productName) {
-			this.$router.push(`/details/${productName}`); // 상품 id 대신 name으로 routing
-			this.$emit('product-selected', {
-				id: this.product.productId,
-				name: this.product.name,
-			});
+		goToDetailPage(product) {
+			// // product 객체를 인자로 받음
+			// this.$emit('product-selected', {
+			// 	id: product.productId, // productId를 사용
+			// 	name: product.name, // name을 사용
+			// });
+			this.$router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
 		},
 	},
 };

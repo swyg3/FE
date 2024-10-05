@@ -14,6 +14,7 @@ export default {
 		refreshToken: getItem('refreshToken') || '',
 		refreshExpireAt: getItem('refreshExpireAt') || null,
 		gpsConsent: getItem('gpsConsent') || false,
+		selectedAddress: getItem('selectedAddress') || '',
 	},
 	getters: {},
 	mutations: {
@@ -76,11 +77,13 @@ export default {
 			setItem('refreshExpireAt', currentDate + expiresIn);
 		},
 		SET_GPS_CONSENT(state, gpsConsent) {
-			console.log('gpsConsent', gpsConsent);
-
 			state.gpsConsent = gpsConsent;
 
 			setItem('gpsConsent', gpsConsent);
+		},
+		SET_SELECTED_ADDRESS(state, selectedAddress) {
+			state.selectedAddress = selectedAddress;
+			setItem('selectedAddress', selectedAddress);
 		},
 	},
 	actions: {
@@ -90,7 +93,6 @@ export default {
 				const { provider, code, userType } = payload;
 
 				const response = await socialLoginApi(provider, code, userType);
-				console.log('response', response);
 
 				if (response && response.data && response.data.success === true) {
 					const data = response.data.data;

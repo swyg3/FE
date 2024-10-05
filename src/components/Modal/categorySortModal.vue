@@ -3,9 +3,6 @@
 		<div class="modal">
 			<p class="text-center text-sm py-[17px]">정렬 기준</p>
 			<ul>
-				<!-- <li @click="setSort('distanceDiscountScore')">문코 추천 순</li>
-				<li @click="setSort('distance')">가까운 순</li>
-				<li @click="setSort('discountRate')">할인율 높은 순</li> -->
 				<li
 					v-for="option in sortOptions"
 					:key="option.value"

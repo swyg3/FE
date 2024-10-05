@@ -50,87 +50,95 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import TheHeader from '@/components/common/TheHeader.vue';
 import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
 import http from '@/api/http.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
 import CategoryListButton from '@/components/common/CategoryListButton.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
 
-export default {
-	components: {
-		TheHeader,
-		CategoryListButton,
-		CategorySortModal,
-		CategoryItemCard,
-	},
-	data() {
-		return {
-			products: [],
-			currentSort: '문코 추천 순', // 기본 정렬 기준
-			category: 'ALL', // 기본 카테고리
-			sortBy: 'distanceDiscountScore', // 기본 정렬 방식
-			categories: [
-				{ name: '전체', value: 'ALL' },
-				{ name: '한식', value: 'KOREAN' },
-				{ name: '일식', value: 'JAPANESE' },
-				{ name: '중식', value: 'CHINESE' },
-				{ name: '분식', value: 'SNACK' },
-				{ name: '양식', value: 'WESTERN' },
-				{ name: '디저트', value: 'DESSERT' },
-			],
-		};
-	},
-	mounted() {
-		this.fetchCategoryProducts(); // 페이지 로드 시 기본 데이터 요청
-	},
-	methods: {
-		// 임의 위치 설정
-		updateLocation() {
-			const locationData = {
-				searchTerm: '테헤란로 152',
-				roadAddress: '서울특별시 강남구 테헤란로 152',
-			};
-			http
-				.post('/api/locations/address/insert', locationData)
-				.then(response => {
-					console.log('Location updated successfully:', response.data);
-				})
-				.catch(error => {
-					console.error('Error updating location:', error);
-				});
-		},
-		// api 연동하여 상품 가져오기
-		fetchCategoryProducts() {
-			const apiUrl = `/api/products/category?category=${this.category}&sortBy=${this.sortBy}&order=asc&limit=8`;
-			http
-				.get(apiUrl)
-				.then(res => {
-					this.products = res.data.data;
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		// 카테고리 변경 메소드
-		changeCategory(newCategory) {
-			this.category = newCategory; // 카테고리 값 업데이트
-			this.fetchCategoryProducts(); // 새 카테고리에 맞는 상품 재요청
-		},
-		// 정렬 기준 변경 메소드
-		openSortModal() {
-			this.$refs.sortModal.openModal();
-		},
-		changeSort(option) {
-			this.currentSort = option.label;
-			this.sortBy = option.value;
-			this.fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
-		},
-		goToDetailPage(product) {
-			this.$router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
-		},
-	},
+const route = useRoute();
+const router = useRouter();
+const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
+const category = ref('ALL'); // 기본 카테고리
+const sortBy = ref('distanceDiscountScore'); // 기본 정렬 방식
+const sortModal = ref(null);
+const products = ref([]);
+const categories = ref([
+	{ name: '전체', value: 'ALL' },
+	{ name: '한식', value: 'KOREAN' },
+	{ name: '일식', value: 'JAPANESE' },
+	{ name: '중식', value: 'CHINESE' },
+	{ name: '분식', value: 'SNACK' },
+	{ name: '양식', value: 'WESTERN' },
+	{ name: '디저트', value: 'DESSERT' },
+]);
+
+onMounted(() => {
+	// URL에서 카테고리와 정렬 방식 가져오기
+	category.value = route.params.category || 'ALL';
+	sortBy.value = route.params.sort || 'distance';
+	// 초기 데이터 요청
+	this.fetchCategoryProducts();
+});
+
+// api 연동하여 상품 가져오기
+const fetchCategoryProducts = () => {
+	const { category, sortBy } = route.params;
+	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=8`;
+	http
+		.get(apiUrl)
+		.then(res => {
+			products.value = res.data.data;
+		})
+		.catch(err => {
+			console.log(err);
+		});
 };
+
+// 카테고리 변경 메소드
+const changeCategory = newCategory => {
+	category.value = newCategory; // 카테고리 값 업데이트
+	updateRoute(); // route 업데이트
+	fetchCategoryProducts(); // 새 카테고리에 맞는 상품 재요청
+};
+
+// ref를 사용해 모달 열기
+const openSortModal = () => {
+	sortModal.value.openModal();
+	console.log(sortModal.value);
+};
+
+// 정렬 기준 변경 메소드
+const changeSort = option => {
+	currentSort.value = option.label;
+	sortBy.value = option.value;
+	updateRoute(); // route 업데이트
+	fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+};
+
+// route 업데이트 메소드
+const updateRoute = () => {
+	router.push(`/category/${category.value}/${sortBy.value}`);
+};
+
+// /name/id로 라우팅
+const goToDetailPage = product => {
+	router.push(`/details/${product.name}/${product.productId}`);
+};
+
+// 경로 변경 시 데이터를 불러오는 watch 함수
+watch(
+	() => route.params, // 경로 파라미터 변경 감지
+	newParams => {
+		category.value = newParams.category || 'ALL';
+		sortBy.value = newParams.sortBy || 'distanceDiscountScore';
+		fetchCategoryProducts();
+	},
+	{ immediate: true }, // 페이지 로드 시에도 즉시 실행
+);
 </script>
 
 <style lang="scss" scoped>

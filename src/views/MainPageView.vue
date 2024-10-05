@@ -68,7 +68,10 @@
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">문코의 추천</p>
 				<div class="flex">
-					<button class="text-sm" @click="router.push('/category')">
+					<button
+						class="text-sm"
+						@click="router.push(`/category/${category}/${sortBy}`)"
+					>
 						더보기
 					</button>
 					<svg
@@ -152,8 +155,11 @@ const getUserName = computed(() => store.state.auth.userName);
 const selectedAddress = computed(() => store.state.auth.selectedAddress);
 
 const products = ref([]);
+const category = ref('ALL');
+const sortBy = ref('distanceDiscountScore');
 
 onMounted(() => {
+	fetchRecommendedProducts();
 	if (store.state.auth.gpsConsent === false) {
 		isVisible.value = true;
 	} else {
@@ -238,6 +244,9 @@ const fetchRecommendedProducts = async () => {
 };
 const goToDetailPage = product => {
 	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
+};
+const goToCategoryPage = () => {
+	window.location.href = `/category/${category.value}/${sortBy.value}`;
 };
 </script>
 

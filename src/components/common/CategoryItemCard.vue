@@ -30,8 +30,6 @@
 	</div>
 </template>
 <script>
-import { computed } from 'vue';
-
 export default {
 	props: {
 		product: {
@@ -45,6 +43,7 @@ export default {
 			const baseUrl = import.meta.env.VITE_APP_API_URL;
 			return `${baseUrl}${imagePath}`;
 		},
+		// 할인율 반올림 계산
 		roundedDiscountRate(rate) {
 			return Math.round(rate);
 		},

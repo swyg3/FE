@@ -14,7 +14,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api': {
-				target: import.meta.env.VITE_APP_API_URL,
+				target: 'http://13.209.10.93:80',
 				changeOrigin: true,
 				// rewrite: path => path.replace(/^/api/, ''),
 				secure: false,

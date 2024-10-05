@@ -38,15 +38,13 @@
 					</svg>
 				</div>
 			</div>
-			<div>
-				<div class="px-4 grid grid-cols-2 gap-[7px]">
-					<CategoryItemCard
-						v-for="(product, index) in products"
-						:key="index"
-						:product="product"
-						@click="goToDetailPage(product)"
-					/>
-				</div>
+			<div class="px-4 grid grid-cols-2 gap-[7px]">
+				<CategoryItemCard
+					v-for="(product, index) in products"
+					:key="index"
+					:product="product"
+					@click="goToDetailPage(product)"
+				/>
 			</div>
 		</div>
 	</div>
@@ -129,11 +127,6 @@ export default {
 			this.fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
 		},
 		goToDetailPage(product) {
-			// // product 객체를 인자로 받음
-			// this.$emit('product-selected', {
-			// 	id: product.productId, // productId를 사용
-			// 	name: product.name, // name을 사용
-			// });
 			this.$router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
 		},
 	},

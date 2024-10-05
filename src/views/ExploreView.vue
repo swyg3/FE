@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-import ItemCard from '@/components/common/ItemCard.vue';
+import ItemCard from '@/components/common/MainItemCard.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
 </script>

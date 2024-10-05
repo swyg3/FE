@@ -6,7 +6,6 @@
 
 <script setup>
 const props = defineProps(['btnText']);
-console.log('props', props);
 </script>
 
 <style lang="scss" scoped>

@@ -13,3 +13,12 @@ export const cancelMembershipApi = payload =>
 //gps동의
 export const gpsConsentApi = payload =>
 	http.patch(`/api/users/settings/gps/${payload}`, { agree: true });
+
+export const saveAddressApi = payload =>
+	http.post('/api/locations/address/insert', payload);
+
+export const getAddressBookApi = () =>
+	http.get('/api/locations/address/getall');
+
+export const setCurrentApi = payload =>
+	http.patch(`/api/locations/setcurrent?id=${encodeURIComponent(payload)}`);

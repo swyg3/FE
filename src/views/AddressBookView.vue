@@ -38,8 +38,18 @@
 			</div>
 		</div>
 		<div class="mt-5">
-			<div class="flex p-3 items-center bg-[#d2efe8] address-individual-box">
+			<div
+				v-for="(individualAddress, index) in addressBook"
+				:key="index"
+				class="flex p-3 items-center address-individual-box"
+				:class="{
+					'bg-[#d2efe8]': individualAddress.isCurrent,
+					'bg-white': !individualAddress.isCurrent,
+				}"
+				@click="clickIndividualAddress(individualAddress.locationId)"
+			>
 				<svg
+					v-if="individualAddress.isCurrent"
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
 					height="24"
@@ -51,13 +61,8 @@
 						fill="#1CB08C"
 					/>
 				</svg>
-				<div class="pl-2">
-					<div class="text-baseB">기본 위치</div>
-					<div class="text-base text-bodyBlack">서울시 어쩌고</div>
-				</div>
-			</div>
-			<div class="flex p-3 items-center bg-white address-individual-box">
 				<svg
+					v-else
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
 					height="24"
@@ -70,8 +75,12 @@
 					/>
 				</svg>
 				<div class="pl-2">
-					<div class="text-baseB">기본 위치</div>
-					<div class="text-base text-bodyBlack">서울시 어쩌고</div>
+					<div class="text-baseB">
+						{{ individualAddress.searchTerm }}
+					</div>
+					<div class="text-base text-bodyBlack">
+						{{ decodeURIComponent(individualAddress.roadAddress) }}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -79,12 +88,61 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { getAddressBookApi, setCurrentApi } from '@/api/auth.js';
 
 const router = useRouter();
+const store = useStore();
+
+const addressBook = ref([]);
+const isCurrent = ref(false);
+
+onMounted(() => {
+	getAddressBook();
+});
+
+const getAddressBook = async () => {
+	store.commit('SET_IS_LOADING', true);
+
+	try {
+		const response = await getAddressBookApi();
+
+		if (response.status === 200) {
+			addressBook.value = response.data;
+			isCurrent.value = response.isCurrent;
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
+	}
+};
+
+const clickIndividualAddress = async locationId => {
+	try {
+		store.commit('SET_IS_LOADING', true);
+
+		const response = await setCurrentApi(locationId);
+
+		if (response.status === 200) {
+			getAddressBook();
+
+			store.commit(
+				'auth/SET_SELECTED_ADDRESS',
+				decodeURIComponent(response.data.roadAddress),
+			);
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
+	}
+};
 
 const goBack = () => {
-	router.go(-1);
+	router.push('/main');
 };
 </script>
 
@@ -117,7 +175,6 @@ const goBack = () => {
 	width: 375px;
 	height: 84px;
 	flex-shrink: 0;
-
 	border-bottom: 2px solid #e4e4e4;
 }
 </style>

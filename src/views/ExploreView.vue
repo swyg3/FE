@@ -84,7 +84,6 @@
 				<ItemCard></ItemCard>
 				<ItemCard></ItemCard>
 			</div>
-			<!-- 할인이 큰 가게 리스트
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">할인이 큰 가게</p>
 				<div class="flex">
@@ -107,7 +106,7 @@
 				<ItemCard></ItemCard>
 				<ItemCard></ItemCard>
 				<ItemCard></ItemCard>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </template>
@@ -121,7 +120,7 @@ import TheHeader from '@/components/common/TheHeader.vue';
 <style lang="scss" scoped>
 .explore-bg {
 	width: 375px;
-	min-height: 638px;
+	min-height: 716px;
 	background-image: url('/mainPage/mainPageBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);

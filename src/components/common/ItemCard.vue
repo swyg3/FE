@@ -2,7 +2,7 @@
 	<div class="item-card">
 		<div class="relative">
 			<img src="/landingPage/card01.jpg" class="item-card-img" />
-			<div class="remaining">2개 남음</div>
+			<div class="remaining">50개 남음</div>
 		</div>
 		<div class="py-2 px-3">
 			<p class="text-smB color-black pb-0.5">치킨 타코 2개</p>

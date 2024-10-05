@@ -4,7 +4,7 @@
 			<!--img-->
 			<div class="w-full h-[240px] relative">
 				<img
-					:src="product.productImageUrl"
+					:src="fullImageUrl(product.productImageUrl)"
 					class="w-full h-[240px] object-cover"
 				/>
 				<!--뒤로가기버튼-->
@@ -71,30 +71,6 @@
 			<div class="px-4 py-4">
 				<p class="text-baseB pb-1">가게 정보</p>
 				<!--주소도-->
-				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
-				</div>
-				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
-				</div>
-				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
-				</div>
-				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
-				</div>
-				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
-				</div>
-				<div class="text-base text-bodyBlack">
-					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
-				</div>
 				<div class="text-base text-bodyBlack">
 					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
 					<p class="pb-2">가게 위치: 이후 구현 예정</p>
@@ -181,14 +157,20 @@ export default {
 		goToOrderDetails(product) {
 			this.$router.push(`/orderdetails/${product.name}/${product.productId}`); // /name/id로 라우팅
 		},
+		// 이미지 경로 변환
+		fullImageUrl(imagePath) {
+			const baseUrl = import.meta.env.VITE_APP_API_IMAGE_URL;
+			const imagePathUrl = `${baseUrl}${imagePath}`;
+			return imagePathUrl;
+		},
 	},
 };
 </script>
 <style lang="scss" scoped>
 .back-absolute-style {
 	position: absolute;
-	left: 16px;
-	top: 12px;
+	left: 8px;
+	top: 6px;
 }
 .refresh-icon {
 	background: var(--20, #d2efe8);

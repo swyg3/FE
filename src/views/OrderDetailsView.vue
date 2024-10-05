@@ -20,7 +20,7 @@
 			<p class="mx-auto">주문하기</p>
 		</div>
 		<div class="h-[48px]"></div>
-		<div class="bg-white text-black pb-[10px]">
+		<div class="bg-white text-black pb-[80px]">
 			<!--상품정보-->
 			<div>
 				<p class="text-baseB px-4 pt-4 pb-2">주문 상품</p>
@@ -98,9 +98,11 @@
 					</label>
 				</div>
 			</div>
-			<button @click="$router.push('/orderdetails')" class="order-btn">
-				{{ product.discountedPrice }}원 주문하기
-			</button>
+			<div class="order-btn-div">
+				<button @click="$router.push('/orderdetails')" class="order-btn">
+					{{ product.discountedPrice }}원 주문하기
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -218,6 +220,17 @@ input {
 	font-weight: 700;
 	line-height: 24px;
 	margin-right: 8px;
+}
+.order-btn-div {
+	width: 343px;
+	border-radius: 10px 10px 0 0;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	align-items: center;
+	padding-bottom: 32px;
+	background: var(--White, #FFF);
+	position: absolute;
 }
 .order-btn {
 	width: 342px;

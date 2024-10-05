@@ -1,6 +1,23 @@
 <template>
 	<div>
-		<TheHeader @click="() => router.push('/addressBook')"></TheHeader>
+		<div class="text-baseB address-book-header">
+			<div @click="() => router.push('/addressBook')" class="flex">
+				<div>{{ selectedAddress }}</div>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+				>
+					<path
+						d="M12 14.975C11.8667 14.975 11.7417 14.9542 11.625 14.9125C11.5083 14.8708 11.4 14.8 11.3 14.7L6.69999 10.1C6.51665 9.91665 6.42499 9.68332 6.42499 9.39999C6.42499 9.11665 6.51665 8.88332 6.69999 8.69999C6.88332 8.51665 7.11665 8.42499 7.39999 8.42499C7.68332 8.42499 7.91665 8.51665 8.09999 8.69999L12 12.6L15.9 8.69999C16.0833 8.51665 16.3167 8.42499 16.6 8.42499C16.8833 8.42499 17.1167 8.51665 17.3 8.69999C17.4833 8.88332 17.575 9.11665 17.575 9.39999C17.575 9.68332 17.4833 9.91665 17.3 10.1L12.7 14.7C12.6 14.8 12.4917 14.8708 12.375 14.9125C12.2583 14.9542 12.1333 14.975 12 14.975Z"
+						fill="#1CB08C"
+					/>
+				</svg>
+			</div>
+		</div>
+
 		<div class="mainpage-bg">
 			<div class="h-[64px]"></div>
 			<!--welcome + 문구 + 카드-->
@@ -113,7 +130,7 @@ import ItemCard from '@/components/common/ItemCard.vue';
 import UserCard from '@/components/common/UserCard.vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, compile } from 'vue';
 import { gpsConsentApi } from '@/api/auth.js';
 
 const router = useRouter();
@@ -124,6 +141,7 @@ const popupType = ref('gps');
 const text = ref('');
 
 const getUserName = computed(() => store.state.auth.userName);
+const selectedAddress = computed(() => store.state.auth.selectedAddress);
 
 onMounted(() => {
 	if (store.state.auth.gpsConsent === false) {
@@ -138,7 +156,6 @@ const gpsConsent = async () => {
 
 	try {
 		const response = await gpsConsentApi(store.state.auth.userId);
-		console.log('response', response);
 
 		if (response.status === 200) {
 			store.commit('auth/SET_GPS_CONSENT', true);
@@ -200,6 +217,16 @@ const gpsCancle = () => {
 </script>
 
 <style lang="scss" scoped>
+.address-book-header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 48px;
+	position: sticky;
+	top: 0;
+	background-color: white;
+	z-index: 10;
+}
 .mainpage-bg {
 	width: 375px;
 

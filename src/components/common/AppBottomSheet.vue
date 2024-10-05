@@ -140,7 +140,6 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const props = defineProps(['visible', 'type']);
-console.log('props', props);
 
 const closeSheet = () => {
 	store.state.isVisible = false;

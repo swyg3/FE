@@ -5,9 +5,7 @@
 		<div class="px-[16px]">
 			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
 			<div class="text-lgB">{{ getUserName }}</div>
-			<div class="text-bodyBlack mypage-period-activity">
-				2024년 9월 17일부터
-			</div>
+			<div class="text-bodyBlack mypage-period-activity">24년 9월 17일부터</div>
 			<div class="flex gap-2">
 				<div class="mt-5 mypage-box">
 					<img src="/myPage/umbrage.png" class="p-1" />
@@ -37,7 +35,7 @@
 					@click="() => router.push('/addressBook')"
 				>
 					<div>주소 관리</div>
-					<div class="text-sm text-bodyBlack">서울시 종로구 율곡로</div>
+					<div class="text-sm text-bodyBlack">{{ selectedAddress }}</div>
 				</div>
 			</div>
 			<div>
@@ -75,6 +73,7 @@ const store = useStore();
 const router = useRouter();
 
 const getUserName = computed(() => store.state.auth.userName);
+const selectedAddress = computed(() => store.state.auth.selectedAddress);
 
 const openBottomSheet = contentType => {
 	store.state.isVisible = true;

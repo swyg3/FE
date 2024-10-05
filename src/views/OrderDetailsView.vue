@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="min-h-[812px]">
 		<!--header-->
 		<div class="bg-white text-base absolute header-container">
 			<button onclick="history.back()" class="back-absolute-style">
@@ -20,7 +20,7 @@
 			<p class="mx-auto">주문하기</p>
 		</div>
 		<div class="h-[48px]"></div>
-		<div class="bg-white text-black pb-[10px]">
+		<div class="bg-white text-black pb-[80px]">
 			<!--상품정보-->
 			<div>
 				<p class="text-baseB px-4 pt-4 pb-2">주문 상품</p>
@@ -77,7 +77,11 @@
 			<!--픽업시간-->
 			<div class="pt-4 pb-6 pl-4">
 				<p class="text-baseB pb-2">픽업시간</p>
-				<div class="text-baseB time-box">오후 6:00</div>
+				<div class="flex">
+					<button class="time-box">오후 1:10</button>
+					<button class="time-box">오후 6:20</button>
+					<button class="time-box">오후 12:30</button>
+				</div>
 			</div>
 			<hr class="w-full bg-disabledGray" />
 			<!--결제-->
@@ -94,9 +98,11 @@
 					</label>
 				</div>
 			</div>
-			<button @click="$router.push('/orderdetails')" class="order-btn">
-				주문하기
-			</button>
+			<div class="order-btn-div">
+				<button @click="$router.push('/orderdetails')" class="order-btn">
+					{{ product.discountedPrice }}원 주문하기
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -200,15 +206,31 @@ input {
 	margin: auto 0;
 }
 .time-box {
-	width: 80px;
+	width: 90px;
 	height: 30px;
-	padding: 3px 6px;
 	border-radius: 6px;
 	border: 1px solid var(--Primary, #031f34);
 	background: var(--Point, #1cb08c);
-	align-items: center;
 	display: flex;
 	color: white;
+	justify-content: center;
+	align-items: center;
+	font-family: Pretendard;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 24px;
+	margin-right: 8px;
+}
+.order-btn-div {
+	width: 343px;
+	border-radius: 10px 10px 0 0;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	align-items: center;
+	padding-bottom: 32px;
+	background: var(--White, #FFF);
+	position: absolute;
 }
 .order-btn {
 	width: 342px;

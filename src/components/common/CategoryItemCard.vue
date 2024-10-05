@@ -2,7 +2,7 @@
 	<div class="item-card-list noScrollBar">
 		<div class="item-card">
 			<img
-				:src="product.productImageUrl"
+				:src="fullImageUrl(product.productImageUrl)"
 				alt="Product Image"
 				class="item-card-img"
 			/>
@@ -33,6 +33,14 @@ export default {
 		product: {
 			type: Object,
 			required: true,
+		},
+	},
+	methods: {
+		// 이미지 경로 변환
+		fullImageUrl(imagePath) {
+			const baseUrl = import.meta.env.VITE_APP_API_IMAGE_URL;
+			const imagePathUrl = `${baseUrl}${imagePath}`;
+			return imagePathUrl;
 		},
 	},
 };

@@ -1,9 +1,9 @@
 <template>
-	<di>
+	<div>
 		<button @click="handleClick" :class="{ active: isActive }">
 			{{ categoryName }}
 		</button>
-	</di>
+	</div>
 </template>
 
 <script>
@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 .active {
-	/* color: #1cb08c; */
+	color: #1cb08c;
 	font-weight: 700;
 }
 </style>

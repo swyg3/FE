@@ -96,7 +96,6 @@
 	white-space: nowrap;
 }
 .text-body {
-
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 500;

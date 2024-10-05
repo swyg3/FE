@@ -99,15 +99,42 @@
 			</div>
 		</div>
 	</div>
+	<Modal
+		:visible="isVisible"
+		:popupType="popupType"
+		:text="text"
+		@gpsCancle="gpsCancle"
+		@gpsConsent="gpsConsent"
+	/>
 </template>
 
 <script setup>
 import ItemCard from '@/components/common/ItemCard.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
 import UserCard from '@/components/common/UserCard.vue';
-
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
 const router = useRouter();
+
+//<modal>
+const isVisible = ref(true);
+const popupType = ref('gps');
+const text = ref('');
+
+const gpsConsent = () => {
+	console.log('동의했니?');
+};
+
+const gpsCancle = () => {
+	console.log('취소했니?');
+
+	isVisible.value = false;
+
+	// isVisible.value = true;
+	// popupType.value = 'service';
+	// text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
+};
 </script>
 
 <style lang="scss" scoped>

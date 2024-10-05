@@ -31,10 +31,6 @@
 - npx tailwindcss -i ./src/assets/main.css -o ./src/output.css
 
 
-# 아직안한부분
--http요청 처리 로직 정의
--모달
--스피너
 
 
 
@@ -48,6 +44,9 @@
 -app.vue정의
 -env환경파일설정 + gitignore파일에 정의
 -localStorage모듈정의
+-http요청 처리 로직 정의
+-모달
+-스피너
 
 
 

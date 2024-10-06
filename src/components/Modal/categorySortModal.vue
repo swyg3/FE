@@ -3,9 +3,6 @@
 		<div class="modal">
 			<p class="text-center text-sm py-[17px]">정렬 기준</p>
 			<ul>
-				<!-- <li @click="setSort('distanceDiscountScore')">문코 추천 순</li>
-				<li @click="setSort('distance')">가까운 순</li>
-				<li @click="setSort('discountRate')">할인율 높은 순</li> -->
 				<li
 					v-for="option in sortOptions"
 					:key="option.value"
@@ -35,6 +32,15 @@ export default {
 		};
 	},
 	methods: {
+		// openModal() {
+		// 	this.isModalOpen = true;
+		// 	const matchingOption = this.sortOptions.find(
+		// 		option => option.label === this.$parent.currentSort,
+		// 	);
+		// 	this.selectedSort = matchingOption
+		// 		? matchingOption.value
+		// 		: this.sortOptions[0].value; // 부모에서 현재 정렬 기준을 가져와서 업데이트
+		// },
 		openModal() {
 			this.isModalOpen = true;
 			this.selectedSort = this.sortOptions.find(
@@ -48,31 +54,31 @@ export default {
 			this.selectedSort = option.value; // 선택된 정렬 기준 업데이트
 			this.$emit('changeSort', option); // 정렬 기준을 부모 컴포넌트에 전달
 			this.closeModal(); // 정렬 기준을 선택하면 모달을 닫음
-			console.log(option.value);
 		},
 	},
 };
 </script>
 <style lang="scss" scoped>
 .modal-overlay {
-	position: fixed;
+	display: absolute;
+	/* position: fixed; */
 	left: 0;
 	top: 0;
-	width: 100%;
+	width: 375px;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정색 배경 */
 	display: flex;
 	justify-content: center; /* 수평 중앙 정렬 */
 	align-items: flex-end; /* 하단 정렬 */
-	z-index: 1000; /* 다른 요소 위에 위치 */
+	z-index: 2000; /* 다른 요소 위에 위치 */
 	color: var(--Text, #1d1d1d);
 }
 .modal {
-	position: fixed;
+	width: 100%;
+	position: absolute;
 	bottom: 0;
 	left: 0;
-	width: 100%;
-	z-index: 100;
+	z-index: 2000;
 	background-color: white;
 	border-radius: 26px 26px 0px 0px;
 }
@@ -91,11 +97,13 @@ li.active {
 .modal-btn {
 	padding-top: 42px;
 	padding-bottom: 32px;
+	background-color: white;
 }
 .btn {
-	width: 342px;
+	width: 100%;
 	height: 48px;
 	text-align: center;
 	margin: 0 auto;
+	background-color: white;
 }
 </style>

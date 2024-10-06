@@ -53,7 +53,7 @@
 				<div class="pt-2">
 					<div class="flex">
 						<p class="text-sm text-[#1CB08C] pr-1">
-							{{ product.discountRate }}%
+							{{ roundedDiscountRate(product.discountRate) }}%
 						</p>
 						<p class="text-sm text-disabledTextGray line-through">
 							{{ product.originalPrice }}원
@@ -159,9 +159,13 @@ export default {
 		},
 		// 이미지 경로 변환
 		fullImageUrl(imagePath) {
-			const baseUrl = import.meta.env.VITE_APP_API_IMAGE_URL;
+			const baseUrl = import.meta.env.VITE_APP_API_URL;
 			const imagePathUrl = `${baseUrl}${imagePath}`;
 			return imagePathUrl;
+		},
+		// 할인율 반올림 계산
+		roundedDiscountRate(rate) {
+			return Math.round(rate);
 		},
 	},
 };
@@ -204,7 +208,7 @@ export default {
 	transform: translate(-50%, 0);
 	align-items: center;
 	padding-bottom: 32px;
-	background: var(--White, #FFF);
+	background: var(--White, #fff);
 	position: absolute;
 }
 .order-btn {

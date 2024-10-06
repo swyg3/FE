@@ -33,13 +33,13 @@
 				<p>{{ getUserName }}</p>
 			</div>
 			<div class="flex my-6 justify-center text-center">
-				<UserCard></UserCard>
-				<!-- <div class="mr-1.5 mainpage-userCard">
-				<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
-				<p>문코를 통해</p>
-				<p class="text-baseB">30끼의 음식을</p>
-				<p>구출했어요!</p>
-			</div> -->
+				<!-- <UserCard></UserCard> -->
+				<div class="mr-1.5 mainpage-userCard">
+					<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
+					<p>문코를 통해</p>
+					<p class="text-baseB">30끼의 음식을</p>
+					<p>구출했어요!</p>
+				</div>
 				<div class="mainpage-userCard">
 					<img src="/mainPage/mainPig.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>지금까지</p>
@@ -51,21 +51,29 @@
 			<!--주문했던 가게 게시글 리스트-->
 			<div class="p-4">
 				<p class="text-baseB">
-					수연님이 주문했던 가게에서<br />
+					{{ getUserName }}님이 주문했던 가게에서<br />
 					마감할인 게시글이 올라왔어요!
 				</p>
 			</div>
 			<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
+				<MainItemCard
+					v-for="(product, index) in products"
+					:key="index"
+					:product="product"
+					@click="goToDetailPage(product)"
+				/>
 			</div>
 
 			<!--문코 추천 리스트-->
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">문코의 추천</p>
 				<div class="flex">
-					<p class="text-sm">더보기</p>
+					<button
+						class="text-sm"
+						@click="router.push(`/category/${category}/${sortBy}`)"
+					>
+						더보기
+					</button>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -81,9 +89,12 @@
 				</div>
 			</div>
 			<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-				<ItemCard @click="$router.push('/orderDetails')"></ItemCard>
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
+				<MainItemCard
+					v-for="(product, index) in products"
+					:key="index"
+					:product="product"
+					@click="goToDetailPage(product)"
+				/>
 			</div>
 			<!--뉴스레터 환경퀴즈 음식판매-->
 			<div class="grid gap-1 gap-y-2 pt-14 pb-4 px-4">
@@ -126,12 +137,12 @@
 </template>
 
 <script setup>
-import ItemCard from '@/components/common/ItemCard.vue';
-import UserCard from '@/components/common/UserCard.vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { ref, onMounted, computed, compile } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { gpsConsentApi } from '@/api/auth.js';
+import http from '@/api/http.js';
+import MainItemCard from '@/components/common/MainItemCard.vue';
 
 const router = useRouter();
 const store = useStore();
@@ -143,12 +154,18 @@ const text = ref('');
 const getUserName = computed(() => store.state.auth.userName);
 const selectedAddress = computed(() => store.state.auth.selectedAddress);
 
+const products = ref([]);
+const category = ref('ALL');
+const sortBy = ref('distanceDiscountScore');
+
 onMounted(() => {
+	fetchRecommendedProducts();
 	if (store.state.auth.gpsConsent === false) {
 		isVisible.value = true;
 	} else {
 		isVisible.value = false;
 	}
+	fetchRecommendedProducts();
 });
 
 const gpsConsent = async () => {
@@ -203,7 +220,7 @@ const gpsConsent = async () => {
 		// 	alert('GPS를 지원하지 않는 브라우저입니다.');
 		// }
 	} catch (error) {
-		console.log('Erro', error);
+		console.log('Error', error);
 		alert('error', error);
 	} finally {
 		store.commit('SET_IS_LOADING', false);
@@ -213,6 +230,22 @@ const gpsConsent = async () => {
 const gpsCancle = () => {
 	popupType.value = 'service';
 	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
+};
+// 추천순 아이템 리스트 불러오기
+const fetchRecommendedProducts = async () => {
+	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
+	try {
+		const res = await http.get(apiUrl);
+		products.value = res.data.data;
+	} catch (error) {
+		console.log('에러라고짱나게하지마', error);
+	}
+};
+const goToDetailPage = product => {
+	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
+};
+const goToCategoryPage = () => {
+	window.location.href = `/category/${category.value}/${sortBy.value}`;
 };
 </script>
 

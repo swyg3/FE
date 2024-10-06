@@ -5,42 +5,66 @@
 		<div class="explore-bg">
 			<SearchBar></SearchBar>
 			<div class="category-scroll noScrollBar">
-				<div class="px-2">
+				<button
+					class="px-2"
+					@click="router.push('/category/ALL/distanceDiscountScore')"
+				>
 					<div class="category-all">ALL</div>
 					<p class="category-text">전체</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/KOREAN/distanceDiscountScore')"
+				>
 					<img src="/category/koreanFood.png" class="category-img" />
 					<p class="category-text">한식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/JAPANESE/distanceDiscountScore')"
+				>
 					<img src="/category/japaneseFood.png" class="category-img" />
 					<p class="category-text">일식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/CHINESE/distanceDiscountScore')"
+				>
 					<img src="/category/chineseFood.png" class="category-img" />
 					<p class="category-text">중식</p>
-				</div>
-
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/SNACK/distanceDiscountScore')"
+				>
 					<img src="/category/snackFood.png" class="category-img" />
 					<p class="category-text">분식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/WESTERN/distanceDiscountScore')"
+				>
 					<img src="/category/westernFood.png" class="category-img" />
 					<p class="category-text">양식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/DESSERT/distanceDiscountScore')"
+				>
 					<img src="/category/dessert.png" class="category-img" />
 					<p class="category-text">디저트</p>
-				</div>
+				</button>
 			</div>
 			<hr class="w-full bg-disabledGray" />
+
 			<!--문코 추천 리스트-->
 			<div class="px-4 py-4 flex justify-between">
 				<p class="text-baseB">문코의 추천</p>
 				<div class="flex">
-					<button class="text-sm" @click="router.push('/category')">
+					<button
+						class="text-sm"
+						@click="router.push(`/category/ALL/distanceDiscountScore`)"
+					>
 						전체보기
 					</button>
 					<svg
@@ -69,7 +93,10 @@
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">가까운 가게</p>
 				<div class="flex">
-					<button class="text-sm" @click="router.push('/category')">
+					<button
+						class="text-sm"
+						@click="router.push(`/category/ALL/distance`)"
+					>
 						전체보기
 					</button>
 					<svg
@@ -97,7 +124,10 @@
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">할인이 큰 가게</p>
 				<div class="flex">
-					<button class="text-sm" @click="router.push('/category')">
+					<button
+						class="text-sm"
+						@click="router.push(`/category/ALL/discountRate`)"
+					>
 						전체보기
 					</button>
 					<svg

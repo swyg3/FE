@@ -237,7 +237,6 @@ const fetchRecommendedProducts = async () => {
 	try {
 		const res = await http.get(apiUrl);
 		products.value = res.data.data;
-		console.log('프로덕트', products.value);
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
 	}

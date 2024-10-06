@@ -1,52 +1,55 @@
 <template>
 	<div>
-		<TheHeader></TheHeader>
-		<div class="category-list">
-			<CategoryListButton
-				v-for="(cat, index) in categories"
-				:key="index"
-				:categoryName="cat.name"
-				:categoryValue="cat.value"
-				:isActive="category === cat.value"
-				@categoryChanged="changeCategory"
-			/>
-		</div>
-		<div class="h-[48px]"></div>
-		<hr class="w-full bg-disabledGray" />
-		<div class="category-bg">
-			<div class="h-[48px]"></div>
-			<!--category item card list-->
-			<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">
-				<p class="">총 {{ products.length }}개</p>
-				<div class="flex">
-					<button @click="openSortModal">{{ currentSort }}</button>
-					<CategorySortModal
-						@changeSort="changeSort"
-						ref="sortModal"
-					></CategorySortModal>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-					>
-						<path
-							d="M12 14.975C11.8667 14.975 11.7417 14.9542 11.625 14.9125C11.5083 14.8708 11.4 14.8 11.3 14.7L6.7 10.1C6.51667 9.91665 6.425 9.68332 6.425 9.39999C6.425 9.11665 6.51667 8.88332 6.7 8.69999C6.88333 8.51665 7.11667 8.42499 7.4 8.42499C7.68333 8.42499 7.91667 8.51665 8.1 8.69999L12 12.6L15.9 8.69999C16.0833 8.51665 16.3167 8.42499 16.6 8.42499C16.8833 8.42499 17.1167 8.51665 17.3 8.69999C17.4833 8.88332 17.575 9.11665 17.575 9.39999C17.575 9.68332 17.4833 9.91665 17.3 10.1L12.7 14.7C12.6 14.8 12.4917 14.8708 12.375 14.9125C12.2583 14.9542 12.1333 14.975 12 14.975Z"
-							fill="#555555"
-						/>
-					</svg>
-				</div>
-			</div>
-			<div class="px-4 grid grid-cols-2 gap-[7px]">
-				<CategoryItemCard
-					v-for="(product, index) in products"
+		<div>
+			<TheHeader></TheHeader>
+			<div class="category-list">
+				<CategoryListButton
+					v-for="(cat, index) in categories"
 					:key="index"
-					:product="product"
-					@click="goToDetailPage(product)"
+					:categoryName="cat.name"
+					:categoryValue="cat.value"
+					:isActive="category === cat.value"
+					@categoryChanged="changeCategory"
 				/>
 			</div>
+			<div class="h-[48px]"></div>
+			<hr class="w-full bg-disabledGray" />
+			<div class="category-bg">
+				<div class="h-[48px]"></div>
+				<!--category item card list-->
+				<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">
+					<p class="">총 {{ products.length }}개</p>
+					<div class="flex">
+						<button @click="openSortModal">{{ currentSort }}</button>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M12 14.975C11.8667 14.975 11.7417 14.9542 11.625 14.9125C11.5083 14.8708 11.4 14.8 11.3 14.7L6.7 10.1C6.51667 9.91665 6.425 9.68332 6.425 9.39999C6.425 9.11665 6.51667 8.88332 6.7 8.69999C6.88333 8.51665 7.11667 8.42499 7.4 8.42499C7.68333 8.42499 7.91667 8.51665 8.1 8.69999L12 12.6L15.9 8.69999C16.0833 8.51665 16.3167 8.42499 16.6 8.42499C16.8833 8.42499 17.1167 8.51665 17.3 8.69999C17.4833 8.88332 17.575 9.11665 17.575 9.39999C17.575 9.68332 17.4833 9.91665 17.3 10.1L12.7 14.7C12.6 14.8 12.4917 14.8708 12.375 14.9125C12.2583 14.9542 12.1333 14.975 12 14.975Z"
+								fill="#555555"
+							/>
+						</svg>
+					</div>
+				</div>
+				<div class="px-4 grid grid-cols-2 gap-[7px]">
+					<CategoryItemCard
+						v-for="(product, index) in products"
+						:key="index"
+						:product="product"
+						@click="goToDetailPage(product)"
+					/>
+				</div>
+			</div>
 		</div>
+		<CategorySortModal
+			@changeSort="changeSort"
+			ref="sortModal"
+			class="absolute"
+		></CategorySortModal>
 	</div>
 </template>
 
@@ -79,9 +82,9 @@ const categories = ref([
 onMounted(() => {
 	// URL에서 카테고리와 정렬 방식 가져오기
 	category.value = route.params.category || 'ALL';
-	sortBy.value = route.params.sort || 'distance';
+	sortBy.value = route.params.sort || 'distanceDiscountScore';
 	// 초기 데이터 요청
-	this.fetchCategoryProducts();
+	fetchCategoryProducts();
 });
 
 // api 연동하여 상품 가져오기
@@ -97,6 +100,11 @@ const fetchCategoryProducts = () => {
 			console.log(err);
 		});
 };
+const sortOptions = [
+	{ label: '문코 추천 순', value: 'distanceDiscountScore' },
+	{ label: '가까운 순', value: 'distance' },
+	{ label: '할인율 높은 순', value: 'discountRate' },
+];
 
 // 카테고리 변경 메소드
 const changeCategory = newCategory => {
@@ -138,6 +146,28 @@ watch(
 		fetchCategoryProducts();
 	},
 	{ immediate: true }, // 페이지 로드 시에도 즉시 실행
+);
+// watch(
+// 	() => route.params.sortBy,
+// 	newSortBy => {
+// 		currentSort.value = newSortBy || 'distanceDiscountScore'; // 파라미터 없을 경우 기본값 설정
+// 	},
+// 	{ immediate: true },
+// );
+watch(
+	() => route.params.sortBy,
+	newSortBy => {
+		// 기본값 설정
+		const defaultSortValue = 'distanceDiscountScore';
+		currentSort.value = newSortBy || defaultSortValue; // 파라미터 없을 경우 기본값 설정
+
+		// 선택된 sortBy value에 해당하는 label을 찾기
+		const selectedOption = sortOptions.find(
+			option => option.value === (newSortBy || defaultSortValue),
+		);
+		currentSort.value = selectedOption ? selectedOption.label : '문코 추천 순'; // label로 변환
+	},
+	{ immediate: true },
 );
 </script>
 

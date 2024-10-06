@@ -23,7 +23,8 @@
 			</p>
 			<div class="pt-1 text-sm text-bodyBlack">
 				<p class="distance-text-style">
-					오후 9:00 마감 · <span>{{ product.distance }}km</span>
+					오후 9:00 마감 ·
+					<span>{{ distanceAdjustCalc(product.distance) }}km</span>
 				</p>
 			</div>
 		</div>
@@ -46,6 +47,10 @@ export default {
 		// 할인율 반올림 계산
 		roundedDiscountRate(rate) {
 			return Math.round(rate);
+		},
+		distanceAdjustCalc(number) {
+			const adjustDistance = number / 100;
+			return parseFloat(adjustDistance.toFixed(2));
 		},
 	},
 };

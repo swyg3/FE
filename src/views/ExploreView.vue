@@ -5,42 +5,68 @@
 		<div class="explore-bg">
 			<SearchBar></SearchBar>
 			<div class="category-scroll noScrollBar">
-				<div class="px-2">
+				<button
+					class="px-2"
+					@click="router.push('/category/ALL/distanceDiscountScore')"
+				>
 					<div class="category-all">ALL</div>
 					<p class="category-text">전체</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/KOREAN/distanceDiscountScore')"
+				>
 					<img src="/category/koreanFood.png" class="category-img" />
 					<p class="category-text">한식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/JAPANESE/distanceDiscountScore')"
+				>
 					<img src="/category/japaneseFood.png" class="category-img" />
 					<p class="category-text">일식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/CHINESE/distanceDiscountScore')"
+				>
 					<img src="/category/chineseFood.png" class="category-img" />
 					<p class="category-text">중식</p>
-				</div>
-
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/SNACK/distanceDiscountScore')"
+				>
 					<img src="/category/snackFood.png" class="category-img" />
 					<p class="category-text">분식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/WESTERN/distanceDiscountScore')"
+				>
 					<img src="/category/westernFood.png" class="category-img" />
 					<p class="category-text">양식</p>
-				</div>
-				<div class="px-2">
+				</button>
+				<button
+					class="px-2"
+					@click="router.push('/category/DESSERT/distanceDiscountScore')"
+				>
 					<img src="/category/dessert.png" class="category-img" />
 					<p class="category-text">디저트</p>
-				</div>
+				</button>
 			</div>
 			<hr class="w-full bg-disabledGray" />
+
 			<!--문코 추천 리스트-->
 			<div class="px-4 py-4 flex justify-between">
 				<p class="text-baseB">문코의 추천</p>
 				<div class="flex">
-					<p class="text-sm">전체보기</p>
+					<button
+						class="text-sm"
+						@click="router.push(`/category/ALL/distanceDiscountScore`)"
+					>
+						전체보기
+					</button>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -56,15 +82,23 @@
 				</div>
 			</div>
 			<div class="item-card-list noScrollBar">
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
+				<MainItemCard
+					v-for="(product, index) in products"
+					:key="index"
+					:product="product"
+					@click="goToDetailPage(product)"
+				/>
 			</div>
 			<!--가까운 가게 리스트-->
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">가까운 가게</p>
 				<div class="flex">
-					<p class="text-sm">전체보기</p>
+					<button
+						class="text-sm"
+						@click="router.push(`/category/ALL/distance`)"
+					>
+						전체보기
+					</button>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -80,14 +114,22 @@
 				</div>
 			</div>
 			<div class="item-card-list noScrollBar">
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
+				<MainItemCard
+					v-for="(product, index) in products"
+					:key="index"
+					:product="product"
+					@click="goToDetailPage(product)"
+				/>
 			</div>
 			<div class="px-4 pt-6 pb-4 flex justify-between">
 				<p class="text-baseB">할인이 큰 가게</p>
 				<div class="flex">
-					<p class="text-sm">전체보기</p>
+					<button
+						class="text-sm"
+						@click="router.push(`/category/ALL/discountRate`)"
+					>
+						전체보기
+					</button>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -103,18 +145,45 @@
 				</div>
 			</div>
 			<div class="item-card-list noScrollBar">
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
-				<ItemCard></ItemCard>
+				<MainItemCard
+					v-for="(product, index) in products"
+					:key="index"
+					:product="product"
+					@click="goToDetailPage(product)"
+				/>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import ItemCard from '@/components/common/ItemCard.vue';
+import MainItemCard from '@/components/common/MainItemCard.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
+import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import http from '@/api/http.js';
+
+const router = useRouter();
+const products = ref([]);
+
+onMounted(() => {
+	fetchRecommendedProducts();
+});
+
+// 추천순 아이템 리스트 불러오기
+const fetchRecommendedProducts = async () => {
+	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
+	try {
+		const res = await http.get(apiUrl);
+		products.value = res.data.data;
+	} catch (error) {
+		console.log('에러라고짱나게하지마', error);
+	}
+};
+const goToDetailPage = product => {
+	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
+};
 </script>
 
 <style lang="scss" scoped>
@@ -154,7 +223,7 @@ import TheHeader from '@/components/common/TheHeader.vue';
 	height: 52px;
 }
 .item-card-list {
-	height: 181px;
+	height: 183px;
 	display: flex;
 	white-space: nowrap;
 	overflow-x: auto;

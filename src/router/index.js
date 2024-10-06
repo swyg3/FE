@@ -35,7 +35,7 @@ const router = createRouter({
 			component: Explore,
 		},
 		{
-			path: '/category',
+			path: '/category/:category/:sortBy',
 			name: 'Category',
 			component: Category,
 		},

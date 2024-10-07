@@ -14,7 +14,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api': {
-				target: 'http://13.209.10.93:80',
+				target: 'https://api.bogiegie.shop', //변경
 				changeOrigin: true,
 				// rewrite: path => path.replace(/^/api/, ''),
 				secure: false,

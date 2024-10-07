@@ -5,7 +5,7 @@ import router from '@/router';
 const TIMEOUT = 1000 * 60;
 
 const instance = axios.create({
-	// baseURL: '/api',
+	baseURL: import.meta.env.VITE_APP_API_URL, // ***변경
 	timeout: TIMEOUT,
 	headers: {
 		'Content-type': 'application/json',
@@ -36,6 +36,13 @@ instance.interceptors.response.use(
 	async error => {
 		const errorRes = error.response;
 		const originalRequest = error.config;
+
+		// ***error.response가 undefined일 때 처리 추가
+		if (!errorRes) {
+			console.log(import.meta.env.VITE_APP_API_URL);
+			console.error('서버로부터 응답이 없습니다.');
+			return Promise.reject(new Error('서버로부터 응답이 없습니다.'));
+		}
 		store.commit('SET_ERROR_COUNT');
 
 		if (

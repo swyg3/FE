@@ -116,6 +116,4 @@ console.log(orderData.value);
 	line-height: 24px;
 	color: var(--Text_body, #555);
 }
-.table-head {
-}
 </style>

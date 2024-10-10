@@ -31,23 +31,23 @@
 					/>
 					<div class="pt-2 pl-4 pb-[22]">
 						<p class="text-baseB pb-0.5">{{ product.name }}</p>
-						<P class="text-base">{{ product.availableStock }}개</P>
+						<P class="text-base">{{ quantity }}개</P>
 					</div>
 				</div>
 				<!--결제금액-->
 				<div class="pay-box text-base">
 					<div class="flex justify-between pb-2">
 						<p>상품가</p>
-						<p>{{ formatNumber(product.originalPrice) }}원</p>
+						<p>{{ formatNumber(product.originalPrice * quantity) }}원</p>
 					</div>
 					<div class="flex justify-between">
 						<p>상품 할인</p>
-						<p>- {{ formatNumber(discount) }}원</p>
+						<p>- {{ formatNumber(discount * quantity) }}원</p>
 					</div>
 					<hr class="w-[310px] bg-disabledGray my-3" />
 					<div class="flex justify-between text-baseB">
 						<p>결제금액</p>
-						<p>{{ formatNumber(product.discountedPrice) }}원</p>
+						<p>{{ formatNumber(product.discountedPrice * quantity) }}원</p>
 					</div>
 				</div>
 			</div>
@@ -102,8 +102,8 @@
 				</div>
 			</div>
 			<div class="order-btn-div">
-				<button @click="$router.push('/orderdetails')" class="order-btn">
-					{{ formatNumber(product.discountedPrice) }}원 주문하기
+				<button @click="$router.push('/receipt')" class="order-btn">
+					{{ formatNumber(product.discountedPrice * quantity) }}원 주문하기
 				</button>
 			</div>
 		</div>
@@ -128,6 +128,8 @@ const props = defineProps({
 
 // 상품 정보를 저장할 state
 const product = ref({});
+// 수량 정보
+const quantity = ref(1);
 
 // 라우터 사용
 const route = useRoute();
@@ -142,6 +144,10 @@ const fetchProductDetail = async () => {
 	try {
 		const res = await http.get(`/api/products/get/${props.id}`);
 		product.value = res.data.data;
+		// route.params에서 quantity 파라미터를 받아옴
+		quantity.value = route.params.quantity
+			? parseInt(route.params.quantity)
+			: 1;
 	} catch (err) {
 		console.error(err);
 	}
@@ -160,7 +166,8 @@ const formatNumber = number => {
 
 // 컴포넌트 마운트 시 상품 정보 가져오기
 onMounted(() => {
-	const productId = route.params.productId;
+	// const productId = route.params.productId;
+	const productId = route.params.id; //확ㅇ닝확인확인확인 무조건.
 	fetchProductDetail(productId);
 });
 </script>

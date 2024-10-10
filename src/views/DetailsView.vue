@@ -96,17 +96,24 @@
 			</div>
 			<div id="map"></div>
 			<div class="order-btn-div">
-				<button @click="goToOrderDetails(product)" class="order-btn">
+				<button @click="openModal" @close="closeModal" class="order-btn">
 					주문하기
 				</button>
 			</div>
 		</div>
+		<OrderCountModal
+			v-if="isModalOpen"
+			@close="closeModal"
+			class="absolute"
+			:product="product"
+		></OrderCountModal>
 	</div>
 </template>
 <script setup>
 import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import OrderCountModal from '@/components/Modal/orderCountModal.vue';
 // import { mapActions } from 'vuex';
 // import { useKakao } from 'vue3-kakao-maps/@utils';
 // import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
@@ -134,6 +141,9 @@ const product = ref({});
 const route = useRoute();
 const router = useRouter();
 
+// 모달 상태
+const isModalOpen = ref(false);
+
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
 	try {
@@ -150,9 +160,9 @@ const openImageInNewTab = src => {
 };
 
 // 주문 상세 페이지로 이동
-const goToOrderDetails = product => {
-	router.push(`/orderdetails/${product.name}/${product.productId}`);
-};
+// const goToOrderDetails = product => {
+// 	router.push(`/orderdetails/${product.name}/${product.productId}`);
+// };
 
 // 이미지 경로 변환 함수
 const fullImageUrl = imagePath => {
@@ -175,6 +185,16 @@ onMounted(() => {
 	const productId = route.params.productId;
 	fetchProductDetail(productId);
 });
+
+// ref를 사용해 모달 열기
+const openModal = () => {
+	isModalOpen.value = true;
+};
+
+// ref를 사용해 모달 닫기
+const closeModal = () => {
+	isModalOpen.value = false;
+};
 </script>
 <style lang="scss" scoped>
 .back-absolute-style {

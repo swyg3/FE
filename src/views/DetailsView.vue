@@ -5,6 +5,8 @@
 			<div class="w-full h-[240px] relative">
 				<img
 					:src="fullImageUrl(product.productImageUrl)"
+					@click="openImageInNewTab(fullImageUrl(product.productImageUrl))"
+					alt="Product Image"
 					class="w-full h-[240px] object-cover"
 				/>
 				<!--뒤로가기버튼-->
@@ -46,7 +48,7 @@
 			<div class="p-4">
 				<div>
 					<p class="text-black text-lgB pb-1">{{ product.name }}</p>
-					<p>
+					<p class="base">
 						{{ product.description }}
 					</p>
 				</div>
@@ -56,10 +58,12 @@
 							{{ roundedDiscountRate(product.discountRate) }}%
 						</p>
 						<p class="text-sm text-disabledTextGray line-through">
-							{{ product.originalPrice }}원
+							{{ formatNumber(product.originalPrice) }}원
 						</p>
 					</div>
-					<p class="text-lgB text-[#1CB08C]">{{ product.discountedPrice }}</p>
+					<p class="text-lgB text-[#1CB08C]">
+						{{ formatNumber(product.discountedPrice) }}원
+					</p>
 				</div>
 			</div>
 			<!--픽업 시간-->
@@ -92,16 +96,25 @@
 			</div>
 			<div id="map"></div>
 			<div class="order-btn-div">
-				<button @click="goToOrderDetails(product)" class="order-btn">
+				<button @click="openModal" @close="closeModal" class="order-btn">
 					주문하기
 				</button>
 			</div>
 		</div>
+		<OrderCountModal
+			v-if="isModalOpen"
+			@close="closeModal"
+			class="absolute"
+			:product="product"
+		></OrderCountModal>
 	</div>
 </template>
-<script>
+<script setup>
 import http from '@/api/http.js';
-import { mapActions } from 'vuex';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import OrderCountModal from '@/components/Modal/orderCountModal.vue';
+// import { mapActions } from 'vuex';
 // import { useKakao } from 'vue3-kakao-maps/@utils';
 // import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 // //kakaoMap
@@ -111,63 +124,76 @@ import { mapActions } from 'vuex';
 // 	lng: 126.9786567,
 // };
 
-export default {
-	props: {
-		name: {
-			type: String,
-			required: true,
-		},
-		id: {
-			type: String,
-			required: true,
-		},
+const props = defineProps({
+	name: {
+		type: String,
+		required: true,
 	},
-	data() {
-		return {
-			product: {}, // API에서 받아올 상품 정보
-		};
+	id: {
+		type: String,
+		required: true,
 	},
-	mounted() {
-		// URL 파라미터에서 id를 가져와 상품 정보 요청
-		const productId = this.$route.params.productId;
-		this.fetchProductDetail(productId);
-		console.log(productId);
-	},
-	created() {
-		// Router의 state에서 productId 가져오기
-		if (this.$route.state && this.$route.state.productId) {
-			this.productId = this.$route.state.productId;
-		} else {
-			console.error('상품 ID를 찾을 수 없습니다.');
-		}
-	},
-	methods: {
-		// API 호출로 상품 상세 정보 가져오기
-		fetchProductDetail() {
-			http
-				.get(`/api/products/get/${this.id}`)
-				.then(res => {
-					this.product = res.data.data;
-					console.log(this.product);
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		goToOrderDetails(product) {
-			this.$router.push(`/orderdetails/${product.name}/${product.productId}`); // /name/id로 라우팅
-		},
-		// 이미지 경로 변환
-		fullImageUrl(imagePath) {
-			const baseUrl = import.meta.env.VITE_APP_API_URL;
-			const imagePathUrl = `${baseUrl}${imagePath}`;
-			return imagePathUrl;
-		},
-		// 할인율 반올림 계산
-		roundedDiscountRate(rate) {
-			return Math.round(rate);
-		},
-	},
+});
+// 상품 정보를 저장할 state
+const product = ref({});
+
+// 라우터 사용
+const route = useRoute();
+const router = useRouter();
+
+// 모달 상태
+const isModalOpen = ref(false);
+
+// 상품 정보 가져오기 함수
+const fetchProductDetail = async () => {
+	try {
+		const res = await http.get(`/api/products/get/${props.id}`);
+		product.value = res.data.data;
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+// 클릭 시 이미지 새 탭으로 열기
+const openImageInNewTab = src => {
+	window.open(src, '_blank');
+};
+
+// 주문 상세 페이지로 이동
+// const goToOrderDetails = product => {
+// 	router.push(`/orderdetails/${product.name}/${product.productId}`);
+// };
+
+// 이미지 경로 변환 함수
+const fullImageUrl = imagePath => {
+	const baseUrl = import.meta.env.VITE_APP_API_URL;
+	return `${baseUrl}${imagePath}`;
+};
+
+// 할인율 반올림 계산 함수
+const roundedDiscountRate = rate => {
+	return Math.round(rate);
+};
+
+// 숫자 포맷 (천단위 , 삽입)
+const formatNumber = number => {
+	return new Intl.NumberFormat().format(number);
+};
+
+// 컴포넌트가 마운트될 때 호출되는 함수
+onMounted(() => {
+	const productId = route.params.productId;
+	fetchProductDetail(productId);
+});
+
+// ref를 사용해 모달 열기
+const openModal = () => {
+	isModalOpen.value = true;
+};
+
+// ref를 사용해 모달 닫기
+const closeModal = () => {
+	isModalOpen.value = false;
 };
 </script>
 <style lang="scss" scoped>
@@ -188,6 +214,7 @@ export default {
 	bottom: 12px;
 }
 .remaining {
+	width: 64px;
 	height: 24px;
 	align-items: center;
 	display: flex;

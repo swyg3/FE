@@ -248,6 +248,7 @@ const goToDetailPage = product => {
 	display: flex;
 	padding: 16px 8px;
 	white-space: nowrap;
+	overflow: hidden;
 	overflow-x: auto;
 	overflow-y: hidden;
 }

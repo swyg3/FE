@@ -44,8 +44,8 @@ const timeSlots = ref([]);
 
 // 시간대 생성 함수 (오후 6:00 ~ 오전 2:00)
 const generateTimeSlots = () => {
-	const startTime = dayjs().hour(3).minute(0); // 오후 6:00
-	const endTime = dayjs().add(1, 'day').hour(2).minute(0); // 다음 날 오전 2:00
+	const startTime = dayjs().hour(18).minute(0); // 오후 6:00
+	const endTime = dayjs().add(1, 'day').hour(2).minute(10); // 다음 날 오전 2:00
 
 	let time = startTime;
 	while (time.isBefore(endTime)) {
@@ -74,7 +74,7 @@ const updateDisabledTimeSlots = () => {
 	//두번째시도
 	const now = dayjs(props.currentTime); // 현재시간 받아옴
 	timeSlots.value.forEach(slot => {
-		const slotTime = dayjs()
+		let slotTime = dayjs()
 			.hour(parseInt(slot.value.split(':')[0]))
 			.minute(parseInt(slot.value.split(':')[1]));
 

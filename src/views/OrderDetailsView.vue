@@ -186,33 +186,67 @@ const setPickUpTime = time => {
 	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
 };
 
-// 주문 생성 함수
+// 주문 데이터 생성
+const orderData = {
+	totalAmount: product.value.discountedPrice * quantity.value,
+	totalPrice: product.value.discountedPrice * quantity.value,
+	pickupTime: selectedPickUpTime.value,
+	paymentMethod: 'CASH',
+	status: 'PENDING',
+	items: [
+		{
+			productId: product.value.productId,
+			quantity: quantity.value,
+			price: product.value.discountedPrice,
+		},
+	],
+};
+
+// // 서버로부터 받은 응답 데이터를 저장할 변수
+// const responseData = ref(null);
+
+// // 주문 생성 함수
+// const createOrder = async () => {
+// 	try {
+// 		const res = await http.post('/api/order', orderData);
+
+// 		if (res.status === 201 && res.data.success) {
+// 			responseData.value = res.data;
+// 			console.log(responseData.value);
+// 			router.push(`/receipt/${responseData.value.orderId}`);
+// 		} else {
+// 			alert('주문에 실패했습니다. 다시 시도해 주세요.');
+// 		}
+// 	} catch (err) {
+// 		if (!selectedPickUpTime.value) {
+// 			alert('픽업시간을 선택해주세요!');
+// 		} else {
+// 			alert('주문 중에 문제가 발생했습니다!');
+// 			console.log(err);
+// 		}
+// 	}
+// };
+
 const createOrder = async () => {
 	try {
-		// 주문 데이터 생성
-		const orderData = {
-			totalAmount: product.value.discountedPrice * quantity.value,
-			totalPrice: product.value.discountedPrice * quantity.value,
-			pickupTime: selectedPickUpTime.value,
-			paymentMethod: 'CASH',
-			status: 'PENDING',
-			items: [
-				{
-					productId: product.value.productId,
-					quantity: quantity.value,
-					price: product.value.discountedPrice,
-				},
-			],
-		};
-		// api 요청
-		const res = await http.post('/api/order', orderData);
+		const response = await http.post('/api/order', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(orderData),
+		});
 
-		if (Response.statsu === 200) {
-			// 주문완료
-			router.push('/reciept');
+		if (response.status === 201) {
+			router.push({
+				name: 'Receipt',
+				query: {
+					orderData: JSON.stringify(orderData),
+				},
+			});
 		}
-	} catch (err) {
-		console.log('주문 생성 중 오류 발생: ', err);
+	} catch (error) {
+		console.error(error);
 	}
 };
 </script>

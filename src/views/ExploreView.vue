@@ -6,53 +6,20 @@
 			<SearchBar></SearchBar>
 			<div class="category-scroll noScrollBar">
 				<button
-					class="px-2"
+					class="px-2 category-btn"
 					@click="router.push('/category/ALL/distanceDiscountScore')"
 				>
 					<div class="category-all">ALL</div>
 					<p class="category-text">전체</p>
 				</button>
 				<button
-					class="px-2"
-					@click="router.push('/category/KOREAN/distanceDiscountScore')"
+					v-for="category in categories"
+					:key="category.name"
+					class="px-2 category-btn"
+					@click="router.push(category.route)"
 				>
-					<img src="/category/koreanFood.png" class="category-img" />
-					<p class="category-text">한식</p>
-				</button>
-				<button
-					class="px-2"
-					@click="router.push('/category/JAPANESE/distanceDiscountScore')"
-				>
-					<img src="/category/japaneseFood.png" class="category-img" />
-					<p class="category-text">일식</p>
-				</button>
-				<button
-					class="px-2"
-					@click="router.push('/category/CHINESE/distanceDiscountScore')"
-				>
-					<img src="/category/chineseFood.png" class="category-img" />
-					<p class="category-text">중식</p>
-				</button>
-				<button
-					class="px-2"
-					@click="router.push('/category/SNACK/distanceDiscountScore')"
-				>
-					<img src="/category/snackFood.png" class="category-img" />
-					<p class="category-text">분식</p>
-				</button>
-				<button
-					class="px-2"
-					@click="router.push('/category/WESTERN/distanceDiscountScore')"
-				>
-					<img src="/category/westernFood.png" class="category-img" />
-					<p class="category-text">양식</p>
-				</button>
-				<button
-					class="px-2"
-					@click="router.push('/category/DESSERT/distanceDiscountScore')"
-				>
-					<img src="/category/dessert.png" class="category-img" />
-					<p class="category-text">디저트</p>
+					<img :src="category.img" class="category-img" />
+					<p class="category-text">{{ category.label }}</p>
 				</button>
 			</div>
 			<hr class="w-full bg-disabledGray" />
@@ -167,6 +134,46 @@ import http from '@/api/http.js';
 const router = useRouter();
 const products = ref([]);
 
+// 카테고리 배열 정의
+const categories = [
+	{
+		name: 'KOREAN',
+		label: '한식',
+		img: '/category/koreanFood.png',
+		route: '/category/KOREAN/distanceDiscountScore',
+	},
+	{
+		name: 'JAPANESE',
+		label: '일식',
+		img: '/category/japaneseFood.png',
+		route: '/category/JAPANESE/distanceDiscountScore',
+	},
+	{
+		name: 'CHINESE',
+		label: '중식',
+		img: '/category/chineseFood.png',
+		route: '/category/CHINESE/distanceDiscountScore',
+	},
+	{
+		name: 'SNACK',
+		label: '분식',
+		img: '/category/snackFood.png',
+		route: '/category/SNACK/distanceDiscountScore',
+	},
+	{
+		name: 'WESTERN',
+		label: '양식',
+		img: '/category/westernFood.png',
+		route: '/category/WESTERN/distanceDiscountScore',
+	},
+	{
+		name: 'DESSERT',
+		label: '디저트',
+		img: '/category/dessert.png',
+		route: '/category/DESSERT/distanceDiscountScore',
+	},
+];
+
 onMounted(() => {
 	fetchRecommendedProducts();
 });
@@ -217,6 +224,13 @@ const goToDetailPage = product => {
 	font-weight: 500;
 	text-align: center;
 	padding-top: 4px;
+}
+.category-btn {
+	min-width: 70px; /* 버튼의 최소 너비 조정 */
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* 아이콘과 텍스트를 수직으로 정렬 */
+	justify-content: center; /* 중앙 정렬 */
 }
 .category-img {
 	width: 52px;

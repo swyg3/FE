@@ -9,15 +9,14 @@
 					height="24"
 					viewBox="0 0 24 24"
 					fill="none"
-					class="back-absolute-style"
 				>
 					<path
 						d="M3.54995 12L10.9 19.35C11.15 19.6 11.2708 19.8917 11.2625 20.225C11.2541 20.5583 11.125 20.85 10.875 21.1C10.625 21.35 10.3333 21.475 9.99995 21.475C9.66662 21.475 9.37495 21.35 9.12495 21.1L1.42495 13.425C1.22495 13.225 1.07495 13 0.974951 12.75C0.874951 12.5 0.824951 12.25 0.824951 12C0.824951 11.75 0.874951 11.5 0.974951 11.25C1.07495 11 1.22495 10.775 1.42495 10.575L9.12495 2.87499C9.37495 2.62499 9.67078 2.50415 10.0125 2.51249C10.3541 2.52082 10.65 2.64999 10.9 2.89999C11.15 3.14999 11.275 3.44165 11.275 3.77499C11.275 4.10832 11.15 4.39999 10.9 4.64999L3.54995 12Z"
-						fill="white"
+						fill="#1D1D1D"
 					/>
 				</svg>
 			</button>
-			<p class="mx-auto">주문하기</p>
+			<p class="mx-auto text-baseB">주문하기</p>
 		</div>
 		<div class="h-[48px]"></div>
 		<div class="bg-white text-black pb-[80px]">
@@ -32,23 +31,23 @@
 					/>
 					<div class="pt-2 pl-4 pb-[22]">
 						<p class="text-baseB pb-0.5">{{ product.name }}</p>
-						<P class="text-base">{{ product.availableStock }}개</P>
+						<P class="text-base">{{ quantity }}개</P>
 					</div>
 				</div>
 				<!--결제금액-->
 				<div class="pay-box text-base">
 					<div class="flex justify-between pb-2">
 						<p>상품가</p>
-						<p>{{ product.originalPrice }}원</p>
+						<p>{{ formatNumber(product.originalPrice * quantity) }}원</p>
 					</div>
 					<div class="flex justify-between">
 						<p>상품 할인</p>
-						<p>- {{ discount }}원</p>
+						<p>- {{ formatNumber(discount * quantity) }}원</p>
 					</div>
 					<hr class="w-[310px] bg-disabledGray my-3" />
 					<div class="flex justify-between text-baseB">
 						<p>결제금액</p>
-						<p>{{ product.discountedPrice }}원</p>
+						<p>{{ formatNumber(product.discountedPrice * quantity) }}원</p>
 					</div>
 				</div>
 			</div>
@@ -91,7 +90,7 @@
 			<!--결제-->
 			<div class="pt-4 pb-6 pl-4">
 				<p class="text-baseB pb-2">결제</p>
-				<p class="text-base text-bodyBlack pb-2">
+				<p class="text-sm text-bodyBlack pb-2">
 					픽업시간에 꼭 가게에 방문해 현장결제 해주세요!<br />
 					사장님이 기다리고 있어요 :-)
 				</p>
@@ -103,73 +102,74 @@
 				</div>
 			</div>
 			<div class="order-btn-div">
-				<button @click="$router.push('/orderdetails')" class="order-btn">
-					{{ product.discountedPrice }}원 주문하기
+				<button @click="$router.push('/receipt')" class="order-btn">
+					{{ formatNumber(product.discountedPrice * quantity) }}원 주문하기
 				</button>
 			</div>
 		</div>
 	</div>
 </template>
-
-<script>
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import http from '@/api/http.js';
 
-export default {
-	props: {
-		name: {
-			type: String,
-			required: true,
-		},
-		id: {
-			type: String,
-			required: true,
-		},
+// props 정의
+const props = defineProps({
+	name: {
+		type: String,
+		required: true,
 	},
-	computed: {
-		discount() {
-			// 할인된 금액 연산
-			return this.product.originalPrice - this.product.discountedPrice;
-		},
+	id: {
+		type: String,
+		required: true,
 	},
-	data() {
-		return {
-			product: {}, // API에서 받아올 상품 정보
-		};
-	},
-	mounted() {
-		// URL 파라미터에서 id를 가져와 상품 정보 요청
-		const productId = this.$route.params.productId;
-		this.fetchProductDetail(productId);
-		console.log(productId);
-	},
-	created() {
-		// Router의 state에서 productId 가져오기
-		if (this.$route.state && this.$route.state.productId) {
-			this.productId = this.$route.state.productId;
-		} else {
-			console.error('상품 ID를 찾을 수 없습니다.');
-		}
-	},
-	methods: {
-		fetchProductDetail() {
-			http
-				.get(`/api/products/get/${this.id}`)
-				.then(res => {
-					this.product = res.data.data;
-					console.log(this.product);
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		// 이미지 경로 변환
-		fullImageUrl(imagePath) {
-			const baseUrl = import.meta.env.VITE_APP_API_URL;
-			const imagePathUrl = `${baseUrl}${imagePath}`;
-			return imagePathUrl;
-		},
-	},
+});
+
+// 상품 정보를 저장할 state
+const product = ref({});
+// 수량 정보
+const quantity = ref(1);
+
+// 라우터 사용
+const route = useRoute();
+
+// 할인된 금액 계산 (computed 사용)
+const discount = computed(() => {
+	return product.value.originalPrice - product.value.discountedPrice;
+});
+
+// 상품 정보 가져오기 함수
+const fetchProductDetail = async () => {
+	try {
+		const res = await http.get(`/api/products/get/${props.id}`);
+		product.value = res.data.data;
+		// route.params에서 quantity 파라미터를 받아옴
+		quantity.value = route.params.quantity
+			? parseInt(route.params.quantity)
+			: 1;
+	} catch (err) {
+		console.error(err);
+	}
 };
+
+// 이미지 경로 변환 함수
+const fullImageUrl = imagePath => {
+	const baseUrl = import.meta.env.VITE_APP_API_URL;
+	return `${baseUrl}${imagePath}`;
+};
+
+// 숫자 포맷 (천단위 , 삽입)
+const formatNumber = number => {
+	return new Intl.NumberFormat().format(number);
+};
+
+// 컴포넌트 마운트 시 상품 정보 가져오기
+onMounted(() => {
+	// const productId = route.params.productId;
+	const productId = route.params.id; //확ㅇ닝확인확인확인 무조건.
+	fetchProductDetail(productId);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -184,8 +184,8 @@ export default {
 }
 .back-absolute-style {
 	position: absolute;
-	left: 8px;
-	top: 6px;
+	left: 16px;
+	top: 12px;
 }
 .order-img {
 	width: 80px;
@@ -252,5 +252,8 @@ input {
 	color: white;
 	text-align: center;
 	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 24px;
 }
 </style>

@@ -78,12 +78,13 @@
 			</div>
 			<hr class="w-full bg-disabledGray" />
 			<!--픽업시간-->
-			<div class="pt-4 pb-6 pl-4">
-				<p class="text-baseB pb-2">픽업시간</p>
-				<div class="flex">
-					<button class="time-box">오후 1:10</button>
-					<button class="time-box">오후 6:20</button>
-					<button class="time-box">오후 12:30</button>
+			<div class="pt-4 pb-6">
+				<p class="text-baseB pb-2 pl-4">픽업시간</p>
+				<div class="flex category-scroll noScrollBar px-4">
+					<PickUpTimeButton
+						:currentTime="currentTime"
+						@updatePickUpTime="setPickUpTime"
+					></PickUpTimeButton>
 				</div>
 			</div>
 			<hr class="w-full bg-disabledGray" />
@@ -102,7 +103,7 @@
 				</div>
 			</div>
 			<div class="order-btn-div">
-				<button @click="$router.push('/receipt')" class="order-btn">
+				<button @click="createOrder" class="order-btn">
 					{{ formatNumber(product.discountedPrice * quantity) }}원 주문하기
 				</button>
 			</div>
@@ -111,8 +112,10 @@
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import http from '@/api/http.js';
+import PickUpTimeButton from '@/components/common/PickUpTimeButton.vue';
+import dayjs from 'dayjs';
 
 // props 정의
 const props = defineProps({
@@ -133,11 +136,18 @@ const quantity = ref(1);
 
 // 라우터 사용
 const route = useRoute();
+const router = useRouter();
 
 // 할인된 금액 계산 (computed 사용)
 const discount = computed(() => {
 	return product.value.originalPrice - product.value.discountedPrice;
 });
+
+// 현재 시간
+const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
+
+// 선택된 픽업 시간
+const selectedPickUpTime = ref(null);
 
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
@@ -170,6 +180,41 @@ onMounted(() => {
 	const productId = route.params.id; //확ㅇ닝확인확인확인 무조건.
 	fetchProductDetail(productId);
 });
+
+// 선택된 픽업 시간을 ISO 형식으로 변환하여 저장
+const setPickUpTime = time => {
+	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
+};
+
+// 주문 생성 함수
+const createOrder = async () => {
+	try {
+		// 주문 데이터 생성
+		const orderData = {
+			totalAmount: product.value.discountedPrice * quantity.value,
+			totalPrice: product.value.discountedPrice * quantity.value,
+			pickupTime: selectedPickUpTime.value,
+			paymentMethod: 'CASH',
+			status: 'PENDING',
+			items: [
+				{
+					productId: product.value.productId,
+					quantity: quantity.value,
+					price: product.value.discountedPrice,
+				},
+			],
+		};
+		// api 요청
+		const res = await http.post('/api/order', orderData);
+
+		if (Response.statsu === 200) {
+			// 주문완료
+			router.push('/reciept');
+		}
+	} catch (err) {
+		console.log('주문 생성 중 오류 발생: ', err);
+	}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -255,5 +300,23 @@ input {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 24px;
+}
+.category-scroll {
+	min-width: 375px;
+	display: flex;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+.noScrollBar {
+	//scroll bar 가리기
+	/* IE and Edge */
+	-ms-overflow-style: none;
+	/* Firefox */
+	scrollbar-width: none;
+}
+/* scroll bar 가리기 Chrome, Safari,Opera */
+.noScrollBar::-webkit-scrollbar {
+	display: none !important;
 }
 </style>

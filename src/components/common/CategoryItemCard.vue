@@ -30,29 +30,30 @@
 		</div>
 	</div>
 </template>
-<script>
-export default {
-	props: {
-		product: {
-			type: Object,
-			required: true,
-		},
+<script setup>
+// props 정의
+const props = defineProps({
+	product: {
+		type: Object,
+		required: true,
 	},
-	methods: {
-		// 이미지 경로 변환
-		fullImageUrl(imagePath) {
-			const baseUrl = import.meta.env.VITE_APP_API_URL;
-			return `${baseUrl}${imagePath}`;
-		},
-		// 할인율 반올림 계산
-		roundedDiscountRate(rate) {
-			return Math.round(rate);
-		},
-		distanceAdjustCalc(number) {
-			const adjustDistance = number / 100;
-			return parseFloat(adjustDistance.toFixed(2));
-		},
-	},
+});
+
+// 이미지 경로 변환
+const fullImageUrl = imagePath => {
+	const baseUrl = import.meta.env.VITE_APP_API_URL;
+	return `${baseUrl}${imagePath}`;
+};
+
+// 할인율 반올림 계산
+const roundedDiscountRate = rate => {
+	return Math.round(rate);
+};
+
+// 거리 소수점 계산
+const distanceAdjustCalc = number => {
+	const adjustDistance = number / 100;
+	return parseFloat(adjustDistance.toFixed(2));
 };
 </script>
 <style lang="scss" scoped>

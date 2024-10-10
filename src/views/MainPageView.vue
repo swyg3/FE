@@ -174,7 +174,7 @@ const gpsConsent = async () => {
 		if (response.status === 200) {
 			store.commit('auth/SET_GPS_CONSENT', true);
 			isVisible.value = false;
-			router.push('/addressSearch');
+			router.push('/addressBook');
 		}
 
 		// if (navigator.geolocation) {

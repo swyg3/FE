@@ -7,7 +7,8 @@
 				<div v-for="order in orders" :key="order.id" class="order-list-card">
 					<div class="flex justify-between">
 						<div>
-							<p class="text-lg">{{ order.id.slice(0, 13) }}</p>
+							<!-- <p class="text-lg">{{ order.id.slice(0, 13) }}</p> -->
+							<p class="text-lg">{{ order.productData?.name }}</p>
 							<p class="text-sm pb-2">{{ formatDate(order.createdAt) }}</p>
 							<p class="text-base pb-1">
 								{{ getOrderStatusMessage(order.status) }}
@@ -54,21 +55,77 @@ const router = useRouter();
 // 주문 목록을 저장
 const orders = ref([]);
 
-const fetchOrders = async () => {
+// const fetchOrders = async () => {
+// 	try {
+// 		const response = await http.get('/api/order');
+// 		if (response.data.success) {
+// 			orders.value = response.data.data;
+// 		} else {
+// 			console.error(
+// 				'주문 목록을 가져오는 데 실패했습니다:',
+// 				response.data.message,
+// 			);
+// 		}
+// 	} catch (error) {
+// 		console.error('API 요청 중 오류 발생:', error);
+// 	}
+// };
+
+//test
+const fetchOrdersList = async () => {
 	try {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
 			orders.value = response.data.data;
+
+			// 각 주문에 대해 productId와 productData를 가져옴
+			for (const order of orders.value) {
+				await fetchProductDetails(order); // order 객체에 추가 데이터 저장
+			}
+			console.log('list', orders.value);
 		} else {
 			console.error(
-				'주문 목록을 가져오는 데 실패했습니다:',
+				'1주문 목록을 가져오는 데 실패했습니다:',
 				response.data.message,
 			);
 		}
 	} catch (error) {
-		console.error('API 요청 중 오류 발생:', error);
+		console.error('2API 요청 중 오류 발생:', error);
 	}
 };
+
+const fetchProductDetails = async order => {
+	try {
+		const response = await http.get(`/api/order-items/${order.id}`);
+		if (response.data.success) {
+			const productId = response.data.data[0].productId;
+			order.productId = productId; // order 객체에 productId 추가
+			console.log('ddd', order.productId);
+
+			// !!!!!!!11상품 상세정보 요청 여기서안됨여기서안됨여기서안됨!!!!!!!!!!!!!!
+			const productResponse = await http.get(`/api/product/get/${productId}`);
+			if (productResponse.data.success) {
+				order.productData = productResponse.data.data; // productData 추가
+			} else {
+				console.error(
+					'3상품 상세정보를 가져오는 데 실패했습니다:',
+					productResponse.data.message,
+				);
+			}
+		} else {
+			console.error(
+				'4상품 아이디를 가져오는 데 실패했습니다:',
+				response.data.message,
+			);
+		}
+	} catch (error) {
+		console.error('5API 요청 중 오류 발생:', error);
+	}
+};
+onMounted(() => {
+	fetchOrdersList();
+});
+//test
 
 // 날짜 포맷
 const formatDate = dateString => {

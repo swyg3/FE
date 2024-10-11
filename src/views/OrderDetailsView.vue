@@ -185,22 +185,22 @@ onMounted(() => {
 const setPickUpTime = time => {
 	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
 };
-
-// 주문 데이터 생성
-const orderData = {
-	totalAmount: product.value.discountedPrice * quantity.value,
-	totalPrice: product.value.discountedPrice * quantity.value,
-	pickupTime: selectedPickUpTime.value,
-	paymentMethod: 'CASH',
-	status: 'PENDING',
-	items: [
-		{
-			productId: product.value.productId,
-			quantity: quantity.value,
-			price: product.value.discountedPrice,
-		},
-	],
-};
+//주석풀곳
+// // 주문 데이터 생성
+// const orderData = {
+// 	totalAmount: product.value.discountedPrice * quantity.value,
+// 	totalPrice: product.value.discountedPrice * quantity.value,
+// 	pickupTime: selectedPickUpTime.value,
+// 	paymentMethod: 'CASH',
+// 	status: 'PENDING',
+// 	items: [
+// 		{
+// 			productId: product.value.productId,
+// 			quantity: quantity.value,
+// 			price: product.value.discountedPrice,
+// 		},
+// 	],
+// };
 
 // // 서버로부터 받은 응답 데이터를 저장할 변수
 // const responseData = ref(null);
@@ -226,27 +226,64 @@ const orderData = {
 // 		}
 // 	}
 // };
+//주석풀곳
+// const createOrder = async () => {
+// 	try {
+// 		const response = await http.post('/api/order', {
+// 			method: 'POST',
+// 			headers: {
+// 				'Content-Type': 'application/json',
+// 			},
+// 			body: JSON.stringify(orderData),
+// 		});
 
+// 		if (response.status === 201) {
+// 			router.push({
+// 				name: 'Receipt',
+// 				query: {
+// 					orderData: JSON.stringify(orderData),
+// 				},
+// 			});
+// 		}
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// };
+// 주문 생성 함수
 const createOrder = async () => {
 	try {
-		const response = await http.post('/api/order', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(orderData),
-		});
+		// 주문 데이터 구조 생성
+		const orderData = {
+			totalAmount: product.value.discountedPrice * quantity.value,
+			totalPrice: product.value.discountedPrice * quantity.value,
+			pickupTime: selectedPickUpTime.value,
+			paymentMethod: 'CASH',
+			status: 'PENDING',
+			items: [
+				{
+					productId: product.value.productId,
+					quantity: quantity.value,
+					price: product.value.discountedPrice,
+				},
+			],
+		};
+		console.log(orderData);
+
+		// API POST 요청
+		const response = await http.post('/api/order', orderData);
+		const resdata = response.data.data;
+		console.log(resdata.value);
 
 		if (response.status === 201) {
-			router.push({
-				name: 'Receipt',
-				query: {
-					orderData: JSON.stringify(orderData),
-				},
-			});
+			alert('주문이 완료되었습니다!');
+			// 주문 완료 후, 페이지를 영수증 페이지로 이동
+			router.push('/receipt');
+		} else {
+			alert('주문실패');
 		}
-	} catch (error) {
-		console.error(error);
+	} catch (err) {
+		console.error('주문 생성 중 오류 발생:', err);
+		alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 	}
 };
 </script>

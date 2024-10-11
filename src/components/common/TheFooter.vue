@@ -1,6 +1,5 @@
 <template>
 	<div class="bg-white footer-container">
-
 		<!-- main -->
 		<div @click="movePage('/main')" class="footer-icon">
 			<svg
@@ -59,13 +58,10 @@
 				/>
 			</svg>
 		</div>
-		<!-- category -->
-		<div
-			@click="movePage('/category/ALL/distanceDiscountScore')"
-			class="footer-icon"
-		>
+		<!-- orderList -->
+		<div @click="movePage('/orderList')" class="footer-icon">
 			<svg
-				v-if="$route.name === 'Category'"
+				v-if="$route.name === 'OrderList'"
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"

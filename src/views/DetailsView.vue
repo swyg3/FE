@@ -149,6 +149,7 @@ const fetchProductDetail = async () => {
 	try {
 		const res = await http.get(`/api/products/get/${props.id}`);
 		product.value = res.data.data;
+		console.log(product.value);
 	} catch (err) {
 		console.error(err);
 	}

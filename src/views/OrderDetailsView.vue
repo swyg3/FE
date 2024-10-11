@@ -78,12 +78,13 @@
 			</div>
 			<hr class="w-full bg-disabledGray" />
 			<!--픽업시간-->
-			<div class="pt-4 pb-6 pl-4">
-				<p class="text-baseB pb-2">픽업시간</p>
-				<div class="flex">
-					<button class="time-box">오후 1:10</button>
-					<button class="time-box">오후 6:20</button>
-					<button class="time-box">오후 12:30</button>
+			<div class="pt-4 pb-6">
+				<p class="text-baseB pb-2 pl-4">픽업시간</p>
+				<div class="flex category-scroll noScrollBar px-4">
+					<PickUpTimeButton
+						:currentTime="currentTime"
+						@updatePickUpTime="setPickUpTime"
+					></PickUpTimeButton>
 				</div>
 			</div>
 			<hr class="w-full bg-disabledGray" />
@@ -102,7 +103,7 @@
 				</div>
 			</div>
 			<div class="order-btn-div">
-				<button @click="$router.push('/receipt')" class="order-btn">
+				<button @click="createOrder" class="order-btn">
 					{{ formatNumber(product.discountedPrice * quantity) }}원 주문하기
 				</button>
 			</div>
@@ -111,8 +112,10 @@
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import http from '@/api/http.js';
+import PickUpTimeButton from '@/components/common/PickUpTimeButton.vue';
+import dayjs from 'dayjs';
 
 // props 정의
 const props = defineProps({
@@ -133,11 +136,18 @@ const quantity = ref(1);
 
 // 라우터 사용
 const route = useRoute();
+const router = useRouter();
 
 // 할인된 금액 계산 (computed 사용)
 const discount = computed(() => {
 	return product.value.originalPrice - product.value.discountedPrice;
 });
+
+// 현재 시간
+const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
+
+// 선택된 픽업 시간
+const selectedPickUpTime = ref(null);
 
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
@@ -170,6 +180,112 @@ onMounted(() => {
 	const productId = route.params.id; //확ㅇ닝확인확인확인 무조건.
 	fetchProductDetail(productId);
 });
+
+// 선택된 픽업 시간을 ISO 형식으로 변환하여 저장
+const setPickUpTime = time => {
+	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
+};
+//주석풀곳
+// // 주문 데이터 생성
+// const orderData = {
+// 	totalAmount: product.value.discountedPrice * quantity.value,
+// 	totalPrice: product.value.discountedPrice * quantity.value,
+// 	pickupTime: selectedPickUpTime.value,
+// 	paymentMethod: 'CASH',
+// 	status: 'PENDING',
+// 	items: [
+// 		{
+// 			productId: product.value.productId,
+// 			quantity: quantity.value,
+// 			price: product.value.discountedPrice,
+// 		},
+// 	],
+// };
+
+// // 서버로부터 받은 응답 데이터를 저장할 변수
+// const responseData = ref(null);
+
+// // 주문 생성 함수
+// const createOrder = async () => {
+// 	try {
+// 		const res = await http.post('/api/order', orderData);
+
+// 		if (res.status === 201 && res.data.success) {
+// 			responseData.value = res.data;
+// 			console.log(responseData.value);
+// 			router.push(`/receipt/${responseData.value.orderId}`);
+// 		} else {
+// 			alert('주문에 실패했습니다. 다시 시도해 주세요.');
+// 		}
+// 	} catch (err) {
+// 		if (!selectedPickUpTime.value) {
+// 			alert('픽업시간을 선택해주세요!');
+// 		} else {
+// 			alert('주문 중에 문제가 발생했습니다!');
+// 			console.log(err);
+// 		}
+// 	}
+// };
+//주석풀곳
+// const createOrder = async () => {
+// 	try {
+// 		const response = await http.post('/api/order', {
+// 			method: 'POST',
+// 			headers: {
+// 				'Content-Type': 'application/json',
+// 			},
+// 			body: JSON.stringify(orderData),
+// 		});
+
+// 		if (response.status === 201) {
+// 			router.push({
+// 				name: 'Receipt',
+// 				query: {
+// 					orderData: JSON.stringify(orderData),
+// 				},
+// 			});
+// 		}
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// };
+// 주문 생성 함수
+const createOrder = async () => {
+	try {
+		// 주문 데이터 구조 생성
+		const orderData = {
+			totalAmount: product.value.discountedPrice * quantity.value,
+			totalPrice: product.value.discountedPrice * quantity.value,
+			pickupTime: selectedPickUpTime.value,
+			paymentMethod: 'CASH',
+			status: 'PENDING',
+			items: [
+				{
+					productId: product.value.productId,
+					quantity: quantity.value,
+					price: product.value.discountedPrice,
+				},
+			],
+		};
+		console.log(orderData);
+
+		// API POST 요청
+		const response = await http.post('/api/order', orderData);
+		const resdata = response.data.data;
+		console.log(resdata.value);
+
+		if (response.status === 201) {
+			alert('주문이 완료되었습니다!');
+			// 주문 완료 후, 페이지를 영수증 페이지로 이동
+			router.push('/receipt');
+		} else {
+			alert('주문실패');
+		}
+	} catch (err) {
+		console.error('주문 생성 중 오류 발생:', err);
+		alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
+	}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -255,5 +371,23 @@ input {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 24px;
+}
+.category-scroll {
+	min-width: 375px;
+	display: flex;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+.noScrollBar {
+	//scroll bar 가리기
+	/* IE and Edge */
+	-ms-overflow-style: none;
+	/* Firefox */
+	scrollbar-width: none;
+}
+/* scroll bar 가리기 Chrome, Safari,Opera */
+.noScrollBar::-webkit-scrollbar {
+	display: none !important;
 }
 </style>

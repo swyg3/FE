@@ -42,7 +42,7 @@
 					type="text"
 					class="p-1 w-[250px]"
 					placeholder="지번, 도로명, 건물명으로 검색하세요."
-					@click="() => router.push('/addressSearch')"
+					@click="searchAddress"
 				/>
 			</div>
 		</div>
@@ -100,13 +100,18 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { getAddressBookApi, setCurrentApi } from '@/api/auth.js';
+import {
+	getAddressBookApi,
+	setCurrentApi,
+	saveAddressApi,
+} from '@/api/auth.js';
 
 const router = useRouter();
 const store = useStore();
 
 const addressBook = ref([]);
-const isCurrent = ref(false);
+const enteredAddress = ref('');
+const searchedAddress = ref('');
 
 onMounted(() => {
 	getAddressBook();
@@ -117,10 +122,11 @@ const getAddressBook = async () => {
 
 	try {
 		const response = await getAddressBookApi();
+		console.log('getAddressBook', response);
 
 		if (response.status === 200) {
 			addressBook.value = response.data;
-			isCurrent.value = response.isCurrent;
+			console.log('addressBook.value', addressBook.value);
 		}
 	} catch (error) {
 		alert(error);
@@ -136,18 +142,52 @@ const clickIndividualAddress = async locationId => {
 		const response = await setCurrentApi(locationId);
 
 		if (response.status === 200) {
-			getAddressBook();
-
 			store.commit(
 				'auth/SET_SELECTED_ADDRESS',
 				decodeURIComponent(response.data.roadAddress),
 			);
+			getAddressBook();
 		}
 	} catch (error) {
 		alert(error);
 	} finally {
 		store.commit('SET_IS_LOADING', false);
 	}
+};
+
+const searchAddress = () => {
+	new daum.Postcode({
+		oncomplete: async function (data) {
+			enteredAddress.value = data.address;
+			//주소저장해주는 api 호출
+			//응답값받아오면   addressBook으로 넘겨서  주소리스트 받아오고
+			//bool값이  true인게  기본주소임 그거 아이콘이랑 배경색클래스 바인딩해주고
+			//현재위치는 서비스준비중으로 해두고
+			//기본주소를 바꾸고 싶을떄   클릭하면 주소고유아디넘겨주면 주소리스트 bool값이 바뀌고 나는
+			//주소리스트를 다시 받아와서 보여줌
+			//그리고 기본주소는  스토어 저장해두기
+			store.commit('SET_IS_LOADING', true);
+
+			try {
+				const response = await saveAddressApi({
+					searchTerm: searchedAddress.value,
+					roadAddress: enteredAddress.value,
+				});
+
+				if (response.status === 201) {
+					getAddressBook();
+				}
+			} catch (error) {
+				alert(error);
+			} finally {
+				store.commit('SET_IS_LOADING', false);
+			}
+		},
+		onsearch: function (data) {
+			// 검색 결과가 반환될 때의 처리
+			searchedAddress.value = data.q; // Daum API의 주소 검색 결과
+		},
+	}).open();
 };
 
 const goBack = () => {

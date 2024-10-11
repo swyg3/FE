@@ -65,7 +65,21 @@
 		</div>
 	</div>
 </template>
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const orderData = ref(null);
+
+// query에서 orderData를 받아옴
+if (route.query.orderData) {
+	orderData.value = JSON.parse(route.query.orderData);
+}
+
+// orderData가 정상적으로 받아졌는지 확인
+console.log(orderData.value);
+</script>
 <style lang="scss" scoped>
 .receipt-bg {
 	width: 375px;
@@ -101,7 +115,5 @@
 	font-weight: 500;
 	line-height: 24px;
 	color: var(--Text_body, #555);
-}
-.table-head {
 }
 </style>

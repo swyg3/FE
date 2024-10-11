@@ -13,6 +13,7 @@
 					$route.name !== 'Detail' &&
 					$route.name !== 'OrderDetails' &&
 					$route.name !== 'Receipt' &&
+					$route.name !== 'Notification' &&
 					$route.name !== 'AddressBook' &&
 					$route.name !== 'AddressSearch'
 						? 'router-view-content'
@@ -28,6 +29,7 @@
 					$route.name !== 'Details' &&
 					$route.name !== 'OrderDetails' &&
 					$route.name !== 'Receipt' &&
+					$route.name !== 'Notification' &&
 					$route.name !== 'AddressBook' &&
 					$route.name !== 'AddressSearch'
 				"

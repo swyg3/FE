@@ -2,7 +2,7 @@
 	<div>
 		<AddressHeader></AddressHeader>
 		<div class="explore-bg">
-			<SearchBar></SearchBar>
+			<SearchBar @click="router.push('/search')"></SearchBar>
 			<!-- 이미지 카테고리 리스트 -->
 			<div class="category-scroll noScrollBar">
 				<button
@@ -126,7 +126,6 @@
 <script setup>
 import MainItemCard from '@/components/common/MainItemCard.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
-import TheHeader from '@/components/common/TheHeader.vue';
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import http from '@/api/http.js';

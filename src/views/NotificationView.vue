@@ -18,8 +18,8 @@
 			</button>
 			<p class="text-style">알림</p>
 		</div>
-		<div class="h-12"></div>
-		<div class="w-full min-h-[716px] bg-white">
+		<!--body-->
+		<div class="w-full min-h-[764px] bg-white">
 			<div class="h-[106px] bg-[#D2EFE8] flex justify-center items-center">
 				준비중
 			</div>
@@ -35,7 +35,7 @@
 	align-items: center;
 	top: 0;
 	background-color: white;
-	position: fixed;
+	position: sticky;
 	z-index: 10;
 }
 .text-style {

@@ -12,6 +12,7 @@ import AddressBook from '@/views/AddressBookView.vue';
 import AddressSearch from '@/views/AddressSearchView.vue';
 import OrderList from '@/views/OrderListView.vue';
 import Notification from '@/views/NotificationView.vue';
+import Search from '@/views/SearchView.vue';
 
 const router = createRouter({
 	history: createWebHistory('/'),
@@ -82,6 +83,11 @@ const router = createRouter({
 			path: '/notification',
 			name: 'Notification',
 			component: Notification,
+		},
+		{
+			path: '/search',
+			name: 'Search',
+			component: Search,
 		},
 	],
 });

@@ -40,7 +40,7 @@
 			</div>
 			<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
 				<MainItemCard
-					v-for="(product, index) in products"
+					v-for="(product, index) in nearestProducts"
 					:key="index"
 					:product="product"
 					@click="goToDetailPage(product)"
@@ -77,7 +77,7 @@
 				/>
 			</div>
 			<!--뉴스레터 환경퀴즈 음식판매-->
-			<div class="grid gap-1 gap-y-2 pt-14 pb-4 px-4">
+			<div class="grid gap-1 gap-y-2 pt-14 pb-8 px-4">
 				<div class="mainpage-bottomCard">
 					<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 
@@ -92,15 +92,6 @@
 						<p>
 							문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 							환경 퀴즈에 참여해보세요!
-						</p>
-					</div>
-				</div>
-				<div class="mainpage-bottomCard">
-					<p class="text-baseB">판매자로 음식 판매하기</p>
-					<div class="mainpage-bottomCard-body">
-						<p>
-							지금 이용하는 계정을 판매자 계정으로 바꿀 수 있어요.<br />
-							문코에서 음식을 판매하고 재고를 관리하세요.
 						</p>
 					</div>
 				</div>
@@ -135,6 +126,7 @@ const text = ref('');
 const getUserName = computed(() => store.state.auth.userName);
 
 const products = ref([]);
+const nearestProducts = ref([]);
 // const category = ref('ALL');
 // const sortBy = ref('distanceDiscountScore');
 
@@ -145,6 +137,7 @@ onMounted(() => {
 	} else {
 		isVisible.value = false;
 	}
+	fetchNearestProducts();
 });
 
 const gpsConsent = async () => {
@@ -219,6 +212,17 @@ const fetchRecommendedProducts = async () => {
 		products.value = res.data.data;
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
+	}
+};
+// 거리순 아이템 리스트 불러오기
+const fetchNearestProducts = async () => {
+	try {
+		const res = await http.get(
+			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+		);
+		nearestProducts.value = res.data.data;
+	} catch (error) {
+		console.log('near에러라고짱나게하지마', error);
 	}
 };
 const goToDetailPage = product => {

@@ -306,7 +306,7 @@ onMounted(() => {
 // api 연동하여 상품 가져오기
 const fetchCategoryProducts = () => {
 	const { category, sortBy } = route.params;
-	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=8`;
+	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=100`;
 	http
 		.get(apiUrl)
 		.then(res => {
@@ -390,7 +390,7 @@ watch(
 <style lang="scss" scoped>
 .category-bg {
 	width: 375px;
-	min-height: 715px;
+	min-height: 716px;
 	background-image: url('/category/categoryBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);

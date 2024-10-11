@@ -64,6 +64,35 @@
 					</button>
 				</div>
 			</div>
+			<!-- cancleMembership -->
+			<div v-if="popupType === 'cancleMembership'" class="p-4 text-center">
+				<h3 class="mb-6 text-lgB">탈퇴하기</h3>
+				<p class="text-base">
+					회원 탈퇴 시 기존 기록이<br />
+					모두 삭제되어 복구가 불가능해요.
+				</p>
+				<p class="mt-7 text-base">정말로 탈퇴하시겠어요?</p>
+				<div
+					class="flex justify-center gap-1 absolute bottom-[10px] left-0 right-0 mx-auto"
+				>
+					<button
+						@click="hide"
+						data-modal-hide="popup-modal"
+						type="button"
+						class="btnLayout"
+					>
+						안할래요
+					</button>
+					<button
+						@click="confirmMembership"
+						data-modal-hide="popup-modal"
+						type="button"
+						class="bg-[#1CB08C] text-white btnLayout"
+					>
+						탈퇴하기
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -72,7 +101,17 @@
 import { ref, reactive } from 'vue';
 const props = defineProps(['visible', 'popupType', 'text']);
 
-const emit = defineEmits(['gpsCancle']);
+const emit = defineEmits([
+	'closeModal',
+	'gpsCancle',
+	'gpsConsent',
+	'confirmMembership',
+]);
+
+const hide = () => {
+	console.log('hide');
+	emit('closeModal');
+};
 
 const gpsCancle = () => {
 	console.log('gpsCancle');
@@ -82,6 +121,11 @@ const gpsCancle = () => {
 const gpsConsent = () => {
 	console.log('gpsConsent');
 	emit('gpsConsent');
+};
+
+const confirmMembership = () => {
+	console.log('confirmMembership');
+	emit('confirmMembership');
 };
 </script>
 

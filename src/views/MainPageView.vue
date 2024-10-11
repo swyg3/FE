@@ -162,7 +162,6 @@ onMounted(() => {
 	} else {
 		isVisible.value = false;
 	}
-	fetchRecommendedProducts();
 });
 
 const gpsConsent = async () => {

@@ -4,6 +4,7 @@
 		<div class="h-[48px]"></div>
 		<div class="explore-bg">
 			<SearchBar></SearchBar>
+			<!-- 이미지 카테고리 리스트 -->
 			<div class="category-scroll noScrollBar">
 				<button
 					class="px-2 category-btn"
@@ -82,7 +83,7 @@
 			</div>
 			<div class="item-card-list noScrollBar">
 				<MainItemCard
-					v-for="(product, index) in products"
+					v-for="(product, index) in nearestProducts"
 					:key="index"
 					:product="product"
 					@click="goToDetailPage(product)"
@@ -113,7 +114,7 @@
 			</div>
 			<div class="item-card-list noScrollBar">
 				<MainItemCard
-					v-for="(product, index) in products"
+					v-for="(product, index) in discountRateProducts"
 					:key="index"
 					:product="product"
 					@click="goToDetailPage(product)"
@@ -133,6 +134,8 @@ import http from '@/api/http.js';
 
 const router = useRouter();
 const products = ref([]);
+const nearestProducts = ref([]);
+const discountRateProducts = ref([]);
 
 // 카테고리 배열 정의
 const categories = [
@@ -176,18 +179,44 @@ const categories = [
 
 onMounted(() => {
 	fetchRecommendedProducts();
+	fetchNearestProducts();
+	fetchDiscountrateProducts();
 });
 
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
-	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
 	try {
-		const res = await http.get(apiUrl);
+		const res = await http.get(
+			'/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7',
+		);
 		products.value = res.data.data;
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
 	}
 };
+// 거리순 아이템 리스트 불러오기
+const fetchNearestProducts = async () => {
+	try {
+		const res = await http.get(
+			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+		);
+		nearestProducts.value = res.data.data;
+	} catch (error) {
+		console.log('near에러라고짱나게하지마', error);
+	}
+};
+// 할인순 아이템 리스트 불러오기
+const fetchDiscountrateProducts = async () => {
+	try {
+		const res = await http.get(
+			'/api/products/category?category=ALL&sortBy=discountRate&order=asc&limit=7',
+		);
+		discountRateProducts.value = res.data.data;
+	} catch (error) {
+		console.log('discount에러라고짱나게하지마', error);
+	}
+};
+
 const goToDetailPage = product => {
 	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
 };
@@ -248,6 +277,7 @@ const goToDetailPage = product => {
 	display: flex;
 	padding: 16px 8px;
 	white-space: nowrap;
+	overflow: hidden;
 	overflow-x: auto;
 	overflow-y: hidden;
 }

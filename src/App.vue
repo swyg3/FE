@@ -12,7 +12,7 @@
 					$route.name !== 'SignIn' &&
 					$route.name !== 'Detail' &&
 					$route.name !== 'OrderDetails' &&
-					$route.name !== 'Deciept' &&
+					$route.name !== 'Receipt' &&
 					$route.name !== 'AddressBook' &&
 					$route.name !== 'AddressSearch'
 						? 'router-view-content'
@@ -27,7 +27,7 @@
 					$route.name !== 'SignIn' &&
 					$route.name !== 'Details' &&
 					$route.name !== 'OrderDetails' &&
-					$route.name !== 'Deciept' &&
+					$route.name !== 'Receipt' &&
 					$route.name !== 'AddressBook' &&
 					$route.name !== 'AddressSearch'
 				"

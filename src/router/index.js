@@ -10,6 +10,7 @@ import Receipt from '@/views/ReceiptView.vue';
 import MyPage from '@/views/MyPageView.vue';
 import AddressBook from '@/views/AddressBookView.vue';
 import AddressSearch from '@/views/AddressSearchView.vue';
+import OrderList from '@/views/OrderListView.vue';
 
 const router = createRouter({
 	history: createWebHistory('/'),
@@ -55,6 +56,11 @@ const router = createRouter({
 			path: '/receipt',
 			name: 'Receipt',
 			component: Receipt,
+		},
+		{
+			path: '/orderList',
+			name: 'OrderList',
+			component: OrderList,
 		},
 		{
 			path: '/myPage',

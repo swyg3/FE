@@ -1,5 +1,6 @@
 <template>
 	<div class="bg-white footer-container">
+
 		<!-- main -->
 		<div @click="movePage('/main')" class="footer-icon">
 			<svg

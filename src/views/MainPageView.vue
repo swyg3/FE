@@ -259,7 +259,6 @@ const goToDetailPage = product => {
 }
 .mainpage-bg {
 	width: 375px;
-
 	background-image: url('/mainPage/mainPageBg.png');
 	color: var(--Text, #1d1d1d);
 	background-attachment: fixed; //배경고정 스크롤

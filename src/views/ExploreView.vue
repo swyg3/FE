@@ -1,7 +1,6 @@
 <template>
 	<div>
-		<TheHeader></TheHeader>
-		<div class="h-[48px]"></div>
+		<AddressHeader></AddressHeader>
 		<div class="explore-bg">
 			<SearchBar></SearchBar>
 			<!-- 이미지 카테고리 리스트 -->
@@ -131,6 +130,7 @@ import TheHeader from '@/components/common/TheHeader.vue';
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import http from '@/api/http.js';
+import AddressHeader from '@/components/common/AddressHeader.vue';
 
 const router = useRouter();
 const products = ref([]);

@@ -210,7 +210,7 @@ watch(
 <template>
 	<div>
 		<div>
-			<TheHeader></TheHeader>
+			<TheHeader :text="selectedCategoryName" showSearchIcon:true></TheHeader>
 			<div class="category-list">
 				<CategoryListButton
 					v-for="(cat, index) in categories"
@@ -221,7 +221,6 @@ watch(
 					@categoryChanged="changeCategory"
 				/>
 			</div>
-			<div class="h-[48px]"></div>
 			<hr class="w-full bg-disabledGray" />
 			<div class="category-bg">
 				<div class="h-[48px]"></div>
@@ -269,7 +268,7 @@ import http from '@/api/http.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
 import CategoryListButton from '@/components/common/CategoryListButton.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -287,6 +286,14 @@ const categories = ref([
 	{ name: '양식', value: 'WESTERN' },
 	{ name: '디저트', value: 'DESSERT' },
 ]);
+
+// header text
+const selectedCategoryName = computed(() => {
+	const selectedCategory = categories.value.find(
+		cat => cat.value === category.value,
+	);
+	return selectedCategory ? selectedCategory.name : '전체';
+});
 
 onMounted(() => {
 	// URL에서 카테고리와 정렬 방식 가져오기

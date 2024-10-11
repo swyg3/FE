@@ -6,7 +6,7 @@
 			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
 			<div class="text-lgB">{{ getUserName }}</div>
 			<div class="text-bodyBlack mypage-period-activity">24년 9월 17일부터</div>
-			<div class="flex gap-2">
+			<div class="flex gap-1">
 				<div class="mt-5 mypage-box">
 					<img src="/myPage/umbrage.png" class="p-1" />
 					<div class="">문코를 통해</div>
@@ -60,17 +60,26 @@
 				</div>
 			</div>
 		</div>
+		<Modal
+			:visible="isVisible"
+			:popupType="popupType"
+			@confirm-membership="confirmMembership"
+			@close-modal="closeModal"
+		/>
 	</div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
 
 const store = useStore();
 const router = useRouter();
+
+const isVisible = ref(false);
+const popupType = ref('');
 
 const getUserName = computed(() => store.state.auth.userName);
 const selectedAddress = computed(() => store.state.auth.selectedAddress);
@@ -96,7 +105,12 @@ const signOut = async () => {
 	}
 };
 
-const cancelMembership = async () => {
+const cancelMembership = () => {
+	isVisible.value = true;
+	popupType.value = 'cancleMembership';
+};
+
+const confirmMembership = async () => {
 	store.commit('SET_IS_LOADING', true);
 
 	try {
@@ -112,6 +126,10 @@ const cancelMembership = async () => {
 	} finally {
 		store.commit('SET_IS_LOADING', false);
 	}
+};
+
+const closeModal = () => {
+	isVisible.value = false;
 };
 </script>
 

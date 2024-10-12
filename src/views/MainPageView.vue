@@ -209,7 +209,7 @@ const fetchRecommendedProducts = async () => {
 	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
 	try {
 		const res = await http.get(apiUrl);
-		products.value = res.data.data;
+		products.value = res.data.items;
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
 	}
@@ -220,7 +220,7 @@ const fetchNearestProducts = async () => {
 		const res = await http.get(
 			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
 		);
-		nearestProducts.value = res.data.data;
+		nearestProducts.value = res.data.items;
 	} catch (error) {
 		console.log('near에러라고짱나게하지마', error);
 	}

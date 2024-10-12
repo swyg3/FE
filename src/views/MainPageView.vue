@@ -1,25 +1,8 @@
 <template>
 	<div>
-		<div class="text-baseB address-book-header">
-			<div @click="() => router.push('/addressBook')" class="flex">
-				<div>{{ selectedAddress }}</div>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-				>
-					<path
-						d="M12 14.975C11.8667 14.975 11.7417 14.9542 11.625 14.9125C11.5083 14.8708 11.4 14.8 11.3 14.7L6.69999 10.1C6.51665 9.91665 6.42499 9.68332 6.42499 9.39999C6.42499 9.11665 6.51665 8.88332 6.69999 8.69999C6.88332 8.51665 7.11665 8.42499 7.39999 8.42499C7.68332 8.42499 7.91665 8.51665 8.09999 8.69999L12 12.6L15.9 8.69999C16.0833 8.51665 16.3167 8.42499 16.6 8.42499C16.8833 8.42499 17.1167 8.51665 17.3 8.69999C17.4833 8.88332 17.575 9.11665 17.575 9.39999C17.575 9.68332 17.4833 9.91665 17.3 10.1L12.7 14.7C12.6 14.8 12.4917 14.8708 12.375 14.9125C12.2583 14.9542 12.1333 14.975 12 14.975Z"
-						fill="#1CB08C"
-					/>
-				</svg>
-			</div>
-		</div>
+		<AddressHeader></AddressHeader>
 
 		<div class="mainpage-bg">
-			<div class="h-[64px]"></div>
 			<!--welcome + 문구 + 카드-->
 			<img
 				src="/mainPage/welcome.png"
@@ -57,7 +40,7 @@
 			</div>
 			<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
 				<MainItemCard
-					v-for="(product, index) in products"
+					v-for="(product, index) in nearestProducts"
 					:key="index"
 					:product="product"
 					@click="goToDetailPage(product)"
@@ -94,7 +77,7 @@
 				/>
 			</div>
 			<!--뉴스레터 환경퀴즈 음식판매-->
-			<div class="grid gap-1 gap-y-2 pt-14 pb-4 px-4">
+			<div class="grid gap-1 gap-y-2 pt-14 pb-8 px-4">
 				<div class="mainpage-bottomCard">
 					<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 
@@ -109,15 +92,6 @@
 						<p>
 							문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 							환경 퀴즈에 참여해보세요!
-						</p>
-					</div>
-				</div>
-				<div class="mainpage-bottomCard">
-					<p class="text-baseB">판매자로 음식 판매하기</p>
-					<div class="mainpage-bottomCard-body">
-						<p>
-							지금 이용하는 계정을 판매자 계정으로 바꿀 수 있어요.<br />
-							문코에서 음식을 판매하고 재고를 관리하세요.
 						</p>
 					</div>
 				</div>
@@ -140,6 +114,7 @@ import { ref, onMounted, computed } from 'vue';
 import { gpsConsentApi } from '@/api/auth.js';
 import http from '@/api/http.js';
 import MainItemCard from '@/components/common/MainItemCard.vue';
+import AddressHeader from '@/components/common/AddressHeader.vue';
 
 const router = useRouter();
 const store = useStore();
@@ -149,9 +124,9 @@ const popupType = ref('gps');
 const text = ref('');
 
 const getUserName = computed(() => store.state.auth.userName);
-const selectedAddress = computed(() => store.state.auth.selectedAddress);
 
 const products = ref([]);
+const nearestProducts = ref([]);
 // const category = ref('ALL');
 // const sortBy = ref('distanceDiscountScore');
 
@@ -162,6 +137,7 @@ onMounted(() => {
 	} else {
 		isVisible.value = false;
 	}
+	fetchNearestProducts();
 });
 
 const gpsConsent = async () => {
@@ -238,6 +214,17 @@ const fetchRecommendedProducts = async () => {
 		console.log('에러라고짱나게하지마', error);
 	}
 };
+// 거리순 아이템 리스트 불러오기
+const fetchNearestProducts = async () => {
+	try {
+		const res = await http.get(
+			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+		);
+		nearestProducts.value = res.data.data;
+	} catch (error) {
+		console.log('near에러라고짱나게하지마', error);
+	}
+};
 const goToDetailPage = product => {
 	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
 };
@@ -247,16 +234,6 @@ const goToDetailPage = product => {
 </script>
 
 <style lang="scss" scoped>
-.address-book-header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 48px;
-	position: sticky;
-	top: 0;
-	background-color: white;
-	z-index: 10;
-}
 .mainpage-bg {
 	width: 375px;
 	background-image: url('/mainPage/mainPageBg.png');

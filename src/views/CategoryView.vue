@@ -210,7 +210,7 @@ watch(
 <template>
 	<div>
 		<div>
-			<TheHeader></TheHeader>
+			<TheHeader :text="selectedCategoryName" showSearchIcon:true></TheHeader>
 			<div class="category-list">
 				<CategoryListButton
 					v-for="(cat, index) in categories"
@@ -221,7 +221,6 @@ watch(
 					@categoryChanged="changeCategory"
 				/>
 			</div>
-			<div class="h-[48px]"></div>
 			<hr class="w-full bg-disabledGray" />
 			<div class="category-bg">
 				<div class="h-[48px]"></div>
@@ -269,7 +268,7 @@ import http from '@/api/http.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
 import CategoryListButton from '@/components/common/CategoryListButton.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -288,6 +287,14 @@ const categories = ref([
 	{ name: '디저트', value: 'DESSERT' },
 ]);
 
+// header text
+const selectedCategoryName = computed(() => {
+	const selectedCategory = categories.value.find(
+		cat => cat.value === category.value,
+	);
+	return selectedCategory ? selectedCategory.name : '전체';
+});
+
 onMounted(() => {
 	// URL에서 카테고리와 정렬 방식 가져오기
 	category.value = route.params.category || 'ALL';
@@ -299,7 +306,7 @@ onMounted(() => {
 // api 연동하여 상품 가져오기
 const fetchCategoryProducts = () => {
 	const { category, sortBy } = route.params;
-	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=8`;
+	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=100`;
 	http
 		.get(apiUrl)
 		.then(res => {
@@ -383,7 +390,7 @@ watch(
 <style lang="scss" scoped>
 .category-bg {
 	width: 375px;
-	min-height: 715px;
+	min-height: 716px;
 	background-image: url('/category/categoryBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);

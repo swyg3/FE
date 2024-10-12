@@ -21,7 +21,7 @@
 							</svg>
 						</button>
 						<span class="quantity">{{ formatNumber(quantity) }}</span>
-						<button @click="increaseQuantity">
+						<button @click="increaseQuantity(product)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
@@ -91,8 +91,10 @@ const decreaseQuantity = () => {
 		quantity.value--;
 	}
 };
-const increaseQuantity = () => {
-	quantity.value++;
+const increaseQuantity = product => {
+	if (quantity.value < product.availableStock) {
+		quantity.value++;
+	}
 };
 
 // 주문 상세 페이지로 이동

@@ -21,27 +21,29 @@
 				/>
 			</svg>
 			<input
-				v-model="searchTerm"
+				type="text"
+				v-model="searchQuery"
+				@keyup.enter="emitSearch"
 				placeholder="음식이나 가게 이름을 입력해주세요"
 				class="search-bar-input"
-				@keydown.enter="goToSearchView"
 			/>
 		</div>
 	</div>
 </template>
+
 <script setup>
-import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
-const searchTerm = ref('');
-const router = useRouter();
+const searchQuery = ref('');
+// setup 함수의 두 번째 인자로 emit을 받아 사용
+const emit = defineEmits(['search']);
 
-const goToSearchView = () => {
-	if (searchTerm.value) {
-		router.push({ path: `/search/${searchTerm.value}` });
-	}
+// 부모 컴포넌트에 search 전달
+const emitSearch = () => {
+	emit('search', searchQuery.value);
 };
 </script>
+
 <style lang="scss" scoped>
 .search-bar {
 	width: 342px;

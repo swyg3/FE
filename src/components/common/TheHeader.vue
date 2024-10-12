@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-white text-base header-container">
 		<!--뒤로가기-->
-		<button @click="this.$router.go(-1)" class="btn-style">
+		<button @click="$router.go(-1)" class="btn-style">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"

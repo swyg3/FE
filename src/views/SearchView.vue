@@ -2,10 +2,10 @@
 	<div>
 		<TheHeader :text="'검색하기'" showSearchIcon="false"></TheHeader>
 		<div class="explore-bg">
-			<SearchBar></SearchBar>
+			<!-- search 이벤트 받음-->
+			<SearchBar @search="handleSearch"></SearchBar>
 			<div class="p-4">
 				<div v-if="products.length">
-					<!-- 검색 결과 출력 -->
 					<div v-for="(product, index) in products" :key="index">
 						{{ product.name }}
 					</div>
@@ -37,30 +37,24 @@
 	</div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
 import http from '@/api/http.js';
 
 const products = ref([]);
-const route = useRoute();
 
-onMounted(() => {
-	const searchTerm = route.params.searchTerm;
-	fetchSearchResults(searchTerm);
-});
-
-const fetchSearchResults = searchTerm => {
-	const apiUrl = `/api/products/search?searchTerm=${searchTerm}&sortBy=distanceDiscountScore&order=asc&limit=8`;
-	http
-		.get(apiUrl)
-		.then(response => {
-			products.value = response.data.data;
-		})
-		.catch(error => {
-			console.error('Error fetching search results:', error);
-		});
+const handleSearch = async searchQuery => {
+	try {
+		console.log(encodeURIComponent(searchQuery));
+		const res = await http.get(
+			`/api/products/search?searchTerm=%ED%95%98%EC%9D%B&sortBy=distanceDiscountScore&order=asc&limit=100`,
+		);
+		products.value = res;
+		console.log(products);
+	} catch (error) {
+		console.error('Error fetching search results:', error);
+	}
 };
 </script>
 <style lang="scss" scoped>

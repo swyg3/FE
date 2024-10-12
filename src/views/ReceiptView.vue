@@ -63,18 +63,34 @@
 				있어요:-)
 			</p>
 		</div>
+		<button @click="router.push('/orderList')" class="order-btn">
+			주문내역으로 가기
+		</button>
+		<router-link
+			to="/explore"
+			class="pt-4 text-center text-base text-[#1CB08C] block"
+		>
+			탐색 페이지로 돌아가기
+		</router-link>
 	</div>
 </template>
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const store = useStore();
+const receiptData = store.state.receiptData;
 const route = useRoute();
+const router = useRouter();
 const orderData = ref(null);
 
 // query에서 orderData를 받아옴
 if (route.query.orderData) {
 	orderData.value = JSON.parse(route.query.orderData);
+}
+if (receiptData) {
+	console.log(receiptData);
 }
 
 // orderData가 정상적으로 받아졌는지 확인
@@ -88,13 +104,13 @@ console.log(orderData.value);
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-position: center;
-	padding-top: 64px;
+	padding: 32px 0;
 }
 .receipt-paper {
 	width: 326px;
 	height: 596px;
 	border: 1px solid var(--Primary, #031f34);
-	margin: 0 auto;
+	margin: 32px auto;
 	background: var(--White, #fff);
 	padding: 16px;
 }
@@ -115,5 +131,30 @@ console.log(orderData.value);
 	font-weight: 500;
 	line-height: 24px;
 	color: var(--Text_body, #555);
+}
+.order-btn-div {
+	width: 343px;
+	border-radius: 10px 10px 0 0;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	align-items: center;
+	padding-bottom: 32px;
+	background: var(--White, #fff);
+	position: absolute;
+}
+.order-btn {
+	width: 342px;
+	height: 48px;
+	border-radius: 10px;
+	background: var(--Point, #1cb08c);
+	padding: 12px 84px;
+	margin: 0 auto;
+	color: white;
+	text-align: center;
+	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 24px;
 }
 </style>

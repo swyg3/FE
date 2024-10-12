@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<AddressHeader></AddressHeader>
+		<AddressHeader :isNotificationRead="isNotificationRead"></AddressHeader>
 
 		<div class="mainpage-bg">
 			<!--welcome + 문구 + 카드-->
@@ -133,9 +133,12 @@ const isActive = ref(false);
 const text = ref('');
 
 const getUserName = computed(() => store.state.auth.userName);
+const getUserId = computed(() => store.state.auth.userId);
 
+const notifications = ref([]);
 const products = ref([]);
 const nearestProducts = ref([]);
+
 // const category = ref('ALL');
 // const sortBy = ref('distanceDiscountScore');
 
@@ -147,6 +150,21 @@ onMounted(() => {
 		isVisible.value = false;
 	}
 	fetchNearestProducts();
+	fetchNotifications();
+});
+// 알림 가져오기
+const fetchNotifications = async () => {
+	try {
+		const res = await http.get(`/api/notifications/${getUserId.value}`);
+		notifications.value = res.data.data;
+	} catch (error) {
+		console.log('에러라고짱나게하지마', error);
+	}
+};
+// 읽지 않은 알림이 있는지 확인
+const isNotificationRead = computed(() => {
+	console.log(notifications.value.some(noti => !noti.isRead));
+	return notifications.value.some(noti => !noti.isRead);
 });
 
 const gpsConsent = async () => {
@@ -219,7 +237,6 @@ const noContents = () => {
 	isVisible.value = true;
 	isActive.value = true;
 	popupType.value = 'noContents';
-	console.log(popupType.value);
 };
 const closeModal = () => {
 	isVisible.value = false;

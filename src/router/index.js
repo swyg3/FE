@@ -13,6 +13,7 @@ import AddressSearch from '@/views/AddressSearchView.vue';
 import OrderList from '@/views/OrderListView.vue';
 import Notification from '@/views/NotificationView.vue';
 import Search from '@/views/SearchView.vue';
+import SearchResult from '@/views/SearchResultView.vue';
 
 const router = createRouter({
 	history: createWebHistory('/'),
@@ -83,6 +84,11 @@ const router = createRouter({
 			path: '/search',
 			name: 'Search',
 			component: Search,
+		},
+		{
+			path: '/searchResult',
+			name: 'SearchResult',
+			component: SearchResult,
 		},
 	],
 });

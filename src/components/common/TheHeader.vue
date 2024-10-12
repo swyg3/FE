@@ -20,7 +20,11 @@
 			{{ text }}
 		</p>
 		<!--왼쪽 검색 아이콘-->
-		<button v-if="!showSearchIcon" class="search-style">
+		<button
+			v-if="!showSearchIcon"
+			class="search-style"
+			@click="() => router.push('/search')"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -44,6 +48,10 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const props = defineProps({
 	text: {
 		type: String,

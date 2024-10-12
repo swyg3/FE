@@ -35,12 +35,14 @@
 import { ref } from 'vue';
 
 const searchQuery = ref('');
+
 // setup 함수의 두 번째 인자로 emit을 받아 사용
 const emit = defineEmits(['search']);
 
 // 부모 컴포넌트에 search 전달
 const emitSearch = () => {
 	emit('search', searchQuery.value);
+	searchQuery.value = '';
 };
 </script>
 

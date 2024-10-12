@@ -15,7 +15,7 @@
 				/>
 			</svg>
 		</div>
-		<div @click="() => router.push('/notification')">
+		<button @click="() => router.push('/notification')">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -28,7 +28,7 @@
 					fill="#1D1D1D"
 				/>
 			</svg>
-		</div>
+		</button>
 	</div>
 </template>
 

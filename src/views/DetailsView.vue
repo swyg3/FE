@@ -1,5 +1,5 @@
 <template>
-	<div class="min-h-[812px]">
+	<div class="min-h-[812px] bg-white">
 		<div class="w-[375px] pb-[88px] bg-white color-black">
 			<!--img-->
 			<div class="w-full h-[240px] relative">
@@ -69,7 +69,7 @@
 			<!--픽업 시간-->
 			<div class="px-4 py-[13px] flex border-y border-disabledGray">
 				<p class="text-baseB pr-6">픽업가능시간</p>
-				<p class="text-base text-bodyBlack">오후 6:00 ~ 오후 8:30</p>
+				<p class="text-base text-bodyBlack">오후 6:00 ~ 오전 2:00</p>
 			</div>
 			<!--가게 정보-->
 			<div class="px-4 py-4">

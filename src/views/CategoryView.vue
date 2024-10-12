@@ -310,7 +310,7 @@ const fetchCategoryProducts = () => {
 	http
 		.get(apiUrl)
 		.then(res => {
-			products.value = res.data.data;
+			products.value = res.data.items;
 		})
 		.catch(err => {
 			console.log(err);
@@ -390,7 +390,7 @@ watch(
 <style lang="scss" scoped>
 .category-bg {
 	width: 375px;
-	min-height: 716px;
+	min-height: 715px;
 	background-image: url('/category/categoryBg.png');
 	background-color: white;
 	color: var(--Text, #1d1d1d);

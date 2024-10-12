@@ -37,13 +37,13 @@
 							</svg>
 						</button>
 					</div>
-					<p>{{ this.product.discountedPrice }}원</p>
+					<p>{{ product.discountedPrice }}원</p>
 				</div>
 			</div>
 			<div class="pt-12 pb-4 flex justify-between text-lgB">
 				<p>합계</p>
 				<p>
-					{{ formatNumber(this.product.discountedPrice * quantity)
+					{{ formatNumber(product.discountedPrice * quantity)
 					}}<span class="text-base">원</span>
 				</p>
 			</div>

@@ -15,9 +15,9 @@
 				<p class="py-2">'친환경 우주 활동가'</p>
 				<p>{{ getUserName }}</p>
 			</div>
-			<div class="flex my-6 justify-center text-center">
+			<div class="flex gap-1 my-6 justify-center text-center">
 				<!-- <UserCard></UserCard> -->
-				<div class="mr-1.5 mainpage-userCard">
+				<div class="mainpage-userCard">
 					<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>문코를 통해</p>
 					<p class="text-baseB">30끼의 음식을</p>
@@ -209,7 +209,7 @@ const fetchRecommendedProducts = async () => {
 	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
 	try {
 		const res = await http.get(apiUrl);
-		products.value = res.data.data;
+		products.value = res.data.items;
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
 	}
@@ -220,7 +220,7 @@ const fetchNearestProducts = async () => {
 		const res = await http.get(
 			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
 		);
-		nearestProducts.value = res.data.data;
+		nearestProducts.value = res.data.items;
 	} catch (error) {
 		console.log('near에러라고짱나게하지마', error);
 	}

@@ -15,9 +15,9 @@
 				<p class="py-2">'친환경 우주 활동가'</p>
 				<p>{{ getUserName }}</p>
 			</div>
-			<div class="flex my-6 justify-center text-center">
+			<div class="flex gap-1 my-6 justify-center text-center">
 				<!-- <UserCard></UserCard> -->
-				<div class="mr-1.5 mainpage-userCard">
+				<div class="mainpage-userCard">
 					<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>문코를 통해</p>
 					<p class="text-baseB">30끼의 음식을</p>

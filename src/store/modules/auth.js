@@ -81,7 +81,8 @@ export default {
 
 			setItem('gpsConsent', gpsConsent);
 		},
-		SET_SELECTED_ADDRESS(state, selectedAddress) {
+		SET_SELECTED_ADDRESS(state, firstDecode) {
+			const selectedAddress = decodeURIComponent(firstDecode);
 			state.selectedAddress = selectedAddress;
 			setItem('selectedAddress', selectedAddress);
 		},

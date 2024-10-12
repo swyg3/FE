@@ -85,7 +85,7 @@
 				</svg>
 				<div class="pl-2">
 					<div class="text-baseB">
-						{{ individualAddress.searchTerm }}
+						{{ decodeURIComponent(individualAddress.searchTerm) }}
 					</div>
 					<div class="text-base text-bodyBlack">
 						{{ decodeURIComponent(individualAddress.roadAddress) }}
@@ -140,6 +140,7 @@ const clickIndividualAddress = async locationId => {
 		store.commit('SET_IS_LOADING', true);
 
 		const response = await setCurrentApi(locationId);
+		console.log('현재위치설정', response);
 
 		if (response.status === 200) {
 			store.commit(
@@ -173,6 +174,8 @@ const searchAddress = () => {
 					searchTerm: searchedAddress.value,
 					roadAddress: enteredAddress.value,
 				});
+
+				console.log('입력', response);
 
 				if (response.status === 201) {
 					getAddressBook();

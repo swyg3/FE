@@ -78,7 +78,7 @@
 			</div>
 			<!--뉴스레터 환경퀴즈 음식판매-->
 			<div class="grid gap-1 gap-y-2 pt-14 pb-8 px-4">
-				<div class="mainpage-bottomCard">
+				<div @click="noContents" class="mainpage-bottomCard">
 					<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 
 					<p class="mainpage-bottomCard-body">
@@ -86,7 +86,7 @@
 						문코가 매달 전하는 세상의 환경 소식을 들어보세요.
 					</p>
 				</div>
-				<div class="mainpage-bottomCard">
+				<div @click="noContents()" class="mainpage-bottomCard">
 					<p class="text-baseB">환경 퀴즈 참여하기</p>
 					<div class="mainpage-bottomCard-body">
 						<p>
@@ -103,6 +103,14 @@
 			:text="text"
 			@gpsCancle="gpsCancle"
 			@gpsConsent="gpsConsent"
+		/>
+		<Modal
+			:visible="isVisible"
+			:popupType="popupType"
+			:text="text"
+			@noContents="noContents"
+			@close-modal="closeModal"
+			@active="isActive"
 		/>
 	</div>
 </template>
@@ -121,6 +129,7 @@ const store = useStore();
 
 const isVisible = ref(false);
 const popupType = ref('gps');
+const isActive = ref(false);
 const text = ref('');
 
 const getUserName = computed(() => store.state.auth.userName);
@@ -204,6 +213,19 @@ const gpsCancle = () => {
 	popupType.value = 'service';
 	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
 };
+
+// 콘텐츠 준비중 모달
+const noContents = () => {
+	isVisible.value = true;
+	isActive.value = true;
+	popupType.value = 'noContents';
+	console.log(popupType.value);
+};
+const closeModal = () => {
+	isVisible.value = false;
+	isActive.value = false;
+};
+
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
 	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;

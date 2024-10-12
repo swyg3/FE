@@ -72,11 +72,6 @@ const router = createRouter({
 			name: 'AddressBook',
 			component: AddressBook,
 		},
-		{
-			path: '/addressSearch',
-			name: 'AddressSearch',
-			component: AddressSearch,
-		},
 	],
 });
 

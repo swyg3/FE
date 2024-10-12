@@ -13,8 +13,7 @@
 					$route.name !== 'Detail' &&
 					$route.name !== 'OrderDetails' &&
 					$route.name !== 'Receipt' &&
-					$route.name !== 'AddressBook' &&
-					$route.name !== 'AddressSearch'
+					$route.name !== 'AddressBook'
 						? 'router-view-content'
 						: 'router-view-content2'
 				"
@@ -28,8 +27,7 @@
 					$route.name !== 'Details' &&
 					$route.name !== 'OrderDetails' &&
 					$route.name !== 'Receipt' &&
-					$route.name !== 'AddressBook' &&
-					$route.name !== 'AddressSearch'
+					$route.name !== 'AddressBook'
 				"
 			></Footer>
 			<BottomSheet

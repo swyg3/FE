@@ -2,7 +2,7 @@
 	<div
 		v-if="visible"
 		id="popup-modal"
-		class="absolute h-full top-0 w-full z-50 bg-opacity-50 bg-gray-900"
+		class="absolute h-full top-0 w-full z-50 bg-opacity-30 bg-black"
 	>
 		<div class="relative p-3 bg-white modalLayout">
 			<!-- 조건에 따른 모달 랜더 -->
@@ -90,6 +90,27 @@
 						class="bg-[#1CB08C] text-white btnLayout"
 					>
 						탈퇴하기
+					</button>
+				</div>
+			</div>
+			<!-- noContents -->
+			<div
+				v-if="popupType === 'noContents'"
+				class="flex grid gap-12 pt-6 pb-4 text-center"
+			>
+				<h3 class="text-lgB">콘텐츠 준비 중</h3>
+				<p class="text-sm text-bodyBlack">
+					현재 관련 콘텐츠를 준비 중입니다. <br />
+					빠른 시일 내에 준비하여 찾아오겠습니다.
+				</p>
+				<div class="mx-auto">
+					<button
+						@click="hide"
+						data-modal-hide="popup-modal"
+						type="button"
+						class="bg-[#1CB08C] text-white btnLayout"
+					>
+						확인
 					</button>
 				</div>
 			</div>

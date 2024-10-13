@@ -199,7 +199,7 @@ const props = defineProps({
 	},
 });
 
-// 상품 정보를 저장할 state
+// 상품 정보
 const product = ref({});
 // 수량 정보
 const quantity = ref(1);
@@ -285,7 +285,7 @@ const createOrder = async () => {
 		if (response.status === 201) {
 			alert('주문이 완료되었습니다!');
 			// 주문 완료 후, 페이지를 영수증 페이지로 이동
-
+			console.log('res', response.data);
 			store.commit('setReceiptData', response.data.data);
 			router.push({ name: 'Receipt' });
 			router.push('/receipt');

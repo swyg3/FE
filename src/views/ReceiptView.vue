@@ -77,10 +77,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 
-const store = useStore();
-const receiptData = store.state.receiptData;
 const route = useRoute();
 const router = useRouter();
 const orderData = ref(null);
@@ -89,12 +86,8 @@ const orderData = ref(null);
 if (route.query.orderData) {
 	orderData.value = JSON.parse(route.query.orderData);
 }
-if (receiptData) {
-	console.log(receiptData);
-}
 
-// orderData가 정상적으로 받아졌는지 확인
-console.log(orderData.value);
+
 </script>
 <style lang="scss" scoped>
 .receipt-bg {

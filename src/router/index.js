@@ -56,7 +56,7 @@ const router = createRouter({
 			props: true,
 		},
 		{
-			path: '/receipt',
+			path: '/receipt/:orderId',
 			name: 'Receipt',
 			component: Receipt,
 		},

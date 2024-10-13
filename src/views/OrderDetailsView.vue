@@ -276,6 +276,7 @@ const createOrder = async () => {
 					price: product.value.discountedPrice,
 				},
 			],
+			memo: checkedItems.value,
 		};
 
 		// API POST 요청
@@ -288,7 +289,7 @@ const createOrder = async () => {
 			console.log('res', response.data);
 			store.commit('setReceiptData', response.data.data);
 			router.push({ name: 'Receipt' });
-			router.push('/receipt');
+			router.push('/receipt/${response.data.orderId}');
 		} else {
 			alert('주문실패');
 		}
@@ -302,6 +303,7 @@ const createOrder = async () => {
 const toggleCheck = item => {
 	if (checkedItems.value.includes(item)) {
 		checkedItems.value = checkedItems.value.filter(i => i !== item);
+		console.log(checkedItems.value);
 	} else {
 		checkedItems.value.push(item);
 	}

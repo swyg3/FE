@@ -165,11 +165,6 @@ const openImageInNewTab = src => {
 	window.open(src, '_blank');
 };
 
-// 주문 상세 페이지로 이동
-// const goToOrderDetails = product => {
-// 	router.push(`/orderdetails/${product.name}/${product.productId}`);
-// };
-
 // 이미지 경로 변환 함수
 const fullImageUrl = imagePath => {
 	const baseUrl = import.meta.env.VITE_APP_API_URL;

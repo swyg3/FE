@@ -1,6 +1,6 @@
 <template>
-	<div class="receipt-bg text-black">
-		<div class="receipt-paper">
+	<div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
+		<div class="modal-receipt-paper">
 			<div class="py-4 text-center">
 				<p class="text-baseB text-black">영수증</p>
 				<p class="text-bodyBlack text-xs">
@@ -103,15 +103,7 @@
 				있어요:-)
 			</p>
 		</div>
-		<button @click="router.push('/orderList')" class="order-btn">
-			주문내역으로 가기
-		</button>
-		<router-link
-			to="/explore"
-			class="pt-4 text-center text-base text-[#1CB08C] block"
-		>
-			탐색 페이지로 돌아가기
-		</router-link>
+		<button @click="CancelOrder()" class="order-btn">주문취소하기</button>
 	</div>
 </template>
 <script setup>
@@ -121,10 +113,19 @@ import http from '@/api/http.js';
 
 const props = defineProps({
 	orderId: {
-		type: String,
+		type: Text,
 		required: true,
 	},
 });
+
+//modal
+const isModalOpen = ref(true);
+// 부모에게 닫기 이벤트를 전달하는 emit 설정
+const emit = defineEmits(['close']);
+// 부모에게 'close' 이벤트 전달 함수
+const closeModal = () => {
+	emit('close');
+};
 
 const router = useRouter();
 const order = ref([]);
@@ -134,7 +135,7 @@ onMounted(() => {
 });
 
 const fetchOrderReceipts = async () => {
-	console.log(props.orderId);
+	console.log(props.orderId.value);
 	try {
 		const res = await http.get(`/api/order/${props.orderId}`);
 		if (res.data.success) {
@@ -146,6 +147,15 @@ const fetchOrderReceipts = async () => {
 		}
 	} catch (err) {
 		console.log(err);
+	}
+};
+
+const CancelOrder = async () => {
+	try {
+		const res = await http.delete(`/api/order/${props.orderId}`);
+		router.push('/orderCancle');
+	} catch (error) {
+		console.log('에러발생', error);
 	}
 };
 // 날짜 포맷
@@ -173,22 +183,46 @@ const formatNumber = number => {
 };
 </script>
 <style lang="scss" scoped>
-.receipt-bg {
+.modal-overlay {
+	display: absolute;
+	left: 0;
+	top: 0;
 	width: 375px;
-	background-image: url('/category/categoryBg.png');
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정색 배경 */
+	display: flex;
+	justify-content: center; /* 수평 중앙 정렬 */
+	align-items: flex-end; /* 하단 정렬 */
+	z-index: 3000; /* 다른 요소 위에 위치 */
 	color: var(--Text, #1d1d1d);
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-position: center;
-	padding: 32px 0;
 }
-.receipt-paper {
+.modal-receipt-paper {
 	width: 326px;
 	height: 596px;
 	border: 1px solid var(--Primary, #031f34);
-	margin: 32px auto;
+	margin-bottom: 108px;
 	background: var(--White, #fff);
 	padding: 16px;
+	position: absolute;
+	top: 13%;
+	margin-bottom: 24px;
+	z-index: 2000;
+	color: var(--Text, #1d1d1d);
+}
+.order-btn {
+	width: 342px;
+	height: 48px;
+	border-radius: 10px;
+	background: var(--Point, #1cb08c);
+	padding: 12px;
+	position: absolute;
+	color: white;
+	text-align: center;
+	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 24px;
+	margin: 32px auto;
 }
 .text-flex {
 	display: flex;
@@ -207,31 +241,6 @@ const formatNumber = number => {
 	font-weight: 500;
 	line-height: 24px;
 	color: var(--Text_body, #555);
-}
-.order-btn-div {
-	width: 343px;
-	border-radius: 10px 10px 0 0;
-	bottom: 0;
-	left: 50%;
-	transform: translate(-50%, 0);
-	align-items: center;
-	padding-bottom: 32px;
-	background: var(--White, #fff);
-	position: absolute;
-}
-.order-btn {
-	width: 342px;
-	height: 48px;
-	border-radius: 10px;
-	background: var(--Point, #1cb08c);
-	padding: 12px 84px;
-	margin: 0 auto;
-	color: white;
-	text-align: center;
-	display: block;
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 24px;
 }
 .table-border {
 	padding-right: 8px;

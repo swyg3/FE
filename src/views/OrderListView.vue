@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="bg-white text-baseB header-container">주문내역</div>
+		<div class="bg-white text-baseB header-container relative">주문내역</div>
 		<div class="h-[48px]"></div>
 		<div class="mainpage-bg">
 			<div v-if="orderList" class="grid-gap">
@@ -12,7 +12,9 @@
 					<div class="flex justify-between">
 						<div>
 							<p class="text-lg">{{ orderList.orderItemsInfo[index].name }}</p>
-							<p class="text-sm pb-2 text-bodyBlack">{{ order.createdAt }}</p>
+							<p class="text-sm pb-2 text-bodyBlack">
+								{{ formatDate(order.createdAt) }}
+							</p>
 							<p class="text-base pb-1">
 								{{ getOrderStatusMessage(order.status) }}
 							</p>
@@ -22,7 +24,7 @@
 							<div class="flex justify-end pt-[1px] pb-[13px]">
 								<button
 									class="flex items-center text-sm"
-									@click="router.push(`/receipt/${order.id}`)"
+									@click="openModal(order.id)"
 								>
 									더보기
 
@@ -44,7 +46,7 @@
 								<img
 									:src="
 										fullImageUrl(
-											orderList.orderItemsInfo[index].productImageUrl
+											orderList.orderItemsInfo[index].productImageUrl,
 										)
 									"
 									alt="Product Image"
@@ -53,6 +55,12 @@
 						</div>
 					</div>
 				</div>
+				<receiptModal
+					v-if="isModalOpen"
+					@close="closeModal"
+					class="absolute"
+					:orderId="selectedOrderId"
+				></receiptModal>
 			</div>
 
 			<div v-if="!orderList" class="h-[668px] grid gap-5 content-center">
@@ -99,11 +107,25 @@
 import { useRouter } from 'vue-router';
 import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
+import receiptModal from '@/components/Modal/receiptModal.vue';
 
 const router = useRouter();
 
 // 주문 목록을 저장
 const orderList = ref([]);
+const selectedOrderId = ref('');
+// 모달 상태
+const isModalOpen = ref(false);
+// ref를 사용해 모달 열기
+const openModal = orderId => {
+	selectedOrderId.value = orderId;
+	isModalOpen.value = true;
+};
+
+// ref를 사용해 모달 닫기
+const closeModal = () => {
+	isModalOpen.value = false;
+};
 
 const fetchOrders = async () => {
 	try {

@@ -42,11 +42,11 @@
 					<label
 						for="check1"
 						class="flex pb-2"
-						@click="toggleCheck('check1')"
+						@click="checkbox(0)"
 						role="checkbox"
 					>
 						<svg
-							v-if="checkedItems.includes('check1')"
+							v-if="checkList[0]"
 							xmlns="http://www.w3.org/2000/svg"
 							class="checkbox-size"
 							viewBox="0 0 24 24"
@@ -75,11 +75,11 @@
 					<label
 						for="check2"
 						class="flex pb-2"
-						@click="toggleCheck('check2')"
+						@click="checkbox(1)"
 						role="checkbox"
 					>
 						<svg
-							v-if="checkedItems.includes('check2')"
+							v-if="checkList[1]"
 							xmlns="http://www.w3.org/2000/svg"
 							class="checkbox-size"
 							viewBox="0 0 24 24"
@@ -105,14 +105,9 @@
 						<p class="pl-2 text-base">개인 장바구니를 가져갈래요</p>
 					</label>
 					<!--checkbox3-->
-					<label
-						for="check3"
-						class="flex"
-						@click="toggleCheck('check3')"
-						role="checkbox"
-					>
+					<label for="check3" class="flex" @click="checkbox(2)" role="checkbox">
 						<svg
-							v-if="checkedItems.includes('check3')"
+							v-if="checkList[2]"
 							xmlns="http://www.w3.org/2000/svg"
 							class="checkbox-size"
 							viewBox="0 0 24 24"
@@ -204,6 +199,9 @@ const product = ref({});
 // 수량 정보
 const quantity = ref(1);
 
+const checkList = ref([false, false, false]);
+const order = ref('');
+
 // 라우터 사용
 const route = useRoute();
 const router = useRouter();
@@ -218,9 +216,6 @@ const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
 
 // 선택된 픽업 시간
 const selectedPickUpTime = ref(null);
-
-// checkbox
-const checkedItems = ref([]);
 
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
@@ -264,7 +259,7 @@ const createOrder = async () => {
 	try {
 		// 주문 데이터 구조 생성
 		const orderData = {
-			totalAmount: product.value.discountedPrice * quantity.value,
+			totalAmount: quantity.value,
 			totalPrice: product.value.discountedPrice * quantity.value,
 			pickupTime: selectedPickUpTime.value,
 			paymentMethod: 'CASH',
@@ -276,20 +271,18 @@ const createOrder = async () => {
 					price: product.value.discountedPrice,
 				},
 			],
-			memo: checkedItems.value,
+			memo: checkList.value,
 		};
 
 		// API POST 요청
 		const response = await http.post('/api/order', orderData);
-		// const resdata = response.data.data;
 
 		if (response.status === 201) {
 			alert('주문이 완료되었습니다!');
 			// 주문 완료 후, 페이지를 영수증 페이지로 이동
-			console.log('res', response.data);
-			store.commit('setReceiptData', response.data.data);
-			router.push({ name: 'Receipt' });
-			router.push('/receipt/${response.data.orderId}');
+			order.value = response.data.orders;
+			console.log('order', order.value);
+			router.push(`/receipt/${response.data.orderId}`);
 		} else {
 			alert('주문실패');
 		}
@@ -300,13 +293,9 @@ const createOrder = async () => {
 };
 
 // checkbox
-const toggleCheck = item => {
-	if (checkedItems.value.includes(item)) {
-		checkedItems.value = checkedItems.value.filter(i => i !== item);
-		console.log(checkedItems.value);
-	} else {
-		checkedItems.value.push(item);
-	}
+const checkbox = item => {
+	checkList.value[item] = !checkList.value[item];
+	console.log(checkList.value);
 };
 </script>
 

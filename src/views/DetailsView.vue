@@ -112,9 +112,8 @@
 <script setup>
 import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import OrderCountModal from '@/components/Modal/orderCountModal.vue';
-import { GoogleMap, Marker, InfoWindow, CustomMarker } from 'vue3-google-map';
+import { GoogleMap, Marker } from 'vue3-google-map';
 
 const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
 const center = ref({ lat: null, lng: null });
@@ -131,18 +130,10 @@ const props = defineProps({
 });
 // 상품 정보를 저장할 state
 const product = ref({});
-
-// 라우터 사용
-const route = useRoute();
-const router = useRouter();
-
 // 모달 상태
 const isModalOpen = ref(false);
 
-// 컴포넌트가 마운트될 때 호출되는 함수
 onMounted(() => {
-	// const productId = route.params.productId;
-	// console.log('productId', productId);
 	fetchProductDetail();
 });
 

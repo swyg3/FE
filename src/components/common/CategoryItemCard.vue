@@ -23,7 +23,7 @@
 			</p>
 			<div class="pt-1 text-sm text-bodyBlack">
 				<p class="distance-text-style">
-					오후 9:00 마감 ·
+					오전 2:00 마감 ·
 					<span>{{ distanceAdjustCalc(product.distance) }}km</span>
 				</p>
 			</div>
@@ -53,7 +53,7 @@ const roundedDiscountRate = rate => {
 // 거리 소수점 계산
 const distanceAdjustCalc = number => {
 	const adjustDistance = number / 100;
-	return parseFloat(adjustDistance.toFixed(2));
+	return parseFloat(adjustDistance.toFixed(1));
 };
 </script>
 <style lang="scss" scoped>

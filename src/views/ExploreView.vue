@@ -1,9 +1,8 @@
 <template>
 	<div>
-		<TheHeader></TheHeader>
-		<div class="h-[48px]"></div>
+		<AddressHeader></AddressHeader>
 		<div class="explore-bg">
-			<SearchBar></SearchBar>
+			<SearchBar @click="router.push('/search')"></SearchBar>
 			<!-- 이미지 카테고리 리스트 -->
 			<div class="category-scroll noScrollBar">
 				<button
@@ -127,10 +126,10 @@
 <script setup>
 import MainItemCard from '@/components/common/MainItemCard.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
-import TheHeader from '@/components/common/TheHeader.vue';
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import http from '@/api/http.js';
+import AddressHeader from '@/components/common/AddressHeader.vue';
 
 const router = useRouter();
 const products = ref([]);
@@ -189,7 +188,7 @@ const fetchRecommendedProducts = async () => {
 		const res = await http.get(
 			'/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7',
 		);
-		products.value = res.data.data;
+		products.value = res.data.items;
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
 	}
@@ -200,7 +199,7 @@ const fetchNearestProducts = async () => {
 		const res = await http.get(
 			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
 		);
-		nearestProducts.value = res.data.data;
+		nearestProducts.value = res.data.items;
 	} catch (error) {
 		console.log('near에러라고짱나게하지마', error);
 	}
@@ -211,7 +210,7 @@ const fetchDiscountrateProducts = async () => {
 		const res = await http.get(
 			'/api/products/category?category=ALL&sortBy=discountRate&order=asc&limit=7',
 		);
-		discountRateProducts.value = res.data.data;
+		discountRateProducts.value = res.data.items;
 	} catch (error) {
 		console.log('discount에러라고짱나게하지마', error);
 	}

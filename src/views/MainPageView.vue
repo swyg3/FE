@@ -1,25 +1,8 @@
 <template>
 	<div>
-		<div class="text-baseB address-book-header">
-			<div @click="() => router.push('/addressBook')" class="flex">
-				<div>{{ selectedAddress }}</div>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-				>
-					<path
-						d="M12 14.975C11.8667 14.975 11.7417 14.9542 11.625 14.9125C11.5083 14.8708 11.4 14.8 11.3 14.7L6.69999 10.1C6.51665 9.91665 6.42499 9.68332 6.42499 9.39999C6.42499 9.11665 6.51665 8.88332 6.69999 8.69999C6.88332 8.51665 7.11665 8.42499 7.39999 8.42499C7.68332 8.42499 7.91665 8.51665 8.09999 8.69999L12 12.6L15.9 8.69999C16.0833 8.51665 16.3167 8.42499 16.6 8.42499C16.8833 8.42499 17.1167 8.51665 17.3 8.69999C17.4833 8.88332 17.575 9.11665 17.575 9.39999C17.575 9.68332 17.4833 9.91665 17.3 10.1L12.7 14.7C12.6 14.8 12.4917 14.8708 12.375 14.9125C12.2583 14.9542 12.1333 14.975 12 14.975Z"
-						fill="#1CB08C"
-					/>
-				</svg>
-			</div>
-		</div>
+		<AddressHeader :isNotificationRead="isNotificationRead"></AddressHeader>
 
 		<div class="mainpage-bg">
-			<div class="h-[64px]"></div>
 			<!--welcome + 문구 + 카드-->
 			<img
 				src="/mainPage/welcome.png"
@@ -32,9 +15,9 @@
 				<p class="py-2">'친환경 우주 활동가'</p>
 				<p>{{ getUserName }}</p>
 			</div>
-			<div class="flex my-6 justify-center text-center">
+			<div class="flex gap-1 my-6 justify-center text-center">
 				<!-- <UserCard></UserCard> -->
-				<div class="mr-1.5 mainpage-userCard">
+				<div class="mainpage-userCard">
 					<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>문코를 통해</p>
 					<p class="text-baseB">30끼의 음식을</p>
@@ -49,19 +32,21 @@
 			</div>
 
 			<!--주문했던 가게 게시글 리스트-->
-			<div class="p-4">
-				<p class="text-baseB">
-					{{ getUserName }}님이 주문했던 가게에서<br />
-					마감할인 게시글이 올라왔어요!
-				</p>
-			</div>
-			<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-				<MainItemCard
-					v-for="(product, index) in products"
-					:key="index"
-					:product="product"
-					@click="goToDetailPage(product)"
-				/>
+			<div v-if="orderList">
+				<div class="p-4">
+					<p class="text-baseB">
+						{{ getUserName }}님이 주문했던 가게에서<br />
+						마감할인 게시글이 올라왔어요!
+					</p>
+				</div>
+				<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
+					<MainItemCard
+						v-for="(product, index) in nearestProducts"
+						:key="index"
+						:product="product"
+						@click="goToDetailPage(product)"
+					/>
+				</div>
 			</div>
 
 			<!--문코 추천 리스트-->
@@ -94,8 +79,8 @@
 				/>
 			</div>
 			<!--뉴스레터 환경퀴즈 음식판매-->
-			<div class="grid gap-1 gap-y-2 pt-14 pb-4 px-4">
-				<div class="mainpage-bottomCard">
+			<div class="grid gap-1 gap-y-2 pt-14 pb-8 px-4">
+				<div @click="noContents" class="mainpage-bottomCard">
 					<p class="text-baseB">문코의 달달 뉴스레터 보러가기</p>
 
 					<p class="mainpage-bottomCard-body">
@@ -103,21 +88,12 @@
 						문코가 매달 전하는 세상의 환경 소식을 들어보세요.
 					</p>
 				</div>
-				<div class="mainpage-bottomCard">
+				<div @click="noContents()" class="mainpage-bottomCard">
 					<p class="text-baseB">환경 퀴즈 참여하기</p>
 					<div class="mainpage-bottomCard-body">
 						<p>
 							문코는 환경오염을 해결하기 위해 만들어졌어요.<br />
 							환경 퀴즈에 참여해보세요!
-						</p>
-					</div>
-				</div>
-				<div class="mainpage-bottomCard">
-					<p class="text-baseB">판매자로 음식 판매하기</p>
-					<div class="mainpage-bottomCard-body">
-						<p>
-							지금 이용하는 계정을 판매자 계정으로 바꿀 수 있어요.<br />
-							문코에서 음식을 판매하고 재고를 관리하세요.
 						</p>
 					</div>
 				</div>
@@ -130,6 +106,14 @@
 			@gpsCancle="gpsCancle"
 			@gpsConsent="gpsConsent"
 		/>
+		<Modal
+			:visible="isVisible"
+			:popupType="popupType"
+			:text="text"
+			@noContents="noContents"
+			@close-modal="closeModal"
+			@active="isActive"
+		/>
 	</div>
 </template>
 
@@ -140,18 +124,24 @@ import { ref, onMounted, computed } from 'vue';
 import { gpsConsentApi } from '@/api/auth.js';
 import http from '@/api/http.js';
 import MainItemCard from '@/components/common/MainItemCard.vue';
+import AddressHeader from '@/components/common/AddressHeader.vue';
 
 const router = useRouter();
 const store = useStore();
 
 const isVisible = ref(false);
 const popupType = ref('gps');
+const isActive = ref(false);
 const text = ref('');
+const orderList = ref([]);
 
 const getUserName = computed(() => store.state.auth.userName);
-const selectedAddress = computed(() => store.state.auth.selectedAddress);
+const getUserId = computed(() => store.state.auth.userId);
 
+const notifications = ref([]);
 const products = ref([]);
+const nearestProducts = ref([]);
+
 // const category = ref('ALL');
 // const sortBy = ref('distanceDiscountScore');
 
@@ -162,7 +152,37 @@ onMounted(() => {
 	} else {
 		isVisible.value = false;
 	}
+	fetchNearestProducts();
+	fetchNotifications();
+	fetchOrders();
+	isLocationNow();
 });
+// 알림 가져오기
+const fetchNotifications = async () => {
+	try {
+		const res = await http.get(`/api/notifications/${getUserId.value}`);
+		notifications.value = res.data.data;
+	} catch (error) {
+		console.log('에러라고짱나게하지마', error);
+	}
+};
+// 읽지 않은 알림이 있는지 확인
+const isNotificationRead = computed(() => {
+	return notifications.value.some(noti => !noti.isRead);
+});
+
+const isLocationNow = async () => {
+	try {
+		const response = await http.get('/api/locations/address/getall');
+		console.log('gpsghps', response.data);
+		if (!response.data.length) {
+			alert('주소를 설정 해주세요!');
+			router.push('/addressBook');
+		}
+	} catch (error) {
+		console.log('주소목록없?', error);
+	}
+};
 
 const gpsConsent = async () => {
 	store.commit('SET_IS_LOADING', true);
@@ -173,6 +193,7 @@ const gpsConsent = async () => {
 		if (response.status === 200) {
 			store.commit('auth/SET_GPS_CONSENT', true);
 			isVisible.value = false;
+			alert('주소를 설정 해주세요!');
 			router.push('/addressBook');
 		}
 
@@ -228,35 +249,57 @@ const gpsCancle = () => {
 	popupType.value = 'service';
 	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
 };
+
+// 콘텐츠 준비중 모달
+const noContents = () => {
+	isVisible.value = true;
+	isActive.value = true;
+	popupType.value = 'noContents';
+};
+const closeModal = () => {
+	isVisible.value = false;
+	isActive.value = false;
+};
+
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
 	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
 	try {
 		const res = await http.get(apiUrl);
-		products.value = res.data.data;
+		products.value = res.data.items;
 	} catch (error) {
 		console.log('에러라고짱나게하지마', error);
+	}
+};
+// 거리순 아이템 리스트 불러오기
+const fetchNearestProducts = async () => {
+	try {
+		const res = await http.get(
+			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+		);
+		nearestProducts.value = res.data.items;
+	} catch (error) {
+		console.log('near에러라고짱나게하지마', error);
 	}
 };
 const goToDetailPage = product => {
 	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
 };
-// const goToCategoryPage = () => {
-// 	window.location.href = `/category/${category.value}/${sortBy.value}`;
-// };
+const fetchOrders = async () => {
+	try {
+		const response = await http.get('/api/order');
+		if (response.data.success) {
+			orderList.value = response.data;
+		} else {
+			console.error(response.data.message);
+		}
+	} catch (error) {
+		console.error('API 요청 중 오류 발생:', error);
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-.address-book-header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 48px;
-	position: sticky;
-	top: 0;
-	background-color: white;
-	z-index: 10;
-}
 .mainpage-bg {
 	width: 375px;
 	background-image: url('/mainPage/mainPageBg.png');

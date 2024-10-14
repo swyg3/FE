@@ -10,6 +10,7 @@ export default createStore({
 		isLoading: false,
 		// product info
 		selectedProduct: null,
+		receiptData: null,
 	},
 	getters: {
 		// 상품 정보를 가져오는 getter
@@ -30,6 +31,9 @@ export default createStore({
 		// product info
 		setSelectedProduct(state, product) {
 			state.selectedProduct = product;
+		},
+		setReceiptData(state, data) {
+			state.receiptData = data;
 		},
 	},
 	actions: {

@@ -1,26 +1,7 @@
 <template>
 	<div class="min-h-[812px]">
-		<!--header-->
-		<div class="bg-white text-base absolute header-container">
-			<button onclick="history.back()" class="back-absolute-style">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-				>
-					<path
-						d="M3.54995 12L10.9 19.35C11.15 19.6 11.2708 19.8917 11.2625 20.225C11.2541 20.5583 11.125 20.85 10.875 21.1C10.625 21.35 10.3333 21.475 9.99995 21.475C9.66662 21.475 9.37495 21.35 9.12495 21.1L1.42495 13.425C1.22495 13.225 1.07495 13 0.974951 12.75C0.874951 12.5 0.824951 12.25 0.824951 12C0.824951 11.75 0.874951 11.5 0.974951 11.25C1.07495 11 1.22495 10.775 1.42495 10.575L9.12495 2.87499C9.37495 2.62499 9.67078 2.50415 10.0125 2.51249C10.3541 2.52082 10.65 2.64999 10.9 2.89999C11.15 3.14999 11.275 3.44165 11.275 3.77499C11.275 4.10832 11.15 4.39999 10.9 4.64999L3.54995 12Z"
-						fill="#1D1D1D"
-					/>
-				</svg>
-			</button>
-			<p class="mx-auto text-baseB">주문하기</p>
-		</div>
-		<div class="h-[48px]"></div>
+		<TheHeader :text="'주문하기'" showSearchIcon="false"></TheHeader>
 		<div class="bg-white text-black pb-[80px]">
-			<!--상품정보-->
 			<div>
 				<p class="text-baseB px-4 pt-4 pb-2">주문 상품</p>
 				<div class="flex pl-4">
@@ -55,17 +36,100 @@
 			<!--환경 지키기-->
 			<div class="pt-4 pb-6 pl-4">
 				<p class="text-baseB pb-2">환경 지키기</p>
+				<!--checkbox screenreader대비(role="checkbox")-->
 				<div class="text-base text-bodyBlack">
-					<label for="check1" class="flex pb-2">
-						<input type="checkbox" id="check1" class="checkbox" />
+					<!--checkbox1-->
+					<label
+						for="check1"
+						class="flex pb-2"
+						@click="checkbox(0)"
+						role="checkbox"
+					>
+						<svg
+							v-if="checkList[0]"
+							xmlns="http://www.w3.org/2000/svg"
+							class="checkbox-size"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M10.6 13.4L8.45 11.25C8.26667 11.0667 8.03333 10.975 7.75 10.975C7.46667 10.975 7.23333 11.0667 7.05 11.25C6.86667 11.4333 6.775 11.6667 6.775 11.95C6.775 12.2333 6.86667 12.4667 7.05 12.65L9.9 15.5C10.1 15.7 10.3333 15.8 10.6 15.8C10.8667 15.8 11.1 15.7 11.3 15.5L16.95 9.85C17.1333 9.66667 17.225 9.43333 17.225 9.15C17.225 8.86667 17.1333 8.63333 16.95 8.45C16.7667 8.26667 16.5333 8.175 16.25 8.175C15.9667 8.175 15.7333 8.26667 15.55 8.45L10.6 13.4ZM5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5Z"
+								fill="#1CB08C"
+							/>
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							class="checkbox-size"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5ZM5 19H19V5H5V19Z"
+								fill="#1CB08C"
+							/>
+						</svg>
 						<p class="pl-2 text-base">개인 용기를 가져갈래요</p>
 					</label>
-					<label for="check2" class="flex pb-2">
-						<input type="checkbox" id="check2" class="checkbox" />
+					<!--checkbox2-->
+					<label
+						for="check2"
+						class="flex pb-2"
+						@click="checkbox(1)"
+						role="checkbox"
+					>
+						<svg
+							v-if="checkList[1]"
+							xmlns="http://www.w3.org/2000/svg"
+							class="checkbox-size"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M10.6 13.4L8.45 11.25C8.26667 11.0667 8.03333 10.975 7.75 10.975C7.46667 10.975 7.23333 11.0667 7.05 11.25C6.86667 11.4333 6.775 11.6667 6.775 11.95C6.775 12.2333 6.86667 12.4667 7.05 12.65L9.9 15.5C10.1 15.7 10.3333 15.8 10.6 15.8C10.8667 15.8 11.1 15.7 11.3 15.5L16.95 9.85C17.1333 9.66667 17.225 9.43333 17.225 9.15C17.225 8.86667 17.1333 8.63333 16.95 8.45C16.7667 8.26667 16.5333 8.175 16.25 8.175C15.9667 8.175 15.7333 8.26667 15.55 8.45L10.6 13.4ZM5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5Z"
+								fill="#1CB08C"
+							/>
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							class="checkbox-size"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5ZM5 19H19V5H5V19Z"
+								fill="#1CB08C"
+							/>
+						</svg>
 						<p class="pl-2 text-base">개인 장바구니를 가져갈래요</p>
 					</label>
-					<label for="check3" class="flex">
-						<input type="checkbox" id="check3" class="checkbox" />
+					<!--checkbox3-->
+					<label for="check3" class="flex" @click="checkbox(2)" role="checkbox">
+						<svg
+							v-if="checkList[2]"
+							xmlns="http://www.w3.org/2000/svg"
+							class="checkbox-size"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M10.6 13.4L8.45 11.25C8.26667 11.0667 8.03333 10.975 7.75 10.975C7.46667 10.975 7.23333 11.0667 7.05 11.25C6.86667 11.4333 6.775 11.6667 6.775 11.95C6.775 12.2333 6.86667 12.4667 7.05 12.65L9.9 15.5C10.1 15.7 10.3333 15.8 10.6 15.8C10.8667 15.8 11.1 15.7 11.3 15.5L16.95 9.85C17.1333 9.66667 17.225 9.43333 17.225 9.15C17.225 8.86667 17.1333 8.63333 16.95 8.45C16.7667 8.26667 16.5333 8.175 16.25 8.175C15.9667 8.175 15.7333 8.26667 15.55 8.45L10.6 13.4ZM5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5Z"
+								fill="#1CB08C"
+							/>
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							class="checkbox-size"
+							viewBox="0 0 24 24"
+							fill="none"
+						>
+							<path
+								d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V19C21 19.55 20.8042 20.0208 20.4125 20.4125C20.0208 20.8042 19.55 21 19 21H5ZM5 19H19V5H5V19Z"
+								fill="#1CB08C"
+							/>
+						</svg>
 						<div class="w-full pr-6 flex justify-between">
 							<p class="pl-2 text-base">일회용 수저는 필요 없어요</p>
 							<img
@@ -116,7 +180,8 @@ import { useRoute, useRouter } from 'vue-router';
 import http from '@/api/http.js';
 import PickUpTimeButton from '@/components/common/PickUpTimeButton.vue';
 import dayjs from 'dayjs';
-
+import { useStore } from 'vuex';
+const store = useStore();
 // props 정의
 const props = defineProps({
 	name: {
@@ -129,10 +194,13 @@ const props = defineProps({
 	},
 });
 
-// 상품 정보를 저장할 state
+// 상품 정보
 const product = ref({});
 // 수량 정보
 const quantity = ref(1);
+
+const checkList = ref([false, false, false]);
+const order = ref([]);
 
 // 라우터 사용
 const route = useRoute();
@@ -185,76 +253,13 @@ onMounted(() => {
 const setPickUpTime = time => {
 	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
 };
-//주석풀곳
-// // 주문 데이터 생성
-// const orderData = {
-// 	totalAmount: product.value.discountedPrice * quantity.value,
-// 	totalPrice: product.value.discountedPrice * quantity.value,
-// 	pickupTime: selectedPickUpTime.value,
-// 	paymentMethod: 'CASH',
-// 	status: 'PENDING',
-// 	items: [
-// 		{
-// 			productId: product.value.productId,
-// 			quantity: quantity.value,
-// 			price: product.value.discountedPrice,
-// 		},
-// 	],
-// };
 
-// // 서버로부터 받은 응답 데이터를 저장할 변수
-// const responseData = ref(null);
-
-// // 주문 생성 함수
-// const createOrder = async () => {
-// 	try {
-// 		const res = await http.post('/api/order', orderData);
-
-// 		if (res.status === 201 && res.data.success) {
-// 			responseData.value = res.data;
-// 			console.log(responseData.value);
-// 			router.push(`/receipt/${responseData.value.orderId}`);
-// 		} else {
-// 			alert('주문에 실패했습니다. 다시 시도해 주세요.');
-// 		}
-// 	} catch (err) {
-// 		if (!selectedPickUpTime.value) {
-// 			alert('픽업시간을 선택해주세요!');
-// 		} else {
-// 			alert('주문 중에 문제가 발생했습니다!');
-// 			console.log(err);
-// 		}
-// 	}
-// };
-//주석풀곳
-// const createOrder = async () => {
-// 	try {
-// 		const response = await http.post('/api/order', {
-// 			method: 'POST',
-// 			headers: {
-// 				'Content-Type': 'application/json',
-// 			},
-// 			body: JSON.stringify(orderData),
-// 		});
-
-// 		if (response.status === 201) {
-// 			router.push({
-// 				name: 'Receipt',
-// 				query: {
-// 					orderData: JSON.stringify(orderData),
-// 				},
-// 			});
-// 		}
-// 	} catch (error) {
-// 		console.error(error);
-// 	}
-// };
 // 주문 생성 함수
 const createOrder = async () => {
 	try {
 		// 주문 데이터 구조 생성
 		const orderData = {
-			totalAmount: product.value.discountedPrice * quantity.value,
+			totalAmount: quantity.value,
 			totalPrice: product.value.discountedPrice * quantity.value,
 			pickupTime: selectedPickUpTime.value,
 			paymentMethod: 'CASH',
@@ -266,25 +271,29 @@ const createOrder = async () => {
 					price: product.value.discountedPrice,
 				},
 			],
+			memo: checkList.value,
 		};
-		console.log(orderData);
 
 		// API POST 요청
 		const response = await http.post('/api/order', orderData);
-		const resdata = response.data.data;
-		console.log(resdata.value);
 
 		if (response.status === 201) {
-			alert('주문이 완료되었습니다!');
-			// 주문 완료 후, 페이지를 영수증 페이지로 이동
-			router.push('/receipt');
+			console.log('주문이 완료되었습니다!');
+			order.value = response.data;
+			console.log('order', order.value);
+			router.push(`/receipt/${response.data.orderId}`);
 		} else {
-			alert('주문실패');
+			console.log('주문실패');
 		}
 	} catch (err) {
 		console.error('주문 생성 중 오류 발생:', err);
 		alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 	}
+};
+
+// checkbox
+const checkbox = item => {
+	checkList.value[item] = !checkList.value[item];
 };
 </script>
 
@@ -297,11 +306,6 @@ const createOrder = async () => {
 	align-items: center;
 	flex-shrink: 0;
 	top: 0;
-}
-.back-absolute-style {
-	position: absolute;
-	left: 16px;
-	top: 12px;
 }
 .order-img {
 	width: 80px;
@@ -371,6 +375,10 @@ input {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 24px;
+}
+.checkbox-size {
+	width: 24px;
+	height: 24px;
 }
 .category-scroll {
 	min-width: 375px;

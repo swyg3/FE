@@ -1,5 +1,5 @@
 <template>
-	<div class="min-h-[812px]">
+	<div class="min-h-[812px] bg-white">
 		<div class="w-[375px] pb-[88px] bg-white color-black">
 			<!--img-->
 			<div class="w-full h-[240px] relative">
@@ -69,7 +69,7 @@
 			<!--픽업 시간-->
 			<div class="px-4 py-[13px] flex border-y border-disabledGray">
 				<p class="text-baseB pr-6">픽업가능시간</p>
-				<p class="text-base text-bodyBlack">오후 6:00 ~ 오후 8:30</p>
+				<p class="text-base text-bodyBlack">오후 6:00 ~ 오전 2:00</p>
 			</div>
 			<!--가게 정보-->
 			<div class="px-4 py-4">
@@ -77,22 +77,22 @@
 				<!--주소도-->
 				<div class="text-base text-bodyBlack">
 					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+					<p class="pb-2">가게 위치: {{ product.storeAddress }}</p>
 				</div>
 				<!--지도-->
-				<div class="w-[342px] h-[180px] ml-[1px] rounded-lg bg-bodyBlack">
-					<!-- <KakaoMap
-						:lat="coordinate.lat"
-						:lng="coordinate.lng"
-						:draggable="true"
+				<div
+					v-if="center.lat && center.lng"
+					class="w-[342px] h-[180px] ml-[1px] rounded-lg"
+				>
+					<GoogleMap
+						style="width: 342px; height: 180px"
+						:api-key="apiKey"
+						:center="center"
+						:zoom="16"
 					>
-						<KakaoMapMarker
-							:lat="coordinate.lat"
-							:lng="coordinate.lng"
-						></KakaoMapMarker>
-					</KakaoMap> -->
+						<Marker :options="{ position: center }" />
+					</GoogleMap>
 				</div>
-				<!-- <div ref="mapContainer" class="w-[100px] h-[100px]"></div> -->
 			</div>
 			<div id="map"></div>
 			<div class="order-btn-div">
@@ -112,17 +112,11 @@
 <script setup>
 import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import OrderCountModal from '@/components/Modal/orderCountModal.vue';
-// import { mapActions } from 'vuex';
-// import { useKakao } from 'vue3-kakao-maps/@utils';
-// import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-// //kakaoMap
-// useKakao(import.meta.env.VITE_APP_KAKAO_JavaScript_KEY);
-// const coordinate = {
-// 	lat: 37.566826,
-// 	lng: 126.9786567,
-// };
+import { GoogleMap, Marker } from 'vue3-google-map';
+
+const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
+const center = ref({ lat: null, lng: null });
 
 const props = defineProps({
 	name: {
@@ -136,20 +130,20 @@ const props = defineProps({
 });
 // 상품 정보를 저장할 state
 const product = ref({});
-
-// 라우터 사용
-const route = useRoute();
-const router = useRouter();
-
 // 모달 상태
 const isModalOpen = ref(false);
+
+onMounted(() => {
+	fetchProductDetail();
+});
 
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
 	try {
 		const res = await http.get(`/api/products/get/${props.id}`);
 		product.value = res.data.data;
-		console.log(product.value);
+		center.value.lat = parseFloat(product.value.locationY);
+		center.value.lng = parseFloat(product.value.locationX);
 	} catch (err) {
 		console.error(err);
 	}
@@ -159,11 +153,6 @@ const fetchProductDetail = async () => {
 const openImageInNewTab = src => {
 	window.open(src, '_blank');
 };
-
-// 주문 상세 페이지로 이동
-// const goToOrderDetails = product => {
-// 	router.push(`/orderdetails/${product.name}/${product.productId}`);
-// };
 
 // 이미지 경로 변환 함수
 const fullImageUrl = imagePath => {
@@ -180,12 +169,6 @@ const roundedDiscountRate = rate => {
 const formatNumber = number => {
 	return new Intl.NumberFormat().format(number);
 };
-
-// 컴포넌트가 마운트될 때 호출되는 함수
-onMounted(() => {
-	const productId = route.params.productId;
-	fetchProductDetail(productId);
-});
 
 // ref를 사용해 모달 열기
 const openModal = () => {
@@ -249,8 +232,4 @@ const closeModal = () => {
 	color: white;
 	text-align: center;
 }
-/* #map {
-	width: 400px;
-	height: 400px;
-} */
 </style>

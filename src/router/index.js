@@ -11,6 +11,10 @@ import MyPage from '@/views/MyPageView.vue';
 import AddressBook from '@/views/AddressBookView.vue';
 import AddressSearch from '@/views/AddressSearchView.vue';
 import OrderList from '@/views/OrderListView.vue';
+import Notification from '@/views/NotificationView.vue';
+import Search from '@/views/SearchView.vue';
+import SearchResult from '@/views/SearchResultView.vue';
+import OrderCancel from '@/views/OrderCancleView.vue';
 
 const router = createRouter({
 	history: createWebHistory('/'),
@@ -53,9 +57,10 @@ const router = createRouter({
 			props: true,
 		},
 		{
-			path: '/receipt',
+			path: '/receipt/:orderId',
 			name: 'Receipt',
 			component: Receipt,
+			props: true,
 		},
 		{
 			path: '/orderList',
@@ -73,9 +78,24 @@ const router = createRouter({
 			component: AddressBook,
 		},
 		{
-			path: '/addressSearch',
-			name: 'AddressSearch',
-			component: AddressSearch,
+			path: '/notification',
+			name: 'Notification',
+			component: Notification,
+		},
+		{
+			path: '/search',
+			name: 'Search',
+			component: Search,
+		},
+		{
+			path: '/searchResult',
+			name: 'SearchResult',
+			component: SearchResult,
+		},
+		{
+			path: '/orderCancel',
+			name: 'OrderCancel',
+			component: OrderCancel,
 		},
 	],
 });

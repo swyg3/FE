@@ -7,7 +7,7 @@
 				height="24"
 				viewBox="0 0 24 24"
 				fill="none"
-				class="my-auto mr-2 content-center"
+				class="my-auto mr-2"
 			>
 				<path
 					d="M21 20.025C21 19.7417 20.9083 19.5083 20.725 19.325L17.0731 15.6731L15.6731 17.0731L19.325 20.725C19.5083 20.9084 19.7417 21 20.025 21C20.3083 21 20.5417 20.9084 20.725 20.725C20.9083 20.5417 21 20.3084 21 20.025Z"
@@ -21,14 +21,31 @@
 				/>
 			</svg>
 			<input
-				v-model="message"
+				type="text"
+				v-model="searchQuery"
+				@keyup.enter="emitSearch"
 				placeholder="음식이나 가게 이름을 입력해주세요"
 				class="search-bar-input"
 			/>
 		</div>
 	</div>
 </template>
-<script setup></script>
+
+<script setup>
+import { ref } from 'vue';
+
+const searchQuery = ref('');
+
+// setup 함수의 두 번째 인자로 emit을 받아 사용
+const emit = defineEmits(['search']);
+
+// 부모 컴포넌트에 search 전달
+const emitSearch = () => {
+	emit('search', searchQuery.value);
+	searchQuery.value = '';
+};
+</script>
+
 <style lang="scss" scoped>
 .search-bar {
 	width: 342px;

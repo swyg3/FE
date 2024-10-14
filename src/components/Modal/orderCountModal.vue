@@ -21,7 +21,7 @@
 							</svg>
 						</button>
 						<span class="quantity">{{ formatNumber(quantity) }}</span>
-						<button @click="increaseQuantity">
+						<button @click="increaseQuantity(product)">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
@@ -37,13 +37,13 @@
 							</svg>
 						</button>
 					</div>
-					<p>{{ this.product.discountedPrice }}원</p>
+					<p>{{ product.discountedPrice }}원</p>
 				</div>
 			</div>
 			<div class="pt-12 pb-4 flex justify-between text-lgB">
 				<p>합계</p>
 				<p>
-					{{ formatNumber(this.product.discountedPrice * quantity)
+					{{ formatNumber(product.discountedPrice * quantity)
 					}}<span class="text-base">원</span>
 				</p>
 			</div>
@@ -91,8 +91,10 @@ const decreaseQuantity = () => {
 		quantity.value--;
 	}
 };
-const increaseQuantity = () => {
-	quantity.value++;
+const increaseQuantity = product => {
+	if (quantity.value < product.availableStock) {
+		quantity.value++;
+	}
 };
 
 // 주문 상세 페이지로 이동

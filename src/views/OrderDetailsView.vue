@@ -200,7 +200,7 @@ const product = ref({});
 const quantity = ref(1);
 
 const checkList = ref([false, false, false]);
-const order = ref('');
+const order = ref([]);
 
 // 라우터 사용
 const route = useRoute();
@@ -277,10 +277,9 @@ const createOrder = async () => {
 		// API POST 요청
 		const response = await http.post('/api/order', orderData);
 
-		if (response.status === 201) {
-			alert('주문이 완료되었습니다!');
-			// 주문 완료 후, 페이지를 영수증 페이지로 이동
-			order.value = response.data.orders;
+		if (response.data.success) {
+			// alert('주문이 완료되었습니다!');
+			order.value = response;
 			console.log('order', order.value);
 			router.push(`/receipt/${response.data.orderId}`);
 		} else {
@@ -295,7 +294,6 @@ const createOrder = async () => {
 // checkbox
 const checkbox = item => {
 	checkList.value[item] = !checkList.value[item];
-	console.log(checkList.value);
 };
 </script>
 

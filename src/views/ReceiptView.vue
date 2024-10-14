@@ -134,7 +134,6 @@ onMounted(() => {
 });
 
 const fetchOrderReceipts = async () => {
-	console.log(props.orderId);
 	try {
 		const res = await http.get(`/api/order/${props.orderId}`);
 		if (res.data.success) {

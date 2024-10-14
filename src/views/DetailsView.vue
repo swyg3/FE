@@ -77,7 +77,7 @@
 				<!--주소도-->
 				<div class="text-base text-bodyBlack">
 					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+					<p class="pb-2">가게 위치: {{ product.storeAddress }}</p>
 				</div>
 				<!--지도-->
 				<div
@@ -144,8 +144,6 @@ const fetchProductDetail = async () => {
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
-
-		console.log('center', center.value);
 	} catch (err) {
 		console.error(err);
 	}

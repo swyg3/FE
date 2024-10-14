@@ -153,7 +153,7 @@ const fetchOrderReceipts = async () => {
 const CancelOrder = async () => {
 	try {
 		const res = await http.delete(`/api/order/${props.orderId}`);
-		router.push('/orderCancle');
+		router.push('/orderCancel');
 	} catch (error) {
 		console.log('에러발생', error);
 	}

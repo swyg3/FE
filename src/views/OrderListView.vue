@@ -42,7 +42,7 @@
 									</svg>
 								</button>
 							</div>
-							<div class="bg-pointGreen w-[80px] h-[80px]">
+							<div class="product-img-box">
 								<img
 									:src="
 										fullImageUrl(
@@ -50,6 +50,7 @@
 										)
 									"
 									alt="Product Image"
+									class="product-img"
 								/>
 							</div>
 						</div>
@@ -218,5 +219,16 @@ const formatNumber = number => {
 	border: 1px solid var(--Border_, #c6c6c6);
 	margin: 0 auto;
 	padding: 16px;
+}
+.product-img-box {
+	width: 80px;
+	height: 80px;
+}
+.product-img {
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	border-radius: 6px;
+	object-fit: cover;
 }
 </style>

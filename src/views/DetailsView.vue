@@ -232,8 +232,4 @@ const closeModal = () => {
 	color: white;
 	text-align: center;
 }
-/* #map {
-	width: 400px;
-	height: 400px;
-} */
 </style>

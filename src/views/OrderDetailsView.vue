@@ -277,13 +277,13 @@ const createOrder = async () => {
 		// API POST 요청
 		const response = await http.post('/api/order', orderData);
 
-		if (response.data.success) {
-			// alert('주문이 완료되었습니다!');
-			order.value = response;
+		if (response.status === 201) {
+			console.log('주문이 완료되었습니다!');
+			order.value = response.data;
 			console.log('order', order.value);
 			router.push(`/receipt/${response.data.orderId}`);
 		} else {
-			alert('주문실패');
+			console.log('주문실패');
 		}
 	} catch (err) {
 		console.error('주문 생성 중 오류 발생:', err);

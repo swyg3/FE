@@ -3,7 +3,7 @@
 		<div class="bg-white text-baseB header-container relative">주문내역</div>
 		<div class="h-[48px]"></div>
 		<div class="mainpage-bg">
-			<div v-if="orderList" class="grid-gap">
+			<div v-if="orderList.length" class="grid-gap">
 				<div
 					v-for="(order, index) in orderList.orders"
 					:key="index"
@@ -64,7 +64,7 @@
 				></receiptModal>
 			</div>
 
-			<div v-if="!orderList" class="h-[668px] grid gap-5 content-center">
+			<div v-else class="h-[668px] grid gap-5 content-center">
 				<div class="mx-auto">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -133,6 +133,7 @@ const fetchOrders = async () => {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
 			orderList.value = response.data;
+			console.log(orderList.value);
 		} else {
 			console.error(
 				'주문 목록을 가져오는 데 실패했습니다:',

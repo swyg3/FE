@@ -130,22 +130,22 @@ const emit = defineEmits([
 ]);
 
 const hide = () => {
-	console.log('hide');
+	// console.log('hide');
 	emit('closeModal');
 };
 
 const gpsCancle = () => {
-	console.log('gpsCancle');
+	// console.log('gpsCancle');
 	emit('gpsCancle');
 };
 
 const gpsConsent = () => {
-	console.log('gpsConsent');
+	// console.log('gpsConsent');
 	emit('gpsConsent');
 };
 
 const confirmMembership = () => {
-	console.log('confirmMembership');
+	// console.log('confirmMembership');
 	emit('confirmMembership');
 };
 </script>

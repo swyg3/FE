@@ -39,7 +39,7 @@ instance.interceptors.response.use(
 
 		// ***error.response가 undefined일 때 처리 추가
 		if (!errorRes) {
-			console.log(import.meta.env.VITE_APP_API_URL);
+			// console.log(import.meta.env.VITE_APP_API_URL);
 			console.error('서버로부터 응답이 없습니다.');
 			return Promise.reject(new Error('서버로부터 응답이 없습니다.'));
 		}

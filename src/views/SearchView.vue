@@ -121,7 +121,6 @@ const fetchSearchResults = async searchTerm => {
 		products.value = res.data.data;
 		if (products.value.length) {
 			searchresultText.value = true;
-			console.log(encodeSearchTerm.value);
 			router.push(
 				`/searchResult/${encodeSearchTerm.value}/distanceDiscountScore`,
 			);
@@ -130,7 +129,7 @@ const fetchSearchResults = async searchTerm => {
 		}
 	} catch (error) {
 		searchresultText.value = false;
-		console.error('Error fetching search results:', error);
+		console.error('Error', error);
 	}
 };
 </script>

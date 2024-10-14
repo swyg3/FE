@@ -222,7 +222,6 @@ const fetchProductDetail = async () => {
 	try {
 		const res = await http.get(`/api/products/get/${props.id}`);
 		product.value = res.data.data;
-		console.log(product.value);
 		// route.params에서 quantity 파라미터를 받아옴
 		quantity.value = route.params.quantity
 			? parseInt(route.params.quantity)
@@ -275,22 +274,18 @@ const createOrder = async () => {
 			],
 			memo: checkList.value,
 		};
-		console.log('orderdata', orderData);
 
 		// API POST 요청
 		const response = await http.post('/api/order', orderData);
-		console.log('res', response);
 
 		if (response.status === 201) {
-			console.log('주문이 완료되었습니다!');
 			order.value = response.data.data.data.orderId;
-			console.log('order', order.value);
 			router.push(`/receipt/${order.value}`);
 		} else {
-			console.log('주문실패');
+			alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 		}
 	} catch (err) {
-		console.error('주문 생성 중 오류 발생:', err);
+		console.error('Error', err);
 		alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 	}
 };

@@ -313,7 +313,7 @@ const fetchCategoryProducts = () => {
 			products.value = res.data.items;
 		})
 		.catch(err => {
-			console.log(err);
+			console.log('Error', err);
 		});
 };
 const sortOptions = [
@@ -332,7 +332,7 @@ const changeCategory = newCategory => {
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	console.log(sortModal.value);
+	// console.log(sortModal.value);
 };
 
 // 정렬 기준 변경 메소드

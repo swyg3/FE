@@ -163,7 +163,7 @@ const fetchNotifications = async () => {
 		const res = await http.get(`/api/notifications/${getUserId.value}`);
 		notifications.value = res.data.data;
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 읽지 않은 알림이 있는지 확인
@@ -175,13 +175,12 @@ const isNotificationRead = computed(() => {
 const isLocationNow = async () => {
 	try {
 		const response = await http.get('/api/locations/address/getall');
-		console.log('gpsghps', response.data);
 		if (!response.data.length) {
 			alert('주소를 설정 해주세요!');
 			router.push('/addressBook');
 		}
 	} catch (error) {
-		console.log('주소목록없?', error);
+		console.log('Error', error);
 	}
 };
 
@@ -269,7 +268,7 @@ const fetchRecommendedProducts = async () => {
 		const res = await http.get(apiUrl);
 		products.value = res.data.items;
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 거리순 아이템 리스트 불러오기
@@ -280,7 +279,7 @@ const fetchNearestProducts = async () => {
 		);
 		nearestProducts.value = res.data.items;
 	} catch (error) {
-		console.log('near에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 const goToDetailPage = product => {
@@ -291,12 +290,11 @@ const fetchOrders = async () => {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
 			orderList.value = response.data.orders.length;
-			console.log('orderlist?', orderList.value);
 		} else {
 			console.error(response.data.message);
 		}
 	} catch (error) {
-		console.error('API 요청 중 오류 발생:', error);
+		console.error('Error', error);
 	}
 };
 </script>

@@ -190,7 +190,7 @@ const fetchRecommendedProducts = async () => {
 		);
 		products.value = res.data.items;
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 거리순 아이템 리스트 불러오기
@@ -201,7 +201,7 @@ const fetchNearestProducts = async () => {
 		);
 		nearestProducts.value = res.data.items;
 	} catch (error) {
-		console.log('near에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 할인순 아이템 리스트 불러오기
@@ -212,7 +212,7 @@ const fetchDiscountrateProducts = async () => {
 		);
 		discountRateProducts.value = res.data.items;
 	} catch (error) {
-		console.log('discount에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 

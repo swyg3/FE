@@ -63,7 +63,6 @@ onMounted(() => {
 	sortBy.value = route.params.sort || 'distanceDiscountScore';
 	// 초기 데이터 요청
 	searchTerm.value = route.params.searchTerm;
-	console.log('mounted searchterm', searchTerm.value);
 	fetchSearchResults(searchTerm);
 });
 
@@ -88,9 +87,8 @@ const fetchSearchResults = async () => {
 			`/api/products/search?searchTerm=${encodeSearchTerm.value}&sortBy=${sortBy}&order=desc&limit=100`,
 		);
 		searchList.value = res.data.data;
-		console.log('lsitlist', searchList.value);
 	} catch (err) {
-		console.log('검색 에러 발생', err);
+		console.log('Error', err);
 	}
 };
 
@@ -103,7 +101,6 @@ const sortOptions = [
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	console.log(sortModal.value);
 };
 
 // 정렬 기준 변경 메소드
@@ -116,7 +113,6 @@ const changeSort = option => {
 
 // route 업데이트 메소드
 const updateRoute = () => {
-	console.log('sortby', sortBy.value);
 	router.push(`/searchResult/${encodeSearchTerm.value}/${sortBy.value}`);
 };
 

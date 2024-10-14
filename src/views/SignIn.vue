@@ -58,13 +58,13 @@ const handleCallback = async () => {
 	const urlParams = new URLSearchParams(window.location.search);
 
 	const code = urlParams.get('code'); // 인증 코드 추출
-	console.log('code', code);
+	// console.log('code', code);
 
 	if (code) {
 		const provider = window.location.href.includes('google')
 			? 'google'
 			: 'kakao';
-		console.log(`${provider} 인증 코드:`, code);
+		// console.log(`${provider} 인증 코드:`, code);
 
 		store.dispatch('auth/socialLogin', {
 			provider,

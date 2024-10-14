@@ -264,7 +264,7 @@ const closeModal = () => {
 
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
-	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
+	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=desc&limit=7`;
 	try {
 		const res = await http.get(apiUrl);
 		products.value = res.data.items;
@@ -276,7 +276,7 @@ const fetchRecommendedProducts = async () => {
 const fetchNearestProducts = async () => {
 	try {
 		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+			'/api/products/category?category=ALL&sortBy=distance&order=desc&limit=7',
 		);
 		nearestProducts.value = res.data.items;
 	} catch (error) {

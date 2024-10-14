@@ -66,10 +66,13 @@ import { onMounted, ref } from 'vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
 import http from '@/api/http.js';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const products = ref([]);
 const searchHistory = ref([]);
 const searchresultText = ref(true);
+const encodeSearchTerm = ref('');
 
 onMounted(() => {
 	loadSearchHistory();
@@ -110,21 +113,24 @@ const handleSearch = searchTerm => {
 };
 
 const fetchSearchResults = async searchTerm => {
+	encodeSearchTerm.value = encodeURIComponent(searchTerm);
 	try {
-		console.log(encodeURIComponent(searchTerm));
 		const res = await http.get(
-			`/api/products/search?searchTerm=${encodeURIComponent(searchTerm)}&sortBy=discountRate&order=asc&limit=100`,
+			`/api/products/search?searchTerm=${encodeSearchTerm.value}&sortBy=distanceDiscountScore&order=desc&limit=100`,
 		);
-		products.value = res;
-		console.log('검색기록:', res);
-		if (products.value) {
+		products.value = res.data.data;
+		if (products.value.length) {
 			searchresultText.value = true;
+			console.log(encodeSearchTerm.value);
+			router.push(
+				`/searchResult/${encodeSearchTerm.value}/distanceDiscountScore`,
+			);
 		} else {
 			searchresultText.value = false;
 		}
 	} catch (error) {
-		console.error('Error fetching search results:', error);
 		searchresultText.value = false;
+		console.error('Error fetching search results:', error);
 	}
 };
 </script>

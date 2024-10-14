@@ -268,7 +268,7 @@ const createOrder = async () => {
 			items: [
 				{
 					// productId: product.value.productId,
-					productId: '3d32b618-7c61-4016-8517-0eee204de8c5',
+					productId: '4215a2bf-4c7d-4127-a821-bd0be766d6bb',
 					quantity: quantity.value,
 					price: product.value.discountedPrice,
 				},
@@ -283,9 +283,9 @@ const createOrder = async () => {
 
 		if (response.status === 201) {
 			console.log('주문이 완료되었습니다!');
-			order.value = response.data;
+			order.value = response.data.data.data.orderId;
 			console.log('order', order.value);
-			router.push(`/receipt/${response.data.orderId}`);
+			router.push(`/receipt/${order.value}`);
 		} else {
 			console.log('주문실패');
 		}

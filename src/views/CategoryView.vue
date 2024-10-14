@@ -306,7 +306,7 @@ onMounted(() => {
 // api 연동하여 상품 가져오기
 const fetchCategoryProducts = () => {
 	const { category, sortBy } = route.params;
-	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=100`;
+	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=desc&limit=100`;
 	http
 		.get(apiUrl)
 		.then(res => {

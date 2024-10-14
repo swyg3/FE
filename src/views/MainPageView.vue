@@ -171,6 +171,7 @@ const isNotificationRead = computed(() => {
 	return notifications.value.some(noti => !noti.isRead);
 });
 
+// 주소설정안돼있으면 주소록으로 보내버려~
 const isLocationNow = async () => {
 	try {
 		const response = await http.get('/api/locations/address/getall');
@@ -289,7 +290,8 @@ const fetchOrders = async () => {
 	try {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
-			orderList.value = response.data;
+			orderList.value = response.data.orders.length;
+			console.log('orderlist?', orderList.value);
 		} else {
 			console.error(response.data.message);
 		}

@@ -74,9 +74,9 @@
 					<tbody>
 						<tr class="table-border">
 							<td class="text-left pl-2 pt-2">{{ product.name }}</td>
-							<td class="text-center pt-2">{{ order.quantity }}</td>
+							<td class="text-center pt-2">{{ order.totalAmount }}</td>
 							<td class="text-right pr-2 pt-2">
-								{{ formatNumber(product.originalPrice * order.quantity) }}
+								{{ formatNumber(product.originalPrice * order.totalAmount) }}
 							</td>
 						</tr>
 						<tr class="table-head">
@@ -84,7 +84,7 @@
 							<td></td>
 							<td class="text-right pr-2 pt-1 pb-2">
 								-
-								{{ formatNumber(product.discountedPrice * order.quantity) }}
+								{{ formatNumber(product.discountedPrice * order.totalAmount) }}
 							</td>
 						</tr>
 					</tbody>

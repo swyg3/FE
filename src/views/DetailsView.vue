@@ -77,7 +77,7 @@
 				<!--주소도-->
 				<div class="text-base text-bodyBlack">
 					<p class="pb-1">가게 이름: {{ product.storeName }}</p>
-					<p class="pb-2">가게 위치: 이후 구현 예정</p>
+					<p class="pb-2">가게 위치: {{ product.storeAddress }}</p>
 				</div>
 				<!--지도-->
 				<div
@@ -112,9 +112,8 @@
 <script setup>
 import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import OrderCountModal from '@/components/Modal/orderCountModal.vue';
-import { GoogleMap, Marker, InfoWindow, CustomMarker } from 'vue3-google-map';
+import { GoogleMap, Marker } from 'vue3-google-map';
 
 const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
 const center = ref({ lat: null, lng: null });
@@ -131,18 +130,10 @@ const props = defineProps({
 });
 // 상품 정보를 저장할 state
 const product = ref({});
-
-// 라우터 사용
-const route = useRoute();
-const router = useRouter();
-
 // 모달 상태
 const isModalOpen = ref(false);
 
-// 컴포넌트가 마운트될 때 호출되는 함수
 onMounted(() => {
-	// const productId = route.params.productId;
-	// console.log('productId', productId);
 	fetchProductDetail();
 });
 
@@ -153,8 +144,6 @@ const fetchProductDetail = async () => {
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
-
-		console.log('center', center.value);
 	} catch (err) {
 		console.error(err);
 	}
@@ -164,11 +153,6 @@ const fetchProductDetail = async () => {
 const openImageInNewTab = src => {
 	window.open(src, '_blank');
 };
-
-// 주문 상세 페이지로 이동
-// const goToOrderDetails = product => {
-// 	router.push(`/orderdetails/${product.name}/${product.productId}`);
-// };
 
 // 이미지 경로 변환 함수
 const fullImageUrl = imagePath => {
@@ -248,8 +232,4 @@ const closeModal = () => {
 	color: white;
 	text-align: center;
 }
-/* #map {
-	width: 400px;
-	height: 400px;
-} */
 </style>

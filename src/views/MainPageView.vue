@@ -32,19 +32,21 @@
 			</div>
 
 			<!--주문했던 가게 게시글 리스트-->
-			<div class="p-4">
-				<p class="text-baseB">
-					{{ getUserName }}님이 주문했던 가게에서<br />
-					마감할인 게시글이 올라왔어요!
-				</p>
-			</div>
-			<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
-				<MainItemCard
-					v-for="(product, index) in nearestProducts"
-					:key="index"
-					:product="product"
-					@click="goToDetailPage(product)"
-				/>
+			<div v-if="orderList">
+				<div class="p-4">
+					<p class="text-baseB">
+						{{ getUserName }}님이 주문했던 가게에서<br />
+						마감할인 게시글이 올라왔어요!
+					</p>
+				</div>
+				<div class="flex whitespace-nowrap overflow-auto px-3 noScrollBar">
+					<MainItemCard
+						v-for="(product, index) in nearestProducts"
+						:key="index"
+						:product="product"
+						@click="goToDetailPage(product)"
+					/>
+				</div>
 			</div>
 
 			<!--문코 추천 리스트-->
@@ -131,6 +133,7 @@ const isVisible = ref(false);
 const popupType = ref('gps');
 const isActive = ref(false);
 const text = ref('');
+const orderList = ref([]);
 
 const getUserName = computed(() => store.state.auth.userName);
 const getUserId = computed(() => store.state.auth.userId);
@@ -151,6 +154,8 @@ onMounted(() => {
 	}
 	fetchNearestProducts();
 	fetchNotifications();
+	fetchOrders();
+	isLocationNow();
 });
 // 알림 가져오기
 const fetchNotifications = async () => {
@@ -163,9 +168,21 @@ const fetchNotifications = async () => {
 };
 // 읽지 않은 알림이 있는지 확인
 const isNotificationRead = computed(() => {
-	console.log(notifications.value.some(noti => !noti.isRead));
 	return notifications.value.some(noti => !noti.isRead);
 });
+
+const isLocationNow = async () => {
+	try {
+		const response = await http.get('/api/locations/address/getall');
+		console.log('gpsghps', response.data);
+		if (!response.data.length) {
+			alert('주소를 설정 해주세요!');
+			router.push('/addressBook');
+		}
+	} catch (error) {
+		console.log('주소목록없?', error);
+	}
+};
 
 const gpsConsent = async () => {
 	store.commit('SET_IS_LOADING', true);
@@ -176,6 +193,7 @@ const gpsConsent = async () => {
 		if (response.status === 200) {
 			store.commit('auth/SET_GPS_CONSENT', true);
 			isVisible.value = false;
+			alert('주소를 설정 해주세요!');
 			router.push('/addressBook');
 		}
 
@@ -267,9 +285,18 @@ const fetchNearestProducts = async () => {
 const goToDetailPage = product => {
 	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
 };
-// const goToCategoryPage = () => {
-// 	window.location.href = `/category/${category.value}/${sortBy.value}`;
-// };
+const fetchOrders = async () => {
+	try {
+		const response = await http.get('/api/order');
+		if (response.data.success) {
+			orderList.value = response.data;
+		} else {
+			console.error(response.data.message);
+		}
+	} catch (error) {
+		console.error('API 요청 중 오류 발생:', error);
+	}
+};
 </script>
 
 <style lang="scss" scoped>

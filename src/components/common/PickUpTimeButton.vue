@@ -103,10 +103,6 @@ const selectTime = slot => {
 			.second(0); // 선택한 시간을 포함한 날짜 생성
 		selectedTime.value = selectedDateTime.toISOString(); // ISO 문자열로 변환
 		emit('updatePickUpTime', selectedTime.value);
-		console.log(selectedTime.value);
-		console.log(slot.label);
-		// selectedTime.value = dayjs(slot.value, 'HH:mm').toISOString();
-		// emit('updatePickUpTime', selectedTime.value);
 	} else {
 		alert('픽업시간을 선택해주세요!');
 	}

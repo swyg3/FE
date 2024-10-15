@@ -163,7 +163,7 @@ const fetchNotifications = async () => {
 		const res = await http.get(`/api/notifications/${getUserId.value}`);
 		notifications.value = res.data.data;
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 읽지 않은 알림이 있는지 확인
@@ -171,16 +171,16 @@ const isNotificationRead = computed(() => {
 	return notifications.value.some(noti => !noti.isRead);
 });
 
+// 주소설정안돼있으면 주소록으로 보내버려~
 const isLocationNow = async () => {
 	try {
 		const response = await http.get('/api/locations/address/getall');
-		console.log('gpsghps', response.data);
 		if (!response.data.length) {
 			alert('주소를 설정 해주세요!');
 			router.push('/addressBook');
 		}
 	} catch (error) {
-		console.log('주소목록없?', error);
+		console.log('Error', error);
 	}
 };
 
@@ -263,23 +263,23 @@ const closeModal = () => {
 
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
-	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7`;
+	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=desc&limit=7`;
 	try {
 		const res = await http.get(apiUrl);
 		products.value = res.data.items;
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 거리순 아이템 리스트 불러오기
 const fetchNearestProducts = async () => {
 	try {
 		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+			'/api/products/category?category=ALL&sortBy=distance&order=desc&limit=7',
 		);
 		nearestProducts.value = res.data.items;
 	} catch (error) {
-		console.log('near에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 const goToDetailPage = product => {
@@ -289,12 +289,12 @@ const fetchOrders = async () => {
 	try {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
-			orderList.value = response.data;
+			orderList.value = response.data.orders.length;
 		} else {
 			console.error(response.data.message);
 		}
 	} catch (error) {
-		console.error('API 요청 중 오류 발생:', error);
+		console.error('Error', error);
 	}
 };
 </script>

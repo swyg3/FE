@@ -25,40 +25,15 @@
 			<div class="text-flex pb-8">
 				<p class="text-baseB pr-11">메모</p>
 				<div>
-					<!-- <p class="text-body text-base> {{ order.memo[0] ? 'O' : 'X' }}</p>
-					<p class="text-body text-base>개인 장바구니 {{ order.memo[1] ? 'O' : 'X' }}<p/>
-					<p class="text-body text-base>일회용 수저 {{ order.memo[2] ? 'O' : 'X' }}</p> -->
-					<!--주문쪽 확인 후 위의 코드로 변경하기 -->
-					<div class="flex">
-						<p class="pr-2">개인 용기</p>
-						<p
-							v-if="Array.isArray(order.memo) && order.memo.includes('check1')"
-							class="text-body text-base"
-						>
-							o
-						</p>
-						<p v-else class="text-body text-base">x</p>
-					</div>
-					<div class="flex">
-						<p class="pr-2">개인 장바구니</p>
-						<p
-							v-if="Array.isArray(order.memo) && order.memo.includes('check2')"
-							class="text-body text-base"
-						>
-							o
-						</p>
-						<p v-else class="text-body text-base">x</p>
-					</div>
-					<div class="flex">
-						<p class="pr-2">일회용 수저</p>
-						<p
-							v-if="Array.isArray(order.memo) && order.memo.includes('check3')"
-							class="text-body text-base"
-						>
-							o
-						</p>
-						<p v-else class="text-body text-base">x</p>
-					</div>
+					<p class="text-body text-base">
+						개인 용기 {{ order.memo && order.memo[0] ? 'O' : 'X' }}
+					</p>
+					<p class="text-body text-base">
+						개인 장바구니 {{ order.memo && order.memo[1] ? 'O' : 'X' }}
+					</p>
+					<p class="text-body text-base">
+						일회용 수저 {{ order.memo && order.memo[2] ? 'O' : 'X' }}
+					</p>
 				</div>
 			</div>
 			<!--table-->
@@ -74,9 +49,9 @@
 					<tbody>
 						<tr class="table-border">
 							<td class="text-left pl-2 pt-2">{{ product.name }}</td>
-							<td class="text-center pt-2">{{ order.quantity }}</td>
+							<td class="text-center pt-2">{{ order.totalAmount }}</td>
 							<td class="text-right pr-2 pt-2">
-								{{ formatNumber(product.originalPrice * order.quantity) }}
+								{{ formatNumber(product.originalPrice * order.totalAmount) }}
 							</td>
 						</tr>
 						<tr class="table-head">
@@ -84,7 +59,7 @@
 							<td></td>
 							<td class="text-right pr-2 pt-1 pb-2">
 								-
-								{{ formatNumber(product.discountedPrice * order.quantity) }}
+								{{ formatNumber(product.discountedPrice * order.totalAmount) }}
 							</td>
 						</tr>
 					</tbody>
@@ -139,12 +114,11 @@ const fetchOrderReceipts = async () => {
 		if (res.data.success) {
 			order.value = res.data.orders[0];
 			product.value = res.data.orderItemsInfo;
-			console.log(order.value);
 		} else {
 			console.error('주문 목록을 가져오는 데 실패했습니다:', res.data.message);
 		}
 	} catch (err) {
-		console.log(err);
+		console.log('Error', err);
 	}
 };
 // 날짜 포맷

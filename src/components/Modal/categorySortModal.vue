@@ -132,6 +132,7 @@ li.active {
 					:class="{ active: selectedSort === option.value }"
 				>
 					{{ option.label }}
+					<!--문코아이콘-->
 					<div v-if="selectedSort === option.value">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -72,10 +72,8 @@ const fetchNotifications = async getUserId => {
 		const res = await http.get(`/api/notifications/${getUserId.value}`);
 		notifications.value = res.data.data;
 		notificationCount.value = notifications.value.length;
-		console.log('알림', notifications.value);
-		console.log('몇개', notificationCount.value);
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	} finally {
 		store.commit('SET_IS_LOADING', false);
 	}
@@ -83,14 +81,13 @@ const fetchNotifications = async getUserId => {
 
 // 알림 선택 시 읽음 처리
 const isNotiRead = async noti => {
-	console.log('getUserId:', getUserId.value); 
 	try {
 		const res = await http.patch(
 			`/api/notifications/${getUserId.value}/read/${noti.messageId}`,
 		);
 		await fetchNotifications(getUserId);
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	} finally {
 		store.commit('SET_IS_LOADING', false);
 	}
@@ -100,10 +97,9 @@ const isNotiRead = async noti => {
 const deleteAllNotification = async () => {
 	try {
 		const res = await http.delete(`/api/notifications/${getUserId.value}`);
-		console.log('삭제ok');
 		await fetchNotifications(getUserId);
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	} finally {
 		store.commit('SET_IS_LOADING', false);
 	}

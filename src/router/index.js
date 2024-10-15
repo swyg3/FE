@@ -88,9 +88,10 @@ const router = createRouter({
 			component: Search,
 		},
 		{
-			path: '/searchResult',
+			path: '/searchResult/:searchTerm/:sortBy',
 			name: 'SearchResult',
 			component: SearchResult,
+			props: true,
 		},
 		{
 			path: '/orderCancel',

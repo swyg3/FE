@@ -47,6 +47,7 @@
 		<!--sortModal로 자식에서 가져오기-->
 		<CategorySortModal
 			@changeSort="changeSort"
+			:sortBy="sortBy"
 			ref="sortModal"
 			class="absolute"
 		></CategorySortModal>
@@ -116,21 +117,21 @@ const changeCategory = async newCategory => {
 	category.value = newCategory; // 카테고리 값 업데이트
 	updateRoute(); // route 업데이트
 	await fetchCategoryProducts(); // 새 카테고리에 맞는 상품 재요청
-	location.reload();
+	location.reload(); // 강제 새로고침
 };
 
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	console.log('ggg', sortModal.value);
+	console.log('부모에서 openosrtmodal', sortModal.value);
 };
 
 // 정렬 기준 변경 메소드
-const changeSort = option => {
+const changeSort = async option => {
 	currentSort.value = option.label;
 	sortBy.value = option.value;
 	updateRoute(); // route 업데이트
-	fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+	await fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
 };
 
 // route 업데이트 메소드

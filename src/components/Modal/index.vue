@@ -47,7 +47,7 @@
 					class="flex justify-center gap-1 absolute bottom-[10px] left-0 right-0 mx-auto"
 				>
 					<button
-						@click="gpsCancle"
+						@click="goToLogin"
 						data-modal-hide="popup-modal"
 						type="button"
 						class="btnLayout"
@@ -120,7 +120,12 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 const props = defineProps(['visible', 'popupType', 'text']);
+console.log('props', props);
+
+const router = useRouter();
 
 const emit = defineEmits([
 	'closeModal',
@@ -130,22 +135,22 @@ const emit = defineEmits([
 ]);
 
 const hide = () => {
-	// console.log('hide');
 	emit('closeModal');
 };
 
 const gpsCancle = () => {
-	// console.log('gpsCancle');
 	emit('gpsCancle');
 };
 
 const gpsConsent = () => {
-	// console.log('gpsConsent');
 	emit('gpsConsent');
 };
 
+const goToLogin = () => {
+	console.log('goToLogin');
+	router.push('/');
+};
 const confirmMembership = () => {
-	// console.log('confirmMembership');
 	emit('confirmMembership');
 };
 </script>

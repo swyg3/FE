@@ -44,7 +44,9 @@
 					@click="() => router.push('/addressBook')"
 				>
 					<div>주소 관리</div>
-					<div class="text-sm text-bodyBlack">{{ selectedAddress }}</div>
+					<div class="text-sm text-bodyBlack truncate">
+						{{ selectedAddress }}
+					</div>
 				</div>
 			</div>
 			<div>
@@ -234,5 +236,12 @@ const closeModal = () => {
 	height: 49px;
 	padding: 12px 16px;
 	border-bottom: 2px solid #e4e4e4;
+}
+
+.truncate {
+	width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 </style>

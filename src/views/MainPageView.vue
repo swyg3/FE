@@ -12,7 +12,11 @@
 			/>
 			<div class="text-lgB text-center pb-10">
 				<p>어서오세요</p>
-				<p class="py-2">'친환경 우주 활동가'</p>
+				<div class="font-bold text-lg py-[7px]">
+					<span>Lv.</span>
+					<span>{{ level }}</span>
+					<span class="pl-2">{{ title }}</span>
+				</div>
 				<p>{{ getUserName }}</p>
 			</div>
 			<div class="flex gap-1 my-6 justify-center text-center">
@@ -20,13 +24,15 @@
 				<div class="mainpage-userCard">
 					<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>문코를 통해</p>
-					<p class="text-baseB">30끼의 음식을</p>
+					<p class="text-baseB">{{ orderCount || '-' }}끼의 음식을</p>
 					<p>구출했어요!</p>
 				</div>
 				<div class="mainpage-userCard">
 					<img src="/mainPage/mainPig.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>지금까지</p>
-					<p class="text-baseB">200,000원을</p>
+					<p class="px-1 text-baseB">
+						{{ totalSavings ? totalSavings.toLocaleString() : '-' }}원의 금액을
+					</p>
 					<p>절약했어요!</p>
 				</div>
 			</div>
@@ -121,7 +127,7 @@
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { ref, onMounted, computed } from 'vue';
-import { gpsConsentApi } from '@/api/auth.js';
+import { gpsConsentApi, fetchUserDetailsApi } from '@/api/auth.js';
 import http from '@/api/http.js';
 import MainItemCard from '@/components/common/MainItemCard.vue';
 import AddressHeader from '@/components/common/AddressHeader.vue';
@@ -144,8 +150,13 @@ const nearestProducts = ref([]);
 
 // const category = ref('ALL');
 // const sortBy = ref('distanceDiscountScore');
+const level = ref(0);
+const title = ref('');
+const orderCount = ref(0);
+const totalSavings = ref(0);
 
 onMounted(() => {
+	fetchUserDetails();
 	fetchRecommendedProducts();
 	if (store.state.auth.gpsConsent === false) {
 		isVisible.value = true;
@@ -157,6 +168,21 @@ onMounted(() => {
 	fetchOrders();
 	isLocationNow();
 });
+
+const fetchUserDetails = async () => {
+	const response = await fetchUserDetailsApi(getUserId.value);
+
+	if (response.data.success === true) {
+		const data = response.data.data;
+		console.log('data', data);
+
+		level.value = data.level;
+		title.value = data.title;
+		orderCount.value = data.orderCount;
+		totalSavings.value = data.totalSavings;
+	}
+};
+
 // 알림 가져오기
 const fetchNotifications = async () => {
 	try {

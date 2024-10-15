@@ -3,16 +3,23 @@
 		<div class="text-baseB mypage-header">마이페이지</div>
 
 		<div class="px-[16px]">
-			<div class="text-lg pt-[16px]">친환경 우주활동가</div>
+			<div class="text-lg pt-[16px]">
+				<span>Lv.</span>
+				<span>{{ level }}</span>
+				<span class="pl-2">{{ title }}</span>
+			</div>
+
 			<div class="text-lgB">{{ getUserName }}</div>
-			<div class="text-bodyBlack mypage-period-activity">24년 9월 17일부터</div>
+			<div class="text-bodyBlack mypage-period-activity">
+				{{ periodOfActivity }}부터
+			</div>
 			<div class="flex gap-1">
 				<div class="mt-5 mypage-box">
 					<img src="/myPage/umbrage.png" class="p-1" />
 					<div class="">문코를 통해</div>
 					<div class="font-bold">
-						<span class="">30</span>
-						<span class="">끼의 음식을</span>
+						<span class="px-1">{{ orderCount || '-' }}</span>
+						<span>끼의 음식을</span>
 					</div>
 					<div class="">구출했어요!</div>
 				</div>
@@ -20,10 +27,12 @@
 					<img src="/myPage/pig.png" class="p-1" />
 					<div class="">지금까지</div>
 					<div class="font-bold">
-						<span class="">200,000</span>
-						<span class="">원의 금액을</span>
+						<span class="px-1">{{
+							totalSavings ? totalSavings.toLocaleString() : '-'
+						}}</span>
+						<span>원의 금액을</span>
 					</div>
-					<div class="">절약했어요!</div>
+					<div>절약했어요!</div>
 				</div>
 			</div>
 		</div>
@@ -70,10 +79,14 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { signOutApi, cancelMembershipApi } from '@/api/auth.js';
+import {
+	signOutApi,
+	cancelMembershipApi,
+	fetchUserDetailsApi,
+} from '@/api/auth.js';
 
 const store = useStore();
 const router = useRouter();
@@ -83,6 +96,43 @@ const popupType = ref('');
 
 const getUserName = computed(() => store.state.auth.userName);
 const selectedAddress = computed(() => store.state.auth.selectedAddress);
+const userId = computed(() => store.state.auth.userId);
+
+const level = ref(0);
+const title = ref('');
+const orderCount = ref(0);
+const totalSavings = ref(0);
+const periodOfActivity = ref('');
+
+onMounted(() => {
+	fetchUserDetails();
+});
+
+const fetchUserDetails = async () => {
+	const response = await fetchUserDetailsApi(userId.value);
+
+	if (response.data.success === true) {
+		const data = response.data.data;
+		console.log('data', data);
+
+		level.value = data.level;
+		title.value = data.title;
+		orderCount.value = data.orderCount;
+		totalSavings.value = data.totalSavings;
+
+		const date = new Date(data.registeredAt);
+
+		const year = date.getFullYear().toString().substring(2);
+
+		// 원하는 형식으로 날짜를 포맷 (연도 조정 포함)
+		const formattedDate = `${year}년 ${date.toLocaleDateString('ko-KR', {
+			month: 'long',
+			day: 'numeric',
+		})}`;
+
+		periodOfActivity.value = formattedDate;
+	}
+};
 
 const openBottomSheet = contentType => {
 	store.state.isVisible = true;

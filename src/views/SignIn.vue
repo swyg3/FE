@@ -1,5 +1,12 @@
 <template>
 	<div class="signin-bg">
+		<div class="text-white text-center absolute top-[34%] left-0 right-0">
+			<span>마감할인 중인</span>
+			<span class="pl-1 text-moonYellow">{{
+				productCount.toLocaleString()
+			}}</span>
+			<span>개의 상품이 기다리고 있어요!</span>
+		</div>
 		<div class="flex flex-col space-y-4 signin-btn-container">
 			<button
 				type="button"
@@ -22,14 +29,29 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
+import { fetchProductCountApi } from '@/api/auth.js';
 
 const store = useStore();
 
+const productCount = ref(0);
+
 onMounted(() => {
 	handleCallback();
+	fetchProductCount();
 });
+const fetchProductCount = async () => {
+	console.log('count');
+
+	const response = await fetchProductCountApi();
+	console.log('response', response);
+
+	if (response.data.success === true) {
+		console.log('성공');
+		productCount.value = response.data.data.count;
+	}
+};
 
 const kakaoSignIn = async () => {
 	if (!Kakao.isInitialized()) {
@@ -58,13 +80,11 @@ const handleCallback = async () => {
 	const urlParams = new URLSearchParams(window.location.search);
 
 	const code = urlParams.get('code'); // 인증 코드 추출
-	// console.log('code', code);
 
 	if (code) {
 		const provider = window.location.href.includes('google')
 			? 'google'
 			: 'kakao';
-		// console.log(`${provider} 인증 코드:`, code);
 
 		store.dispatch('auth/socialLogin', {
 			provider,
@@ -75,37 +95,6 @@ const handleCallback = async () => {
 		console.error('인증 코드가 없습니다.');
 	}
 };
-
-// const handleKakaoCallback = async () => {
-// 	// URL에서 인증 코드 추출
-// 	const urlParams = new URLSearchParams(window.location.search);
-// 	const code = urlParams.get('code'); // 카카오로부터 전달된 인증 코드
-// 	console.log('code', code);
-
-// 	if (code) {
-// 		store.dispatch('auth/socialLogin', {
-// 			provider: 'kakao',
-// 			code,
-// 			userType: 'user',
-// 		});
-// 	} else {
-// 		console.error('No authorization code found');
-// 	}
-// };
-
-// const googleOnSuccess = async authObj => {
-// 	console.log('구글로그인 성공', authObj);
-
-// 	store.dispatch('auth/socialLogin', {
-// 		provider: 'google',
-// 		code: authObj.code,
-// 		userType: 'user',
-// 	});
-// };
-
-// const googleoOnError = error => {
-// 	alert('구글로그인이 실패하였습니다', error);
-// };
 </script>
 
 <style lang="scss" scoped>

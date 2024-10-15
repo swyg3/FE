@@ -22,3 +22,12 @@ export const getAddressBookApi = () =>
 
 export const setCurrentApi = payload =>
 	http.patch(`/api/locations/setcurrent?id=${encodeURIComponent(payload)}`);
+
+export const fetchUserDetailsApi = userId =>
+	http.get(`/api/user-activities/level-title/${userId}`);
+
+export const fetchProductCountApi = () => {
+	console.log('api');
+
+	return http.get('/api/user-activities/product-count');
+};

@@ -112,14 +112,14 @@
 			@gpsCancle="gpsCancle"
 			@gpsConsent="gpsConsent"
 		/>
-		<Modal
+		<!-- <Modal
 			:visible="isVisible"
 			:popupType="popupType"
 			:text="text"
 			@noContents="noContents"
 			@close-modal="closeModal"
 			@active="isActive"
-		/>
+		/> -->
 	</div>
 </template>
 
@@ -136,7 +136,7 @@ const router = useRouter();
 const store = useStore();
 
 const isVisible = ref(false);
-const popupType = ref('gps');
+const popupType = ref('');
 const isActive = ref(false);
 const text = ref('');
 const orderList = ref([]);
@@ -160,7 +160,10 @@ onMounted(() => {
 	fetchRecommendedProducts();
 	if (store.state.auth.gpsConsent === false) {
 		isVisible.value = true;
+		popupType.value = 'gps';
 	} else {
+		// isVisible.value = true;
+		// popupType.value = 'gps';
 		isVisible.value = false;
 	}
 	fetchNearestProducts();
@@ -212,62 +215,60 @@ const isLocationNow = async () => {
 
 const gpsConsent = async () => {
 	store.commit('SET_IS_LOADING', true);
+	console.log('gpsConsent2');
 
 	try {
-		const response = await gpsConsentApi(store.state.auth.userId);
+		if (navigator.geolocation) {
+			// GPS 위치 요청
+			navigator.geolocation.getCurrentPosition(
+				async position => {
+					// 성공 시: 위도와 경도 설정
 
-		if (response.status === 200) {
-			store.commit('auth/SET_GPS_CONSENT', true);
-			isVisible.value = false;
-			alert('주소를 설정 해주세요!');
-			router.push('/addressBook');
+					if (position.coords.latitude && position.coords.longitude) {
+						const response = await gpsConsentApi({
+							longitude: position.coords.latitude,
+							latitude: position.coords.longitude,
+							agree: true,
+						});
+
+						console.log('response111', response);
+
+						if (response.status === 200) {
+							store.commit('auth/SET_GPS_CONSENT', true);
+							store.commit(
+								'auth/SET_SELECTED_ADDRESS',
+								decodeURIComponent(response.data.roadAddress),
+							);
+							isVisible.value = false;
+						}
+					}
+					store.commit('SET_IS_LOADING', false);
+				},
+
+				error => {
+					switch (error.code) {
+						case error.PERMISSION_DENIED:
+							alert('위치 권한이 거부되었습니다.');
+							break;
+						case error.POSITION_UNAVAILABLE:
+							alert('위치 정보를 사용할 수 없습니다.');
+							break;
+						case error.TIMEOUT:
+							alert('위치 요청 시간이 초과되었습니다.');
+							break;
+						default:
+							alert('알 수 없는 오류가 발생했습니다.');
+					}
+					store.commit('SET_IS_LOADING', false);
+				},
+			);
+		} else {
+			alert('GPS를 지원하지 않는 브라우저입니다.');
 		}
-
-		// if (navigator.geolocation) {
-		// 	// GPS 위치 요청
-		// 	navigator.geolocation.getCurrentPosition(
-		// 		async position => {
-		// 			// 성공 시: 위도와 경도 설정
-
-		// 			if (position.coords.latitude && position.coords.longitude) {
-		// 				const response = await gpsConsentApi({
-		// 					longitude: position.coords.latitude,
-		// 					latitude: position.coords.longitude,
-		// 				});
-		// 				console.log('response', response);
-
-		// 				if (response.status === 200) {
-		// 					store.commit('auth/SET_GPS_CONSENT', true);
-		// 					isVisible.value = false;
-		// 				}
-		// 			}
-		// 			store.commit('SET_IS_LOADING', false);
-		// 		},
-
-		// 		error => {
-		// 			switch (error.code) {
-		// 				case error.PERMISSION_DENIED:
-		// 					alert('위치 권한이 거부되었습니다.');
-		// 					break;
-		// 				case error.POSITION_UNAVAILABLE:
-		// 					alert('위치 정보를 사용할 수 없습니다.');
-		// 					break;
-		// 				case error.TIMEOUT:
-		// 					alert('위치 요청 시간이 초과되었습니다.');
-		// 					break;
-		// 				default:
-		// 					alert('알 수 없는 오류가 발생했습니다.');
-		// 			}
-		// 		},
-		// 	);
-		// } else {
-		// 	alert('GPS를 지원하지 않는 브라우저입니다.');
-		// }
 	} catch (error) {
 		console.log('Error', error);
 		alert('error', error);
 	} finally {
-		store.commit('SET_IS_LOADING', false);
 	}
 };
 

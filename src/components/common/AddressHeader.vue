@@ -1,7 +1,7 @@
 <template>
 	<div class="text-base address-book-header">
 		<div @click="() => router.push('/addressBook')" class="flex">
-			<div>{{ selectedAddress }}</div>
+			<div class="truncate">{{ selectedAddress }}</div>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -79,5 +79,12 @@ const selectedAddress = computed(() => store.state.auth.selectedAddress);
 	background-color: white;
 	position: sticky;
 	z-index: 10;
+}
+
+.truncate {
+	width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 </style>

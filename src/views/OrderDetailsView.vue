@@ -266,7 +266,8 @@ const createOrder = async () => {
 			status: 'PENDING',
 			items: [
 				{
-					productId: product.value.productId,
+					// productId: product.value.productId,
+					productId: '4215a2bf-4c7d-4127-a821-bd0be766d6bb',
 					quantity: quantity.value,
 					price: product.value.discountedPrice,
 				},
@@ -278,15 +279,13 @@ const createOrder = async () => {
 		const response = await http.post('/api/order', orderData);
 
 		if (response.status === 201) {
-			console.log('주문이 완료되었습니다!');
-			order.value = response.data;
-			console.log('order', order.value);
-			router.push(`/receipt/${response.data.orderId}`);
+			order.value = response.data.data.data.orderId;
+			router.push(`/receipt/${order.value}`);
 		} else {
-			console.log('주문실패');
+			alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 		}
 	} catch (err) {
-		console.error('주문 생성 중 오류 발생:', err);
+		console.error('Error', err);
 		alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 	}
 };

@@ -1,11 +1,10 @@
 <template>
 	<div>
-		<TheHeader :text="selectedCategoryName" showSearchIcon="false"></TheHeader>
+		<TheHeader :text="'검색결과'" showSearchIcon="false"></TheHeader>
 		<div class="category-bg">
-			<SearchBar></SearchBar>
-			<!--category item card list-->
+			<SearchBar @click="router.push('/search')"></SearchBar>
 			<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">
-				<p class="">총 {{ products.length }}개</p>
+				<p class="">총 {{ searchList.length }}개</p>
 				<div class="flex">
 					<button @click="openSortModal">{{ currentSort }}</button>
 					<svg
@@ -24,7 +23,7 @@
 			</div>
 			<div class="px-4 grid grid-cols-2 gap-[7px]">
 				<CategoryItemCard
-					v-for="(product, index) in products"
+					v-for="(product, index) in searchList"
 					:key="index"
 					:product="product"
 					@click="goToDetailPage(product)"
@@ -54,63 +53,54 @@ const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
 const category = ref('ALL'); // 기본 카테고리
 const sortBy = ref('distanceDiscountScore'); // 기본 정렬 방식
 const sortModal = ref(null);
-const products = ref([]);
-const categories = ref([
-	{ name: '전체', value: 'ALL' },
-	{ name: '한식', value: 'KOREAN' },
-	{ name: '일식', value: 'JAPANESE' },
-	{ name: '중식', value: 'CHINESE' },
-	{ name: '분식', value: 'SNACK' },
-	{ name: '양식', value: 'WESTERN' },
-	{ name: '디저트', value: 'DESSERT' },
-]);
-
-// header text
-const selectedCategoryName = computed(() => {
-	const selectedCategory = categories.value.find(
-		cat => cat.value === category.value,
-	);
-	return selectedCategory ? selectedCategory.name : '전체';
-});
+const encodeSearchTerm = ref('');
+const searchTerm = ref('');
+const searchList = ref([]);
 
 onMounted(() => {
 	// URL에서 카테고리와 정렬 방식 가져오기
 	category.value = route.params.category || 'ALL';
 	sortBy.value = route.params.sort || 'distanceDiscountScore';
 	// 초기 데이터 요청
-	fetchCategoryProducts();
+	searchTerm.value = route.params.searchTerm;
+	fetchSearchResults(searchTerm);
 });
 
 // api 연동하여 상품 가져오기
-const fetchCategoryProducts = () => {
-	const { category, sortBy } = route.params;
-	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=100`;
-	http
-		.get(apiUrl)
-		.then(res => {
-			products.value = res.data.items;
-		})
-		.catch(err => {
-			console.log(err);
-		});
+// const fetchSearchResults = () => {
+// 	const { category, sortBy } = route.params;
+// 	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=desc&limit=100`;
+// 	http
+// 		.get(apiUrl)
+// 		.then(res => {
+// 			products.value = res.data.items;
+// 		})
+// 		.catch(err => {
+// 			console.log(err);
+// 		});
+// };
+const fetchSearchResults = async () => {
+	const { searchTerm, sortBy } = route.params;
+	encodeSearchTerm.value = encodeURIComponent(searchTerm);
+	try {
+		const res = await http.get(
+			`/api/products/search?searchTerm=${encodeSearchTerm.value}&sortBy=${sortBy}&order=desc&limit=100`,
+		);
+		searchList.value = res.data.data;
+	} catch (err) {
+		console.log('Error', err);
+	}
 };
+
 const sortOptions = [
 	{ label: '문코 추천 순', value: 'distanceDiscountScore' },
 	{ label: '가까운 순', value: 'distance' },
 	{ label: '할인율 높은 순', value: 'discountRate' },
 ];
 
-// 카테고리 변경 메소드
-const changeCategory = newCategory => {
-	category.value = newCategory; // 카테고리 값 업데이트
-	updateRoute(); // route 업데이트
-	fetchCategoryProducts(); // 새 카테고리에 맞는 상품 재요청
-};
-
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	console.log(sortModal.value);
 };
 
 // 정렬 기준 변경 메소드
@@ -118,12 +108,12 @@ const changeSort = option => {
 	currentSort.value = option.label;
 	sortBy.value = option.value;
 	updateRoute(); // route 업데이트
-	fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+	fetchSearchResults(); // 카테고리에 맞는 상품 재요청
 };
 
 // route 업데이트 메소드
 const updateRoute = () => {
-	router.push(`/category/${category.value}/${sortBy.value}`);
+	router.push(`/searchResult/${encodeSearchTerm.value}/${sortBy.value}`);
 };
 
 // /name/id로 라우팅
@@ -137,7 +127,7 @@ watch(
 	newParams => {
 		category.value = newParams.category || 'ALL';
 		sortBy.value = newParams.sortBy || 'distanceDiscountScore';
-		fetchCategoryProducts();
+		fetchSearchResults();
 	},
 	{ immediate: true }, // 페이지 로드 시에도 즉시 실행
 );

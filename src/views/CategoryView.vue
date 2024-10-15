@@ -306,14 +306,14 @@ onMounted(() => {
 // api 연동하여 상품 가져오기
 const fetchCategoryProducts = () => {
 	const { category, sortBy } = route.params;
-	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=asc&limit=100`;
+	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=desc&limit=100`;
 	http
 		.get(apiUrl)
 		.then(res => {
 			products.value = res.data.items;
 		})
 		.catch(err => {
-			console.log(err);
+			console.log('Error', err);
 		});
 };
 const sortOptions = [
@@ -332,7 +332,7 @@ const changeCategory = newCategory => {
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	console.log(sortModal.value);
+	// console.log(sortModal.value);
 };
 
 // 정렬 기준 변경 메소드

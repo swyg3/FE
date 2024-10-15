@@ -3,7 +3,7 @@
 		<div class="bg-white text-baseB header-container relative">주문내역</div>
 		<div class="h-[48px]"></div>
 		<div class="mainpage-bg">
-			<div v-if="orderList.length" class="grid-gap">
+			<div v-if="orderList.orders" class="grid-gap">
 				<div
 					v-for="(order, index) in orderList.orders"
 					:key="index"
@@ -13,7 +13,7 @@
 						<div>
 							<p class="text-lg">{{ orderList.orderItemsInfo[index].name }}</p>
 							<p class="text-sm pb-2 text-bodyBlack">
-								{{ formatDate(order.createdAt) }}
+								{{ formatDate(order.pickupTime) }}
 							</p>
 							<p class="text-base pb-1">
 								{{ getOrderStatusMessage(order.status) }}
@@ -133,7 +133,6 @@ const fetchOrders = async () => {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
 			orderList.value = response.data;
-			console.log(orderList.value);
 		} else {
 			console.error(
 				'주문 목록을 가져오는 데 실패했습니다:',
@@ -141,7 +140,7 @@ const fetchOrders = async () => {
 			);
 		}
 	} catch (error) {
-		console.error('API 요청 중 오류 발생:', error);
+		console.error('Error', error);
 	}
 };
 // 컴포넌트가 마운트되면 주문 목록을 가져옴
@@ -206,7 +205,6 @@ const formatNumber = number => {
 	background-attachment: fixed; //배경고정 스크롤
 	background-repeat: no-repeat;
 	background-position: center;
-	padding-bottom: 48px;
 }
 .grid-gap {
 	display: grid;

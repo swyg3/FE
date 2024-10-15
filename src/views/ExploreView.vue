@@ -186,33 +186,33 @@ onMounted(() => {
 const fetchRecommendedProducts = async () => {
 	try {
 		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=asc&limit=7',
+			'/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=desc&limit=7',
 		);
 		products.value = res.data.items;
 	} catch (error) {
-		console.log('에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 거리순 아이템 리스트 불러오기
 const fetchNearestProducts = async () => {
 	try {
 		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distance&order=asc&limit=7',
+			'/api/products/category?category=ALL&sortBy=distance&order=desc&limit=7',
 		);
 		nearestProducts.value = res.data.items;
 	} catch (error) {
-		console.log('near에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 // 할인순 아이템 리스트 불러오기
 const fetchDiscountrateProducts = async () => {
 	try {
 		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=discountRate&order=asc&limit=7',
+			'/api/products/category?category=ALL&sortBy=discountRate&order=desc&limit=7',
 		);
 		discountRateProducts.value = res.data.items;
 	} catch (error) {
-		console.log('discount에러라고짱나게하지마', error);
+		console.log('Error', error);
 	}
 };
 

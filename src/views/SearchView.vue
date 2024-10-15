@@ -103,13 +103,9 @@ const deleteSearchHistory = index => {
 };
 
 const handleSearch = searchTerm => {
-	if (searchTerm) {
-		saveSearchHistory(searchTerm);
-		fetchSearchResults(searchTerm);
-		loadSearchHistory();
-	} else {
-		alert('검색어를 입력해주세요!');
-	}
+	saveSearchHistory(searchTerm);
+	fetchSearchResults(searchTerm);
+	loadSearchHistory();
 };
 
 const fetchSearchResults = async searchTerm => {

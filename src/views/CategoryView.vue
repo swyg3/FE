@@ -253,6 +253,7 @@ watch(
 				</div>
 			</div>
 		</div>
+		<!--sortModal로 자식에서 가져오기-->
 		<CategorySortModal
 			@changeSort="changeSort"
 			ref="sortModal"
@@ -275,7 +276,7 @@ const router = useRouter();
 const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
 const category = ref('ALL'); // 기본 카테고리
 const sortBy = ref('distanceDiscountScore'); // 기본 정렬 방식
-const sortModal = ref(null);
+const sortModal = ref(null); // 자식에서 가져오기(categorysortmodal)
 const products = ref([]);
 const categories = ref([
 	{ name: '전체', value: 'ALL' },
@@ -332,7 +333,7 @@ const changeCategory = newCategory => {
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	// console.log(sortModal.value);
+	console.log('ggg', sortModal.value);
 };
 
 // 정렬 기준 변경 메소드

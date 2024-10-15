@@ -1,7 +1,6 @@
 <template>
 	<div>
-		<AddressHeader :isNotificationRead="isNotificationRead"></AddressHeader>
-
+		<AddressHeader></AddressHeader>
 		<div class="mainpage-bg">
 			<!--welcome + 문구 + 카드-->
 			<img
@@ -144,7 +143,6 @@ const orderList = ref([]);
 const getUserName = computed(() => store.state.auth.userName);
 const getUserId = computed(() => store.state.auth.userId);
 
-const notifications = ref([]);
 const products = ref([]);
 const nearestProducts = ref([]);
 
@@ -167,7 +165,6 @@ onMounted(() => {
 		isVisible.value = false;
 	}
 	fetchNearestProducts();
-	fetchNotifications();
 	fetchOrders();
 	isLocationNow();
 });
@@ -186,19 +183,19 @@ const fetchUserDetails = async () => {
 	}
 };
 
-// 알림 가져오기
-const fetchNotifications = async () => {
-	try {
-		const res = await http.get(`/api/notifications/${getUserId.value}`);
-		notifications.value = res.data.data;
-	} catch (error) {
-		console.log('Error', error);
-	}
-};
-// 읽지 않은 알림이 있는지 확인
-const isNotificationRead = computed(() => {
-	return notifications.value.some(noti => !noti.isRead);
-});
+// // 알림 가져오기
+// const fetchNotifications = async () => {
+// 	try {
+// 		const res = await http.get(`/api/notifications/${getUserId.value}`);
+// 		notifications.value = res.data.data;
+// 	} catch (error) {
+// 		console.log('Error', error);
+// 	}
+// };
+// // 읽지 않은 알림이 있는지 확인
+// const isNotificationRead = computed(() => {
+// 	return notifications.value.some(noti => !noti.isRead);
+// });
 
 // 주소설정안돼있으면 주소록으로 보내버려~
 const isLocationNow = async () => {

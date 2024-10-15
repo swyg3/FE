@@ -60,7 +60,8 @@ const kakaoSignIn = async () => {
 
 	Kakao.Auth.authorize({
 		// redirectUri: 'http://localhost:5174',
-		redirectUri: 'https://moonco.swygbro.com',
+		// redirectUri: 'https://moonco.swygbro.com',
+		redirectUri: 'https://mooncotest.vercel.app',
 	});
 };
 
@@ -68,7 +69,8 @@ const googleSignIn = async () => {
 	const clientId = import.meta.env.VITE_APP_GOOGLE_KEY;
 
 	// const redirectUri = 'http://localhost:5174';
-	const redirectUri = 'https://moonco.swygbro.com';
+	// const redirectUri = 'https://moonco.swygbro.com';
+	const redirectUri = 'https://mooncotest.vercel.app';
 
 	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
 

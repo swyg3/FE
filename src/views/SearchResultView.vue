@@ -82,6 +82,8 @@ onMounted(() => {
 const fetchSearchResults = async () => {
 	const { searchTerm, sortBy } = route.params;
 	encodeSearchTerm.value = encodeURIComponent(searchTerm);
+	console.log(encodeURIComponent('딸기 타르트'));
+	console.log(encodeURIComponent('딸기타르트'));
 	try {
 		const res = await http.get(
 			`/api/products/search?searchTerm=${encodeSearchTerm.value}&sortBy=${sortBy}&order=desc&limit=100`,

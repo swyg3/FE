@@ -11,8 +11,10 @@ export const signOutApi = () => http.post('/api/auth/logout');
 export const cancelMembershipApi = payload =>
 	http.delete(`/api/users/deactivate/${payload}`);
 //gps동의
-export const gpsConsentApi = payload =>
-	http.patch(`/api/users/settings/gps/${payload}`, { agree: true });
+export const gpsConsentApi = payload => {
+	console.log('payload', payload);
+	return http.put(`/api/locations/first/address/insert`, payload);
+};
 
 export const saveAddressApi = payload =>
 	http.post('/api/locations/address/insert', payload);

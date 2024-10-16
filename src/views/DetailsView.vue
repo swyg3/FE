@@ -2,7 +2,7 @@
 	<div class="min-h-[812px] bg-white">
 		<div class="w-[375px] pb-[88px] bg-white color-black">
 			<!--img-->
-			<div class="w-full h-[240px] relative">
+			<div class="w-full h-[240px]">
 				<img
 					:src="fullImageUrl(product.productImageUrl)"
 					@click="openImageInNewTab(fullImageUrl(product.productImageUrl))"

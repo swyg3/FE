@@ -51,10 +51,6 @@
 import { ref } from 'vue';
 
 const props = defineProps({
-	currentSort: {
-		type: String,
-		required: true,
-	},
 	sortBy: {
 		type: String,
 		required: true,
@@ -86,7 +82,6 @@ const closeModal = () => {
 };
 const setSort = option => {
 	selectedSort.value = option; // 선택된 정렬 기준 업데이트
-	console.log('selectedsort', selectedSort.value);
 	emit('changeSort', option); // 정렬 기준을 부모 컴포넌트에 전달
 	closeModal();
 };

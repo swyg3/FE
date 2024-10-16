@@ -122,17 +122,21 @@ const openModal = orderId => {
 	selectedOrderId.value = orderId;
 	isModalOpen.value = true;
 };
-
 // ref를 사용해 모달 닫기
 const closeModal = () => {
 	isModalOpen.value = false;
 };
+// 컴포넌트가 마운트되면 주문 목록을 가져옴
+onMounted(() => {
+	fetchOrders();
+});
 
 const fetchOrders = async () => {
 	try {
 		const response = await http.get('/api/order');
 		if (response.data.success) {
 			orderList.value = response.data;
+			console.log(Boolean(orderList.value.orders));
 		} else {
 			console.error(
 				'주문 목록을 가져오는 데 실패했습니다:',
@@ -143,10 +147,6 @@ const fetchOrders = async () => {
 		console.error('Error', error);
 	}
 };
-// 컴포넌트가 마운트되면 주문 목록을 가져옴
-onMounted(() => {
-	fetchOrders();
-});
 
 // 날짜 포맷
 const formatDate = dateString => {

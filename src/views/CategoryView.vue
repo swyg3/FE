@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<div>
-			<TheHeader :text="selectedCategoryName" showSearchIcon:true></TheHeader>
+			<TheHeader
+				:text="selectedCategoryName"
+				:showSearchIcon="true"
+			></TheHeader>
 			<div class="category-list">
 				<CategoryListButton
 					v-for="(cat, index) in categories"
@@ -123,7 +126,6 @@ const changeCategory = async newCategory => {
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
-	console.log('부모에서 openosrtmodal', sortModal.value);
 };
 
 // 정렬 기준 변경 메소드

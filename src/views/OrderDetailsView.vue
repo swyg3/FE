@@ -1,6 +1,6 @@
 <template>
 	<div class="min-h-[812px]">
-		<TheHeader :text="'주문하기'" showSearchIcon="false"></TheHeader>
+		<TheHeader text="주문하기" :showSearchIcon="false"></TheHeader>
 		<div class="bg-white text-black pb-[80px]">
 			<div>
 				<p class="text-baseB px-4 pt-4 pb-2">주문 상품</p>
@@ -298,15 +298,6 @@ const checkbox = item => {
 </script>
 
 <style lang="scss" scoped>
-.header-container {
-	display: flex;
-	height: 48px;
-	width: 375px;
-	padding: 12px 16px;
-	align-items: center;
-	flex-shrink: 0;
-	top: 0;
-}
 .order-img {
 	width: 80px;
 	height: 80px;

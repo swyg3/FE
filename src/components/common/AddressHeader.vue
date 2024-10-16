@@ -82,7 +82,7 @@ const selectedAddress = computed(() => store.state.auth.selectedAddress);
 }
 
 .truncate {
-	width: 200px;
+	max-width: 200px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

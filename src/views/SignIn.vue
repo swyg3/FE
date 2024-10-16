@@ -42,10 +42,7 @@ onMounted(() => {
 	fetchProductCount();
 });
 const fetchProductCount = async () => {
-	console.log('count');
-
 	const response = await fetchProductCountApi();
-	console.log('response', response);
 
 	if (response.data.success === true) {
 		console.log('성공');

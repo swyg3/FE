@@ -21,7 +21,7 @@
 		</p>
 		<!--왼쪽 검색 아이콘-->
 		<button
-			v-if="!showSearchIcon"
+			v-if="showSearchIcon"
 			class="search-style"
 			@click="() => router.push('/search')"
 		>

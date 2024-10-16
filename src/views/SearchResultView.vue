@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<TheHeader :text="'검색결과'" showSearchIcon="false"></TheHeader>
+		<TheHeader text="검색결과" :showSearchIcon="false"></TheHeader>
 		<div class="category-bg">
 			<SearchBar @click="router.push('/search')"></SearchBar>
 			<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">

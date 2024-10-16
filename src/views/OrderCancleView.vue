@@ -32,14 +32,6 @@ const router = useRouter();
 	padding: 32px 0;
 	background-color: white;
 }
-.header-container {
-	height: 48px;
-	width: 375px;
-	padding: 12px 16px;
-	justify-content: space-between;
-	text-align: center;
-	background-color: white;
-}
 .order-btn {
 	width: 342px;
 	height: 48px;

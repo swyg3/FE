@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<TheHeader :text="'검색하기'" showSearchIcon="False"></TheHeader>
+		<TheHeader text="검색하기" :showSearchIcon="false"></TheHeader>
 		<div class="explore-bg">
 			<!-- search 이벤트 받음-->
 			<SearchBar @search="handleSearch"></SearchBar>

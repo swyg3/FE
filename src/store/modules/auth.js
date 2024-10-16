@@ -19,7 +19,6 @@ export default {
 	getters: {},
 	mutations: {
 		SET_CLEAR_TOKEN(state) {
-			console.log('토큰 clear');
 			state.userEmail = '';
 			state.userId = '';
 			state.userType = '';

@@ -123,7 +123,6 @@ import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps(['visible', 'popupType', 'text']);
-console.log('props', props);
 
 const router = useRouter();
 
@@ -147,7 +146,6 @@ const gpsConsent = () => {
 };
 
 const goToLogin = () => {
-	console.log('goToLogin');
 	router.push('/');
 };
 const confirmMembership = () => {

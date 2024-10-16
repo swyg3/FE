@@ -169,20 +169,25 @@ onMounted(() => {
 	fetchNearestProducts();
 	fetchNotifications();
 	fetchOrders();
-	isLocationNow();
 });
 
 const fetchUserDetails = async () => {
-	const response = await fetchUserDetailsApi(getUserId.value);
+	store.commit('SET_IS_LOADING', true);
+	try {
+		const response = await fetchUserDetailsApi(getUserId.value);
 
-	if (response.data.success === true) {
-		const data = response.data.data;
-		console.log('data', data);
+		if (response.data.success === true) {
+			const data = response.data.data;
 
-		level.value = data.level;
-		title.value = data.title;
-		orderCount.value = data.orderCount;
-		totalSavings.value = data.totalSavings;
+			level.value = data.level;
+			title.value = data.title;
+			orderCount.value = data.orderCount;
+			totalSavings.value = data.totalSavings;
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
@@ -201,21 +206,20 @@ const isNotificationRead = computed(() => {
 });
 
 // 주소설정안돼있으면 주소록으로 보내버려~
-const isLocationNow = async () => {
-	try {
-		const response = await http.get('/api/locations/address/getall');
-		if (!response.data.length) {
-			alert('주소를 설정 해주세요!');
-			router.push('/addressBook');
-		}
-	} catch (error) {
-		console.log('Error', error);
-	}
-};
+// const isLocationNow = async () => {
+// 	try {
+// 		const response = await http.get('/api/locations/address/getall');
+// 		if (!response.data.length) {
+// 			alert('주소를 설정 해주세요!');
+// 			router.push('/addressBook');
+// 		}
+// 	} catch (error) {
+// 		console.log('Error', error);
+// 	}
+// };
 
 const gpsConsent = async () => {
 	store.commit('SET_IS_LOADING', true);
-	console.log('gpsConsent2');
 
 	try {
 		if (navigator.geolocation) {
@@ -226,12 +230,10 @@ const gpsConsent = async () => {
 
 					if (position.coords.latitude && position.coords.longitude) {
 						const response = await gpsConsentApi({
-							longitude: position.coords.latitude,
-							latitude: position.coords.longitude,
+							longitude: position.coords.longitude,
+							latitude: position.coords.latitude,
 							agree: true,
 						});
-
-						console.log('response111', response);
 
 						if (response.status === 200) {
 							store.commit('auth/SET_GPS_CONSENT', true);
@@ -268,7 +270,6 @@ const gpsConsent = async () => {
 	} catch (error) {
 		console.log('Error', error);
 		alert('error', error);
-	} finally {
 	}
 };
 

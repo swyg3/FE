@@ -111,28 +111,34 @@ onMounted(() => {
 });
 
 const fetchUserDetails = async () => {
-	const response = await fetchUserDetailsApi(userId.value);
+	store.commit('SET_IS_LOADING', true);
+	try {
+		const response = await fetchUserDetailsApi(userId.value);
 
-	if (response.data.success === true) {
-		const data = response.data.data;
-		console.log('data', data);
+		if (response.data.success === true) {
+			const data = response.data.data;
 
-		level.value = data.level;
-		title.value = data.title;
-		orderCount.value = data.orderCount;
-		totalSavings.value = data.totalSavings;
+			level.value = data.level;
+			title.value = data.title;
+			orderCount.value = data.orderCount;
+			totalSavings.value = data.totalSavings;
 
-		const date = new Date(data.registeredAt);
+			const date = new Date(data.registeredAt);
 
-		const year = date.getFullYear().toString().substring(2);
+			const year = date.getFullYear().toString().substring(2);
 
-		// 원하는 형식으로 날짜를 포맷 (연도 조정 포함)
-		const formattedDate = `${year}년 ${date.toLocaleDateString('ko-KR', {
-			month: 'long',
-			day: 'numeric',
-		})}`;
+			// 원하는 형식으로 날짜를 포맷 (연도 조정 포함)
+			const formattedDate = `${year}년 ${date.toLocaleDateString('ko-KR', {
+				month: 'long',
+				day: 'numeric',
+			})}`;
 
-		periodOfActivity.value = formattedDate;
+			periodOfActivity.value = formattedDate;
+		}
+	} catch (error) {
+		alert(error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
@@ -239,7 +245,7 @@ const closeModal = () => {
 }
 
 .truncate {
-	width: 200px;
+	max-width: 200px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

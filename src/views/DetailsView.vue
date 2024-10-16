@@ -10,7 +10,7 @@
 					class="w-full h-[240px] object-cover"
 				/>
 				<!--뒤로가기버튼-->
-				<button @click="this.$router.go(-1)" class="back-absolute-style">
+				<button @click="$router.go(-1)" class="back-absolute-style">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -26,7 +26,7 @@
 					</svg>
 				</button>
 				<div class="absolute-style">
-					<button @click="this.$router.go(0)">
+					<button @click="$router.go(0)">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"

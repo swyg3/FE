@@ -6,18 +6,27 @@
 	</div>
 </template>
 
-<script>
-export default {
-	props: {
-		categoryName: String,
-		categoryValue: String,
-		isActive: Boolean,
+<script setup>
+const props = defineProps({
+	categoryName: {
+		type: String,
+		required: true,
 	},
-	methods: {
-		handleClick() {
-			this.$emit('categoryChanged', this.categoryValue);
-		},
+	categoryValue: {
+		type: String,
+		required: true,
 	},
+	isActive: {
+		type: Boolean,
+		required: true,
+	},
+});
+// emit 선언
+const emit = defineEmits(['categoryChanged']);
+
+// 클릭 핸들러 함수
+const handleClick = () => {
+	emit('categoryChanged', props.categoryValue);
 };
 </script>
 

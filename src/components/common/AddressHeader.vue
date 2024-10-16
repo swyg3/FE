@@ -16,7 +16,7 @@
 			</svg>
 		</div>
 		<button
-			v-if="isNotificationRead"
+			v-if="isRead"
 			class="search-style"
 			@click="() => router.push('/notification')"
 		>
@@ -52,19 +52,46 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import http from '@/api/http.js';
+import { ref, computed, onMounted } from 'vue';
+
 const store = useStore();
 const router = useRouter();
 
 const props = defineProps({
-	isNotificationRead: {
-		type: Boolean,
-		required: true,
-	},
+	// isNotificationRead: {
+	// 	type: Boolean,
+	// 	required: true,
+	// },
 });
+
+const notifications = ref([]);
 const selectedAddress = computed(() => store.state.auth.selectedAddress);
+const getUserId = computed(() => store.state.auth.userId);
+const isRead = ref(false);
+
+onMounted(() => {
+	fetchNotifications();
+});
+// 알림 가져오기
+const fetchNotifications = async () => {
+	try {
+		const res = await http.get(`/api/notifications/${getUserId.value}`);
+		notifications.value = res.data.data;
+		// console.log('알림', notifications.value.length);
+		if (notifications.value.length) {
+			isRead.value = true;
+			// console.log('isread t-', Boolean(notifications.value.length));
+		} else {
+			isRead.value = false;
+			// console.log('isread f-', Boolean(notifications.value));
+		}
+	} catch (error) {
+		console.log('Error', error);
+	}
+};
 </script>
 
 <style lang="scss" scoped>

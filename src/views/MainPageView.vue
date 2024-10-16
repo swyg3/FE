@@ -1,7 +1,6 @@
 <template>
 	<div>
-		<AddressHeader :isNotificationRead="isNotificationRead"></AddressHeader>
-
+		<AddressHeader></AddressHeader>
 		<div class="mainpage-bg">
 			<!--welcome + 문구 + 카드-->
 			<img
@@ -94,7 +93,7 @@
 						문코가 매달 전하는 세상의 환경 소식을 들어보세요.
 					</p>
 				</div>
-				<div @click="noContents()" class="mainpage-bottomCard">
+				<div @click="noContents" class="mainpage-bottomCard">
 					<p class="text-baseB">환경 퀴즈 참여하기</p>
 					<div class="mainpage-bottomCard-body">
 						<p>
@@ -111,6 +110,8 @@
 			:text="text"
 			@gpsCancle="gpsCancle"
 			@gpsConsent="gpsConsent"
+			@close-modal="closeModal"
+			@active="isActive"
 		/>
 		<!-- <Modal
 			:visible="isVisible"
@@ -144,7 +145,6 @@ const orderList = ref([]);
 const getUserName = computed(() => store.state.auth.userName);
 const getUserId = computed(() => store.state.auth.userId);
 
-const notifications = ref([]);
 const products = ref([]);
 const nearestProducts = ref([]);
 
@@ -167,9 +167,18 @@ onMounted(() => {
 		isVisible.value = false;
 	}
 	fetchNearestProducts();
-	fetchNotifications();
 	fetchOrders();
 });
+// 콘텐츠 준비중 모달
+const noContents = () => {
+	isVisible.value = true;
+	isActive.value = true;
+	popupType.value = 'noContents';
+};
+const closeModal = () => {
+	isVisible.value = false;
+	isActive.value = false;
+};
 
 const fetchUserDetails = async () => {
 	store.commit('SET_IS_LOADING', true);
@@ -190,20 +199,6 @@ const fetchUserDetails = async () => {
 		store.commit('SET_IS_LOADING', false);
 	}
 };
-
-// 알림 가져오기
-const fetchNotifications = async () => {
-	try {
-		const res = await http.get(`/api/notifications/${getUserId.value}`);
-		notifications.value = res.data.data;
-	} catch (error) {
-		console.log('Error', error);
-	}
-};
-// 읽지 않은 알림이 있는지 확인
-const isNotificationRead = computed(() => {
-	return notifications.value.some(noti => !noti.isRead);
-});
 
 // 주소설정안돼있으면 주소록으로 보내버려~
 // const isLocationNow = async () => {
@@ -276,17 +271,6 @@ const gpsConsent = async () => {
 const gpsCancle = () => {
 	popupType.value = 'service';
 	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
-};
-
-// 콘텐츠 준비중 모달
-const noContents = () => {
-	isVisible.value = true;
-	isActive.value = true;
-	popupType.value = 'noContents';
-};
-const closeModal = () => {
-	isVisible.value = false;
-	isActive.value = false;
 };
 
 // 추천순 아이템 리스트 불러오기

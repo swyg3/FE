@@ -23,7 +23,9 @@
 			<input
 				type="text"
 				v-model="searchQuery"
+				@input="onInput"
 				@keyup.enter="emitSearch"
+				ref="searchInput"
 				placeholder="음식이나 가게 이름을 입력해주세요"
 				class="search-bar-input"
 			/>
@@ -32,18 +34,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const searchQuery = ref('');
-
+const searchInput = ref(null);
 // setup 함수의 두 번째 인자로 emit을 받아 사용
 const emit = defineEmits(['search']);
 
-// 부모 컴포넌트에 search 전달
+onMounted(() => {
+	// input focus 되게 => 모든페이지에 적용됨
+	// searchInput.value.focus();
+});
+
+// 엔터 키를 눌렀을 때 검색 되도록
 const emitSearch = () => {
-	emit('search', searchQuery.value);
-	searchQuery.value = '';
+	//공백제거
+	if (searchQuery.value.trim()) {
+		emit('search', searchQuery.value.trim());
+		searchQuery.value = ''; // 검색 후 입력 초기화
+	}
 };
+
+// 실시간 검색 전달 => 바로 api 함수 호출돼서 보류
+// const onInput = () => {
+// 	emit('search', searchQuery.value.trim());
+// };
 </script>
 
 <style lang="scss" scoped>

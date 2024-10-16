@@ -198,11 +198,11 @@ const props = defineProps({
 const product = ref({});
 // 수량 정보
 const quantity = ref(1);
-
+// 메모
 const checkList = ref([false, false, false]);
+// 픽업 시간
+const selectedPickUpTime = ref(null);
 const order = ref([]);
-
-// 라우터 사용
 const route = useRoute();
 const router = useRouter();
 
@@ -213,9 +213,7 @@ const discount = computed(() => {
 
 // 현재 시간
 const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
-
-// 선택된 픽업 시간
-const selectedPickUpTime = ref(null);
+console.log('현재시간', currentTime);
 
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
@@ -244,14 +242,14 @@ const formatNumber = number => {
 
 // 컴포넌트 마운트 시 상품 정보 가져오기
 onMounted(() => {
-	// const productId = route.params.productId;
-	const productId = route.params.id; //확ㅇ닝확인확인확인 무조건.
+	const productId = route.params.id;
 	fetchProductDetail(productId);
 });
 
 // 선택된 픽업 시간을 ISO 형식으로 변환하여 저장
 const setPickUpTime = time => {
 	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
+	console.log('픽업시간', selectedPickUpTime.value);
 };
 
 // 주문 생성 함수
@@ -274,15 +272,18 @@ const createOrder = async () => {
 			],
 			memo: checkList.value,
 		};
+		console.log('픽업타임', orderData.value);
 
 		// API POST 요청
 		const response = await http.post('/api/order', orderData);
 
 		if (response.status === 201) {
 			order.value = response.data.data.data.orderId;
+			console.log('주문성공 오더데이타', orderData);
 			router.push(`/receipt/${order.value}`);
 		} else {
 			alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
+			console.log('주문실패', orderData);
 		}
 	} catch (err) {
 		console.error('Error', err);

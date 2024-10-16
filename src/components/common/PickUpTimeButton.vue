@@ -44,8 +44,9 @@ const timeSlots = ref([]);
 
 // 시간대 생성 함수 (오후 6:00 ~ 오전 2:00)
 const generateTimeSlots = () => {
-	const startTime = dayjs().hour(18).minute(0); // 오후 6:00
-	const endTime = dayjs().add(1, 'day').hour(2).minute(10); // 다음 날 오전 2:00
+	const startTime = dayjs().hour(20).minute(0); // 오후 6:00
+	const endTime = dayjs().hour(23).minute(10); // 오후 6:00
+	// const endTime = dayjs().add(1, 'day').hour(2).minute(10); // 다음 날 오전 2:00
 
 	let time = startTime;
 	while (time.isBefore(endTime)) {

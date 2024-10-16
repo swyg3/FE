@@ -114,6 +114,7 @@ const fetchOrderReceipts = async () => {
 		if (res.data.success) {
 			order.value = res.data.orders[0];
 			product.value = res.data.orderItemsInfo;
+			console.log('resresreceipt', res);
 		} else {
 			console.error('주문 목록을 가져오는 데 실패했습니다:', res.data.message);
 		}

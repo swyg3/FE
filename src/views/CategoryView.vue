@@ -1,15 +1,12 @@
 <template>
 	<div>
 		<div>
-			<TheHeader
-				:text="selectedCategoryName"
-				:showSearchIcon="true"
-			></TheHeader>
+			<TheHeader :text="selectedCategory()" :showSearchIcon="true"></TheHeader>
 			<div class="category-list">
 				<CategoryListButton
-					v-for="(cat, index) in categories"
+					v-for="(cat, index) in simpleCategory"
 					:key="index"
-					:categoryName="cat.name"
+					:categoryLabel="cat.label"
 					:categoryValue="cat.value"
 					:isActive="category === cat.value"
 					@categoryChanged="changeCategory"
@@ -22,7 +19,7 @@
 				<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">
 					<p class="">총 {{ products.length }}개</p>
 					<div class="flex">
-						<button @click="openSortModal">{{ currentSort }}</button>
+						<button @click="openSortModal">{{ selectedSort() }}</button>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -49,7 +46,7 @@
 		</div>
 		<!--sortModal로 자식에서 가져오기-->
 		<CategorySortModal
-			@changeSort="changeSort"
+			@sortByChanged="changeSortBy"
 			:sortBy="sortBy"
 			ref="sortModal"
 			class="absolute"
@@ -60,118 +57,88 @@
 <script setup>
 import TheHeader from '@/components/common/TheHeader.vue';
 import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
-import http from '@/api/http.js';
+import {
+	categoryOption,
+	sortByOption,
+	fetchProductApi,
+	productDetailPageUrl,
+	categoryPageUrl,
+} from '@/api/product.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
 import CategoryListButton from '@/components/common/CategoryListButton.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
 const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
-const category = ref('ALL'); // 기본 카테고리
-const sortBy = ref('distanceDiscountScore'); // 기본 정렬 방식
+const category = ref(route.params.category || 'ALL'); // 기본 카테고리
+const sortBy = ref(route.params.sortBy || 'distanceDiscountScore'); // 기본 정렬 방식
 const sortModal = ref(null); // 자식에서 가져오기(categorysortmodal)
 const products = ref([]);
-const categories = ref([
-	{ name: '전체', value: 'ALL' },
-	{ name: '한식', value: 'KOREAN' },
-	{ name: '일식', value: 'JAPANESE' },
-	{ name: '중식', value: 'CHINESE' },
-	{ name: '분식', value: 'SNACK' },
-	{ name: '양식', value: 'WESTERN' },
-	{ name: '디저트', value: 'DESSERT' },
-]);
-
-// header text
-const selectedCategoryName = computed(() => {
-	const selectedCategory = categories.value.find(
-		cat => cat.value === category.value,
-	);
-	return selectedCategory ? selectedCategory.name : '전체';
-});
+const simpleCategory = categoryOption.map(({ label, value }) => ({
+	label,
+	value,
+}));
 
 onMounted(() => {
-	// URL에서 카테고리와 정렬 방식 가져오기
-	category.value = route.params.category || 'ALL';
-	sortBy.value = route.params.sort || 'distanceDiscountScore';
-	// 초기 데이터 요청
 	fetchCategoryProducts();
 });
 
+// 선택된 카테고리로 label 변경 o
+const selectedCategory = () => {
+	const selectecedCategoryValue = simpleCategory.find(
+		option => option.value === category.value,
+	);
+	return selectecedCategoryValue ? selectecedCategoryValue.label : '전체';
+};
+// 선택된 정렬방식으로 label 변경 o
+const selectedSort = () => {
+	const selectecedSortValue = sortByOption.find(
+		option => option.value === sortBy.value,
+	);
+	return selectecedSortValue ? selectecedSortValue.label : '문코 추천 순';
+};
+// 상품 리스트 가져오기 o
 const fetchCategoryProducts = async () => {
-	const { category, sortBy } = route.params;
-	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=desc&limit=100`;
 	try {
-		const res = await http.get(apiUrl);
-		products.value = res.data.items;
-	} catch (err) {
-		console.log('Error', err);
+		const response = await fetchProductApi(category.value, sortBy.value);
+		products.value = response.data.items;
+	} catch (error) {
+		console.log('Error', error);
 	}
 };
-const sortOptions = [
-	{ label: '문코 추천 순', value: 'distanceDiscountScore' },
-	{ label: '가까운 순', value: 'distance' },
-	{ label: '할인율 높은 순', value: 'discountRate' },
-];
 
-// 카테고리 변경 메소드
-const changeCategory = async newCategory => {
-	category.value = newCategory; // 카테고리 값 업데이트
-	updateRoute(); // route 업데이트
-	await fetchCategoryProducts(); // 새 카테고리에 맞는 상품 재요청
-	location.reload(); // 강제 새로고침
-};
-
-// ref를 사용해 모달 열기
-const openSortModal = () => {
-	sortModal.value.openModal();
+// 카테고리 버튼 컴포넌트에서 선택된 카테고리 값 받아서 업데이트 o
+const changeCategory = newCategory => {
+	category.value = newCategory;
+	updateRoute();
+	fetchCategoryProducts();
+	// location.reload(); // 강제 새로고침
 };
 
 // 정렬 기준 변경 메소드
-const changeSort = async option => {
+const changeSortBy = async option => {
 	currentSort.value = option.label;
 	sortBy.value = option.value;
 	updateRoute(); // route 업데이트
 	await fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
 };
 
-// route 업데이트 메소드
+// url 업데이트 o
 const updateRoute = () => {
-	router.push(`/category/${category.value}/${sortBy.value}`);
+	router.push(categoryPageUrl(category.value, sortBy.value));
 };
 
-// /name/id로 라우팅
+// 상품 상세 페이지로 이동 o
 const goToDetailPage = product => {
-	router.push(`/details/${product.name}/${product.productId}`);
+	router.push(productDetailPageUrl(product.name, product.productId));
 };
 
-// 경로 변경 시 데이터를 불러오는 watch 함수
-watch(
-	() => route.params, // 경로 파라미터 변경 감지
-	newParams => {
-		category.value = newParams.category || 'ALL';
-		sortBy.value = newParams.sortBy || 'distanceDiscountScore';
-		fetchCategoryProducts();
-	},
-	{ immediate: true }, // 페이지 로드 시에도 즉시 실행
-);
-
-watch(
-	() => route.params.sortBy,
-	newSortBy => {
-		// 기본값 설정
-		const defaultSortValue = 'distanceDiscountScore';
-		currentSort.value = newSortBy || defaultSortValue; // 파라미터 없을 경우 기본값 설정
-
-		// 선택된 sortBy value에 해당하는 label을 찾기
-		const selectedOption = sortOptions.find(
-			option => option.value === (newSortBy || defaultSortValue),
-		);
-		currentSort.value = selectedOption ? selectedOption.label : '문코 추천 순'; // label로 변환
-	},
-	{ immediate: true },
-);
+// ref를 사용해 모달 열기 o
+const openSortModal = () => {
+	sortModal.value.openModal();
+};
 </script>
 
 <style lang="scss" scoped>

@@ -6,15 +6,8 @@
 			<!-- 이미지 카테고리 리스트 -->
 			<div class="category-scroll noScrollBar">
 				<button
-					class="px-2 category-btn"
-					@click="router.push('/category/ALL/distanceDiscountScore')"
-				>
-					<div class="category-all">ALL</div>
-					<p class="category-text">전체</p>
-				</button>
-				<button
-					v-for="category in categories"
-					:key="category.name"
+					v-for="category in categoryOption"
+					:key="category.value"
 					class="px-2 category-btn"
 					@click="router.push(category.route)"
 				>
@@ -128,53 +121,18 @@ import MainItemCard from '@/components/common/MainItemCard.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
-import http from '@/api/http.js';
+import {
+	categoryOption,
+	fetchProductApi,
+	productDetailPageUrl,
+} from '@/api/product.js';
 import AddressHeader from '@/components/common/AddressHeader.vue';
+import store from '@/store';
 
 const router = useRouter();
 const products = ref([]);
 const nearestProducts = ref([]);
 const discountRateProducts = ref([]);
-
-// 카테고리 배열 정의
-const categories = [
-	{
-		name: 'KOREAN',
-		label: '한식',
-		img: '/category/koreanFood.png',
-		route: '/category/KOREAN/distanceDiscountScore',
-	},
-	{
-		name: 'JAPANESE',
-		label: '일식',
-		img: '/category/japaneseFood.png',
-		route: '/category/JAPANESE/distanceDiscountScore',
-	},
-	{
-		name: 'CHINESE',
-		label: '중식',
-		img: '/category/chineseFood.png',
-		route: '/category/CHINESE/distanceDiscountScore',
-	},
-	{
-		name: 'SNACK',
-		label: '분식',
-		img: '/category/snackFood.png',
-		route: '/category/SNACK/distanceDiscountScore',
-	},
-	{
-		name: 'WESTERN',
-		label: '양식',
-		img: '/category/westernFood.png',
-		route: '/category/WESTERN/distanceDiscountScore',
-	},
-	{
-		name: 'DESSERT',
-		label: '디저트',
-		img: '/category/dessert.png',
-		route: '/category/DESSERT/distanceDiscountScore',
-	},
-];
 
 onMounted(() => {
 	fetchRecommendedProducts();
@@ -185,39 +143,39 @@ onMounted(() => {
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
 	try {
-		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=desc&limit=7',
-		);
-		products.value = res.data.items;
+		const response = await fetchProductApi('ALL', 'distanceDiscountScore');
+		products.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 // 거리순 아이템 리스트 불러오기
 const fetchNearestProducts = async () => {
 	try {
-		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distance&order=desc&limit=7',
-		);
-		nearestProducts.value = res.data.items;
+		const response = await fetchProductApi('ALL', 'distance');
+		nearestProducts.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 // 할인순 아이템 리스트 불러오기
 const fetchDiscountrateProducts = async () => {
 	try {
-		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=discountRate&order=desc&limit=7',
-		);
-		discountRateProducts.value = res.data.items;
+		const response = await fetchProductApi('ALL', 'discountRate');
+		discountRateProducts.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
 const goToDetailPage = product => {
-	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
+	router.push(productDetailPageUrl(product.name, product.productId));
 };
 </script>
 

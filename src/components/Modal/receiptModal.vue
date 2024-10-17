@@ -78,11 +78,18 @@
 				있어요:-)
 			</p>
 		</div>
-		<button @click="CancelOrder()" class="order-btn">주문취소하기</button>
+		<button
+			@click="CancelOrder()"
+			:disabled="isPickupTimeNear"
+			class="order-btn"
+			:class="{ disabledBtn: isPickupTimeNear }"
+		>
+			주문취소하기
+		</button>
 	</div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getReceiptApi, deleteOrderApi } from '@/api/product.js';
 import { useStore } from 'vuex';
@@ -126,7 +133,7 @@ const fetchOrderReceipts = async () => {
 		store.commit('SET_IS_LOADING', false);
 	}
 };
-
+// 주문 취소 버튼
 const CancelOrder = async () => {
 	try {
 		const response = await deleteOrderApi(props.orderId);
@@ -137,10 +144,19 @@ const CancelOrder = async () => {
 		store.commit('SET_IS_LOADING', false);
 	}
 };
+
+// 주문 취소 버튼 비활성화
+const isPickupTimeNear = computed(() => {
+	const currentTime = new Date().getTime();
+	const pickupTime = new Date(order.value.pickupTime).getTime();
+	const timeDifference = pickupTime - currentTime; 
+	return timeDifference <= 5 * 60 * 1000; // 5분 이하일 경우 true
+});
+
 // 날짜 포맷
 const formatDate = dateString => {
 	if (!dateString) {
-		return ''; // dateString이 없으면 빈 문자열 반환
+		return '';
 	}
 	// "YYYY-MM-DD HH:MM:SS" 형식의 문자열을 Date 객체로 변환
 	const [datePart, timePart] = dateString.split(' ');
@@ -224,5 +240,8 @@ const formatNumber = number => {
 .table-border {
 	padding-right: 8px;
 	border-top: 1px solid #e4e4e4;
+}
+.disabledBtn {
+	background-color: #BEBEBE;
 }
 </style>

@@ -61,16 +61,18 @@ import {
 	categoryOption,
 	sortByOption,
 	fetchProductApi,
-	productDetailPageUrl,
-	categoryPageUrl,
+	goToproductDetailPageUrl,
+	goTocategoryPageUrl,
 } from '@/api/product.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
 import CategoryListButton from '@/components/common/CategoryListButton.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 
 const route = useRoute();
 const router = useRouter();
+const store = useStore();
 const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
 const category = ref(route.params.category || 'ALL'); // 기본 카테고리
 const sortBy = ref(route.params.sortBy || 'distanceDiscountScore'); // 기본 정렬 방식
@@ -106,6 +108,8 @@ const fetchCategoryProducts = async () => {
 		products.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
@@ -127,12 +131,12 @@ const changeSortBy = async option => {
 
 // url 업데이트 o
 const updateRoute = () => {
-	router.push(categoryPageUrl(category.value, sortBy.value));
+	router.push(goTocategoryPageUrl(category.value, sortBy.value));
 };
 
 // 상품 상세 페이지로 이동 o
 const goToDetailPage = product => {
-	router.push(productDetailPageUrl(product.name, product.productId));
+	router.push(goToproductDetailPageUrl(product.name, product.productId));
 };
 
 // ref를 사용해 모달 열기 o

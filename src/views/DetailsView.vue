@@ -109,12 +109,15 @@
 		></OrderCountModal>
 	</div>
 </template>
+
 <script setup>
-import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
 import OrderCountModal from '@/components/Modal/orderCountModal.vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
+import { getProductDetailAPi } from '@/api/product.js';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
 const center = ref({ lat: null, lng: null });
 
@@ -140,13 +143,15 @@ onMounted(() => {
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
 	try {
-		const res = await http.get(`/api/products/get/${props.id}`);
+		const res = await getProductDetailAPi(props.id);
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
 		console.log(product.value);
 	} catch (err) {
 		console.error(err);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
@@ -181,6 +186,7 @@ const closeModal = () => {
 	isModalOpen.value = false;
 };
 </script>
+
 <style lang="scss" scoped>
 .back-absolute-style {
 	position: absolute;

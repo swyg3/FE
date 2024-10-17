@@ -174,15 +174,31 @@
 		</div>
 	</div>
 </template>
+
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import http from '@/api/http.js';
 import PickUpTimeButton from '@/components/common/PickUpTimeButton.vue';
 import dayjs from 'dayjs';
 import { useStore } from 'vuex';
+import {
+	getProductDetailAPi,
+	orderProductApi,
+	goToReceiptUrl,
+} from '@/api/product.js';
+
+const route = useRoute();
+const router = useRouter();
 const store = useStore();
-// props 정의
+// 상품 정보
+const product = ref({});
+// 수량 정보
+const quantity = ref(1);
+// 환경 체크 박스 메모
+const checkList = ref([false, false, false]);
+// 픽업 시간
+const selectedPickUpTime = ref(null);
+const order = ref([]);
 const props = defineProps({
 	name: {
 		type: String,
@@ -193,32 +209,14 @@ const props = defineProps({
 		required: true,
 	},
 });
-
-// 상품 정보
-const product = ref({});
-// 수량 정보
-const quantity = ref(1);
-// 메모
-const checkList = ref([false, false, false]);
-// 픽업 시간
-const selectedPickUpTime = ref(null);
-const order = ref([]);
-const route = useRoute();
-const router = useRouter();
-
-// 할인된 금액 계산 (computed 사용)
-const discount = computed(() => {
-	return product.value.originalPrice - product.value.discountedPrice;
+onMounted(() => {
+	const productId = route.params.id;
+	fetchProductDetail(productId);
 });
-
-// 현재 시간
-const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
-console.log('현재시간', currentTime);
-
 // 상품 정보 가져오기 함수
 const fetchProductDetail = async () => {
 	try {
-		const res = await http.get(`/api/products/get/${props.id}`);
+		const res = await getProductDetailAPi(props.id);
 		product.value = res.data.data;
 		// route.params에서 quantity 파라미터를 받아옴
 		quantity.value = route.params.quantity
@@ -226,8 +224,14 @@ const fetchProductDetail = async () => {
 			: 1;
 	} catch (err) {
 		console.error(err);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
+// 할인된 금액 계산
+const discount = computed(() => {
+	return product.value.originalPrice - product.value.discountedPrice;
+});
 
 // 이미지 경로 변환 함수
 const fullImageUrl = imagePath => {
@@ -239,19 +243,17 @@ const fullImageUrl = imagePath => {
 const formatNumber = number => {
 	return new Intl.NumberFormat().format(number);
 };
-
-// 컴포넌트 마운트 시 상품 정보 가져오기
-onMounted(() => {
-	const productId = route.params.id;
-	fetchProductDetail(productId);
-});
-
+const checkbox = item => {
+	checkList.value[item] = !checkList.value[item];
+};
+// 현재 시간
+const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
+console.log('현재시간', currentTime);
 // 선택된 픽업 시간을 ISO 형식으로 변환하여 저장
 const setPickUpTime = time => {
 	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DD HH:mm:ss');
 	console.log('픽업시간', selectedPickUpTime.value);
 };
-
 // 주문 생성 함수
 const createOrder = async () => {
 	try {
@@ -271,28 +273,20 @@ const createOrder = async () => {
 			],
 			memo: checkList.value,
 		};
-		console.log('픽업타임', orderData.value);
-
-		// API POST 요청
-		const response = await http.post('/api/order', orderData);
-
+		const response = await orderProductApi(orderData);
 		if (response.status === 201) {
 			order.value = response.data.data.data.orderId;
-			console.log('주문성공 오더데이타', orderData);
-			router.push(`/receipt/${order.value}`);
+			router.push(goToReceiptUrl(order.value));
 		} else {
 			alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
 			console.log('주문실패', orderData);
 		}
-	} catch (err) {
-		console.error('Error', err);
+	} catch (error) {
+		console.error('Error', error);
 		alert('주문 중 오류가 발생했습니다. 다시 시도해주세요.');
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
-};
-
-// checkbox
-const checkbox = item => {
-	checkList.value[item] = !checkList.value[item];
 };
 </script>
 

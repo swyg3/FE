@@ -5,12 +5,17 @@ export const fetchProductApi = (category, sortBy) =>
 	http.get(
 		`/api/products/category?category=${category}&sortBy=${sortBy}&order=desc&limit=100`,
 	);
+// 상품 상세 정보 가져오기 api
+export const getProductDetailAPi = id => http.get(`/api/products/get/${id}`);
+// 주문하기 api
+export const orderProductApi = orderData => http.post('/api/order', orderData);
 // 상품 상세 페이지 경로
-export const productDetailPageUrl = (category, sortBy) =>
-	`/details/${category}/${sortBy}`;
+export const goToproductDetailPageUrl = (name, id) => `/details/${name}/${id}`;
 // 카테고리, 정렬기준 변경에 따른 페이지 경로
-export const categoryPageUrl = (category, sortBy) =>
+export const goTocategoryPageUrl = (category, sortBy) =>
 	`/category/${category}/${sortBy}`;
+// 영수증 경로
+export const goToReceiptUrl = order => `/receipt/${order}`;
 // 주문 리스트 가져오기 api
 export const orderListApi = () => http.get('/api/order');
 export const categoryOption = [

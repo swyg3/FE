@@ -127,9 +127,10 @@ import {
 	productDetailPageUrl,
 } from '@/api/product.js';
 import AddressHeader from '@/components/common/AddressHeader.vue';
-import store from '@/store';
+import { useStore } from 'vuex';
 
 const router = useRouter();
+const store = useStore();
 const products = ref([]);
 const nearestProducts = ref([]);
 const discountRateProducts = ref([]);

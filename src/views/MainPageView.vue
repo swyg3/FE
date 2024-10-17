@@ -123,7 +123,7 @@ import { ref, onMounted, computed } from 'vue';
 import { gpsConsentApi, fetchUserDetailsApi } from '@/api/auth.js';
 import {
 	fetchProductApi,
-	productDetailPageUrl,
+	goToproductDetailPageUrl,
 	orderListApi,
 } from '@/api/product.js';
 import MainItemCard from '@/components/common/MainItemCard.vue';
@@ -272,7 +272,7 @@ const fetchNearestProducts = async () => {
 };
 // 상품 상세페이지로
 const goToDetailPage = product => {
-	router.push(productDetailPageUrl(product.name, product.productId));
+	router.push(goToproductDetailPageUrl(product.name, product.productId));
 };
 // 주문 내역 있는지 확인
 const fetchOrders = async () => {

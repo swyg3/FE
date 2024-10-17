@@ -87,24 +87,24 @@ onMounted(() => {
 	fetchCategoryProducts();
 });
 
-// 선택된 카테고리로 label 변경 o
+// 선택된 카테고리로 label 변경
 const selectedCategory = () => {
 	const selectecedCategoryValue = simpleCategory.find(
 		option => option.value === category.value,
 	);
 	return selectecedCategoryValue ? selectecedCategoryValue.label : '전체';
 };
-// 선택된 정렬방식으로 label 변경 o
+// 선택된 정렬방식으로 label 변경
 const selectedSort = () => {
 	const selectecedSortValue = sortByOption.find(
 		option => option.value === sortBy.value,
 	);
 	return selectecedSortValue ? selectecedSortValue.label : '문코 추천 순';
 };
-// 상품 리스트 가져오기 o
+// 상품 리스트 가져오기
 const fetchCategoryProducts = async () => {
 	try {
-		const response = await fetchProductApi(category.value, sortBy.value);
+		const response = await fetchProductApi(category.value, sortBy.value, 100);
 		products.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
@@ -113,7 +113,7 @@ const fetchCategoryProducts = async () => {
 	}
 };
 
-// 카테고리 버튼 컴포넌트에서 선택된 카테고리 값 받아서 업데이트 o
+// 카테고리 버튼 컴포넌트에서 선택된 카테고리 값 받아서 업데이트 
 const changeCategory = newCategory => {
 	category.value = newCategory;
 	updateRoute();
@@ -121,25 +121,25 @@ const changeCategory = newCategory => {
 	// location.reload(); // 강제 새로고침
 };
 
-// 정렬 기준 변경 메소드
-const changeSortBy = async option => {
+// 정렬 기준 변경
+const changeSortBy = option => {
 	currentSort.value = option.label;
 	sortBy.value = option.value;
 	updateRoute(); // route 업데이트
-	await fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+	fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
 };
 
-// url 업데이트 o
+// url 업데이트
 const updateRoute = () => {
 	router.push(goTocategoryPageUrl(category.value, sortBy.value));
 };
 
-// 상품 상세 페이지로 이동 o
+// 상품 상세 페이지로 이동
 const goToDetailPage = product => {
 	router.push(goToproductDetailPageUrl(product.name, product.productId));
 };
 
-// ref를 사용해 모달 열기 o
+// ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
 };

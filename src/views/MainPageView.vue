@@ -255,7 +255,7 @@ const gpsCancle = () => {
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
 	try {
-		const response = await fetchProductApi('ALL', 'distanceDiscountScore');
+		const response = await fetchProductApi('ALL', 'distanceDiscountScore', 7);
 		products.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
@@ -264,7 +264,7 @@ const fetchRecommendedProducts = async () => {
 // 거리순 아이템 리스트 불러오기
 const fetchNearestProducts = async () => {
 	try {
-		const response = await fetchProductApi('ALL', 'distance');
+		const response = await fetchProductApi('ALL', 'distance', 7);
 		nearestProducts.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);

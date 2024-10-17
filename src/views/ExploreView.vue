@@ -124,7 +124,7 @@ import { onMounted, ref } from 'vue';
 import {
 	categoryOption,
 	fetchProductApi,
-	productDetailPageUrl,
+	goToproductDetailPageUrl,
 } from '@/api/product.js';
 import AddressHeader from '@/components/common/AddressHeader.vue';
 import { useStore } from 'vuex';
@@ -144,7 +144,7 @@ onMounted(() => {
 // 추천순 아이템 리스트 불러오기
 const fetchRecommendedProducts = async () => {
 	try {
-		const response = await fetchProductApi('ALL', 'distanceDiscountScore');
+		const response = await fetchProductApi('ALL', 'distanceDiscountScore', 7);
 		products.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
@@ -155,7 +155,7 @@ const fetchRecommendedProducts = async () => {
 // 거리순 아이템 리스트 불러오기
 const fetchNearestProducts = async () => {
 	try {
-		const response = await fetchProductApi('ALL', 'distance');
+		const response = await fetchProductApi('ALL', 'distance', 7);
 		nearestProducts.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
@@ -166,7 +166,7 @@ const fetchNearestProducts = async () => {
 // 할인순 아이템 리스트 불러오기
 const fetchDiscountrateProducts = async () => {
 	try {
-		const response = await fetchProductApi('ALL', 'discountRate');
+		const response = await fetchProductApi('ALL', 'discountRate', 7);
 		discountRateProducts.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
@@ -176,7 +176,7 @@ const fetchDiscountrateProducts = async () => {
 };
 
 const goToDetailPage = product => {
-	router.push(productDetailPageUrl(product.name, product.productId));
+	router.push(goToproductDetailPageUrl(product.name, product.productId));
 };
 </script>
 

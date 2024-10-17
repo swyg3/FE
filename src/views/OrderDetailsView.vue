@@ -82,7 +82,12 @@
 				</div>
 			</div>
 			<div class="order-btn-div">
-				<button @click="createOrder" class="order-btn">
+				<button
+					@click="createOrder"
+					:disabled="isPickUpTimeSelected"
+					class="order-btn"
+					:class="{ disabledBtn: isPickUpTimeSelected }"
+				>
 					{{ formatNumber(product.discountedPrice * quantity) }}원 주문하기
 				</button>
 			</div>
@@ -117,6 +122,7 @@ const checkList = ref([false, false, false]);
 // 픽업 시간
 const selectedPickUpTime = ref(null);
 const order = ref([]);
+const isPickUpTimeSelected = ref(true);
 const props = defineProps({
 	name: {
 		type: String,
@@ -167,6 +173,7 @@ const currentTime = ref(dayjs().format('YYYY-MM-DD HH:mm'));
 // 선택된 픽업 시간을 ISO 형식으로 변환하여 저장
 const setPickUpTime = time => {
 	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DD HH:mm:ss');
+	isPickUpTimeSelected.value = false;
 };
 
 // 주문 생성
@@ -278,6 +285,9 @@ input {
 .checkbox-size {
 	width: 24px;
 	height: 24px;
+}
+.disabledBtn {
+	background-color: #BEBEBE;
 }
 .category-scroll {
 	min-width: 375px;

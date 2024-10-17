@@ -14,8 +14,12 @@ export const searchApi = (word, sortBy) =>
 	http.get(
 		`/api/products/search?searchTerm=${word}&sortBy=${sortBy}&order=desc&limit=100`,
 	);
+// 영수증 가져오기 api
+export const getReceiptApi = orderId => http.get(`/api/order/${orderId}`);
 // 주문 리스트 가져오기 api
 export const orderListApi = () => http.get('/api/order');
+// 주문 내역 삭제하기 api
+export const deleteOrderApi = orderId => http.delete(`/api/order/${orderId}`);
 // 상품 상세 페이지 경로
 export const goToproductDetailPageUrl = (name, id) => `/details/${name}/${id}`;
 // 카테고리, 정렬기준 변경에 따른 페이지 경로
@@ -74,4 +78,9 @@ export const sortByOption = [
 	{ label: '문코 추천 순', value: 'distanceDiscountScore' },
 	{ label: '가까운 순', value: 'distance' },
 	{ label: '할인율 높은 순', value: 'discountRate' },
+];
+export const checkBoxLabel = [
+	'개인 용기를 가져갈래요',
+	'개인 장바구니를 가져갈래요',
+	'일회용 수저는 필요 없어요',
 ];

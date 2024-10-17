@@ -57,8 +57,8 @@ import { useStore } from 'vuex';
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
-const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
-const sortBy = ref(route.params.sort || 'distanceDiscountScore'); // 기본 정렬 방식
+const currentSort = ref('문코 추천 순');
+const sortBy = ref(route.params.sort || 'distanceDiscountScore');
 const sortModal = ref(null);
 const encodeSearchTerm = ref('');
 const searchTerm = ref(route.params.searchTerm);
@@ -83,8 +83,8 @@ const fetchSearchResults = async () => {
 const changeSortBy = option => {
 	currentSort.value = option.label;
 	sortBy.value = option.value;
-	updateRoute(); // route 업데이트
-	fetchSearchResults(); // 카테고리에 맞는 상품 재요청
+	updateRoute();
+	fetchSearchResults();
 };
 // 선택된 정렬방식으로 label 변경
 const selectedSort = () => {

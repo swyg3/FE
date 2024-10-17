@@ -84,8 +84,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import http from '@/api/http.js';
+import { getReceiptApi, deleteOrderApi } from '@/api/product.js';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const props = defineProps({
 	orderId: {
 		type: Text,
@@ -111,7 +113,7 @@ onMounted(() => {
 
 const fetchOrderReceipts = async () => {
 	try {
-		const res = await http.get(`/api/order/${props.orderId}`);
+		const res = await getReceiptApi(props.orderId);
 		if (res.data.success) {
 			order.value = res.data.orders[0];
 			product.value = res.data.orderItemsInfo;
@@ -120,15 +122,19 @@ const fetchOrderReceipts = async () => {
 		}
 	} catch (err) {
 		console.log('Error', err);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
 const CancelOrder = async () => {
 	try {
-		const res = await http.delete(`/api/order/${props.orderId}`);
+		const response = await deleteOrderApi(props.orderId);
 		router.push('/orderCancel');
 	} catch (error) {
 		console.log('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 // 날짜 포맷

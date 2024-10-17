@@ -141,7 +141,7 @@ onMounted(() => {
 	fetchDiscountrateProducts();
 });
 
-// 추천순 아이템 리스트 불러오기
+// 추천순 아이템 리스트
 const fetchRecommendedProducts = async () => {
 	try {
 		const response = await fetchProductApi('ALL', 'distanceDiscountScore', 7);
@@ -152,7 +152,7 @@ const fetchRecommendedProducts = async () => {
 		store.commit('SET_IS_LOADING', false);
 	}
 };
-// 거리순 아이템 리스트 불러오기
+// 거리순 아이템 리스트
 const fetchNearestProducts = async () => {
 	try {
 		const response = await fetchProductApi('ALL', 'distance', 7);
@@ -163,7 +163,7 @@ const fetchNearestProducts = async () => {
 		store.commit('SET_IS_LOADING', false);
 	}
 };
-// 할인순 아이템 리스트 불러오기
+// 할인순 아이템 리스트
 const fetchDiscountrateProducts = async () => {
 	try {
 		const response = await fetchProductApi('ALL', 'discountRate', 7);

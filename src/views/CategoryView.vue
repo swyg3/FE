@@ -73,9 +73,9 @@ import { useStore } from 'vuex';
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
-const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
-const category = ref(route.params.category || 'ALL'); // 기본 카테고리
-const sortBy = ref(route.params.sortBy || 'distanceDiscountScore'); // 기본 정렬 방식
+const currentSort = ref('문코 추천 순');
+const category = ref(route.params.category || 'ALL');
+const sortBy = ref(route.params.sortBy || 'distanceDiscountScore');
 const sortModal = ref(null); // 자식에서 가져오기(categorysortmodal)
 const products = ref([]);
 const simpleCategory = categoryOption.map(({ label, value }) => ({
@@ -113,20 +113,20 @@ const fetchCategoryProducts = async () => {
 	}
 };
 
-// 카테고리 버튼 컴포넌트에서 선택된 카테고리 값 받아서 업데이트 
+// 카테고리 버튼 컴포넌트에서 선택된 카테고리 값 받아서 업데이트
 const changeCategory = newCategory => {
 	category.value = newCategory;
 	updateRoute();
 	fetchCategoryProducts();
-	// location.reload(); // 강제 새로고침
+	location.reload(); // 강제 새로고침
 };
 
 // 정렬 기준 변경
 const changeSortBy = option => {
 	currentSort.value = option.label;
 	sortBy.value = option.value;
-	updateRoute(); // route 업데이트
-	fetchCategoryProducts(); // 카테고리에 맞는 상품 재요청
+	updateRoute();
+	fetchCategoryProducts();
 };
 
 // url 업데이트

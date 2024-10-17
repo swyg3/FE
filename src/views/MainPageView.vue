@@ -252,7 +252,7 @@ const gpsCancle = () => {
 	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
 };
 
-// 추천순 아이템 리스트 불러오기
+// 추천순 아이템 리스트
 const fetchRecommendedProducts = async () => {
 	try {
 		const response = await fetchProductApi('ALL', 'distanceDiscountScore', 7);
@@ -261,7 +261,7 @@ const fetchRecommendedProducts = async () => {
 		console.log('Error', error);
 	}
 };
-// 거리순 아이템 리스트 불러오기
+// 거리순 아이템 리스트
 const fetchNearestProducts = async () => {
 	try {
 		const response = await fetchProductApi('ALL', 'distance', 7);
@@ -274,6 +274,7 @@ const fetchNearestProducts = async () => {
 const goToDetailPage = product => {
 	router.push(goToproductDetailPageUrl(product.name, product.productId));
 };
+
 // 주문 내역 있는지 확인
 const fetchOrders = async () => {
 	try {

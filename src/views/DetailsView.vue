@@ -2,7 +2,7 @@
 	<div class="min-h-[812px] bg-white">
 		<div class="w-[375px] pb-[88px] bg-white color-black">
 			<!--img-->
-			<div class="w-full h-[240px]">
+			<div class="w-full h-[240px] relative">
 				<img
 					:src="fullImageUrl(product.productImageUrl)"
 					@click="openImageInNewTab(fullImageUrl(product.productImageUrl))"
@@ -144,6 +144,7 @@ const fetchProductDetail = async () => {
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
+		console.log(product.value);
 	} catch (err) {
 		console.error(err);
 	}
@@ -220,7 +221,7 @@ const closeModal = () => {
 	align-items: center;
 	padding-bottom: 32px;
 	background: var(--White, #fff);
-	position: absolute;
+	position: fixed;
 }
 .order-btn {
 	width: 343px;

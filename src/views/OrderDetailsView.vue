@@ -248,7 +248,7 @@ onMounted(() => {
 
 // 선택된 픽업 시간을 ISO 형식으로 변환하여 저장
 const setPickUpTime = time => {
-	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DDTHH:mm:ss[Z]');
+	selectedPickUpTime.value = dayjs(time).format('YYYY-MM-DD HH:mm:ss');
 	console.log('픽업시간', selectedPickUpTime.value);
 };
 
@@ -264,8 +264,7 @@ const createOrder = async () => {
 			status: 'PENDING',
 			items: [
 				{
-					// productId: product.value.productId,
-					productId: '4215a2bf-4c7d-4127-a821-bd0be766d6bb',
+					productId: product.value.productId,
 					quantity: quantity.value,
 					price: product.value.discountedPrice,
 				},

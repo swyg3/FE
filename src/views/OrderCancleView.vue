@@ -15,11 +15,12 @@
 		</div>
 	</div>
 </template>
+
 <script setup>
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
 </script>
+
 <style lang="scss" scoped>
 .mainpage-bg {
 	width: 375px;

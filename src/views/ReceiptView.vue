@@ -92,8 +92,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import http from '@/api/http.js';
+import { getReceiptApi } from '@/api/product.js';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const props = defineProps({
 	orderId: {
 		type: String,
@@ -110,18 +112,23 @@ onMounted(() => {
 
 const fetchOrderReceipts = async () => {
 	try {
-		const res = await http.get(`/api/order/${props.orderId}`);
-		if (res.data.success) {
-			order.value = res.data.orders[0];
-			product.value = res.data.orderItemsInfo;
-			console.log('resresreceipt', res);
+		const response = await getReceiptApi(props.orderId);
+		if (response.data.success) {
+			order.value = response.data.orders[0];
+			product.value = response.data.orderItemsInfo;
 		} else {
-			console.error('주문 목록을 가져오는 데 실패했습니다:', res.data.message);
+			console.error(
+				'주문 목록을 가져오는 데 실패했습니다:',
+				response.data.message,
+			);
 		}
 	} catch (err) {
 		console.log('Error', err);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
+
 // 날짜 포맷
 const formatDate = dateString => {
 	if (!dateString) {
@@ -146,6 +153,7 @@ const formatNumber = number => {
 	return new Intl.NumberFormat().format(number);
 };
 </script>
+
 <style lang="scss" scoped>
 .receipt-bg {
 	width: 375px;

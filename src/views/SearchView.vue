@@ -67,10 +67,12 @@
 import { onMounted, ref } from 'vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
-import http from '@/api/http.js';
+import { searchApi, goToSearchResult } from '@/api/product.js';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 const router = useRouter();
+const store = useStore();
 const products = ref([]);
 const searchHistory = ref([]);
 const searchresultText = ref(true);
@@ -113,14 +115,15 @@ const handleSearch = searchTerm => {
 const fetchSearchResults = async searchTerm => {
 	encodeSearchTerm.value = encodeURIComponent(searchTerm);
 	try {
-		const res = await http.get(
-			`/api/products/search?searchTerm=${encodeSearchTerm.value}&sortBy=distanceDiscountScore&order=desc&limit=100`,
+		const res = await searchApi(
+			encodeSearchTerm.value,
+			'distanceDiscountScore',
 		);
 		products.value = res.data.data;
 		if (products.value.length) {
 			searchresultText.value = true;
 			router.push(
-				`/searchResult/${encodeSearchTerm.value}/distanceDiscountScore`,
+				goToSearchResult(encodeSearchTerm.value, 'distanceDiscountScore'),
 			);
 		} else {
 			searchresultText.value = false;
@@ -128,6 +131,8 @@ const fetchSearchResults = async searchTerm => {
 	} catch (error) {
 		searchresultText.value = false;
 		console.error('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 </script>

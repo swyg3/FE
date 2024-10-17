@@ -1,14 +1,14 @@
 <template>
 	<div>
-		<button @click="handleClick" :class="{ active: isActive }">
-			{{ categoryName }}
+		<button @click="selectCategory" :class="{ active: isActive }">
+			{{ categoryLabel }}
 		</button>
 	</div>
 </template>
 
 <script setup>
 const props = defineProps({
-	categoryName: {
+	categoryLabel: {
 		type: String,
 		required: true,
 	},
@@ -24,8 +24,7 @@ const props = defineProps({
 // emit 선언
 const emit = defineEmits(['categoryChanged']);
 
-// 클릭 핸들러 함수
-const handleClick = () => {
+const selectCategory = () => {
 	emit('categoryChanged', props.categoryValue);
 };
 </script>

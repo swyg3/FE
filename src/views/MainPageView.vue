@@ -113,14 +113,6 @@
 			@close-modal="closeModal"
 			@active="isActive"
 		/>
-		<!-- <Modal
-			:visible="isVisible"
-			:popupType="popupType"
-			:text="text"
-			@noContents="noContents"
-			@close-modal="closeModal"
-			@active="isActive"
-		/> -->
 	</div>
 </template>
 
@@ -129,7 +121,11 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { ref, onMounted, computed } from 'vue';
 import { gpsConsentApi, fetchUserDetailsApi } from '@/api/auth.js';
-import http from '@/api/http.js';
+import {
+	fetchProductApi,
+	goToproductDetailPageUrl,
+	orderListApi,
+} from '@/api/product.js';
 import MainItemCard from '@/components/common/MainItemCard.vue';
 import AddressHeader from '@/components/common/AddressHeader.vue';
 
@@ -140,20 +136,18 @@ const isVisible = ref(false);
 const popupType = ref('');
 const isActive = ref(false);
 const text = ref('');
-const orderList = ref([]);
+
+const level = ref(0);
+const title = ref('');
+const orderCount = ref(0);
+const totalSavings = ref(0);
 
 const getUserName = computed(() => store.state.auth.userName);
 const getUserId = computed(() => store.state.auth.userId);
 
 const products = ref([]);
 const nearestProducts = ref([]);
-
-// const category = ref('ALL');
-// const sortBy = ref('distanceDiscountScore');
-const level = ref(0);
-const title = ref('');
-const orderCount = ref(0);
-const totalSavings = ref(0);
+const orderList = ref('');
 
 onMounted(() => {
 	fetchUserDetails();
@@ -175,6 +169,7 @@ const noContents = () => {
 	isActive.value = true;
 	popupType.value = 'noContents';
 };
+// 모달 닫기
 const closeModal = () => {
 	isVisible.value = false;
 	isActive.value = false;
@@ -200,29 +195,14 @@ const fetchUserDetails = async () => {
 	}
 };
 
-// 주소설정안돼있으면 주소록으로 보내버려~
-// const isLocationNow = async () => {
-// 	try {
-// 		const response = await http.get('/api/locations/address/getall');
-// 		if (!response.data.length) {
-// 			alert('주소를 설정 해주세요!');
-// 			router.push('/addressBook');
-// 		}
-// 	} catch (error) {
-// 		console.log('Error', error);
-// 	}
-// };
-
 const gpsConsent = async () => {
 	store.commit('SET_IS_LOADING', true);
-
 	try {
 		if (navigator.geolocation) {
 			// GPS 위치 요청
 			navigator.geolocation.getCurrentPosition(
 				async position => {
 					// 성공 시: 위도와 경도 설정
-
 					if (position.coords.latitude && position.coords.longitude) {
 						const response = await gpsConsentApi({
 							longitude: position.coords.longitude,
@@ -241,7 +221,6 @@ const gpsConsent = async () => {
 					}
 					store.commit('SET_IS_LOADING', false);
 				},
-
 				error => {
 					switch (error.code) {
 						case error.PERMISSION_DENIED:
@@ -273,37 +252,35 @@ const gpsCancle = () => {
 	text.value = 'gps 동의를 안하면 이용이 어렵습니다.';
 };
 
-// 추천순 아이템 리스트 불러오기
+// 추천순 아이템 리스트
 const fetchRecommendedProducts = async () => {
-	const apiUrl = `/api/products/category?category=ALL&sortBy=distanceDiscountScore&order=desc&limit=7`;
 	try {
-		const res = await http.get(apiUrl);
-		products.value = res.data.items;
+		const response = await fetchProductApi('ALL', 'distanceDiscountScore', 7);
+		products.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
 	}
 };
-// 거리순 아이템 리스트 불러오기
+// 거리순 아이템 리스트
 const fetchNearestProducts = async () => {
 	try {
-		const res = await http.get(
-			'/api/products/category?category=ALL&sortBy=distance&order=desc&limit=7',
-		);
-		nearestProducts.value = res.data.items;
+		const response = await fetchProductApi('ALL', 'distance', 7);
+		nearestProducts.value = response.data.items;
 	} catch (error) {
 		console.log('Error', error);
 	}
 };
+// 상품 상세페이지로
 const goToDetailPage = product => {
-	router.push(`/details/${product.name}/${product.productId}`); // /name/id로 라우팅
+	router.push(goToproductDetailPageUrl(product.name, product.productId));
 };
+
+// 주문 내역 있는지 확인
 const fetchOrders = async () => {
 	try {
-		const response = await http.get('/api/order');
+		const response = await orderListApi();
 		if (response.data.success) {
 			orderList.value = response.data.orders.length;
-		} else {
-			console.error(response.data.message);
 		}
 	} catch (error) {
 		console.error('Error', error);

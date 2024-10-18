@@ -62,33 +62,20 @@ const generateTimeSlots = () => {
 
 // 남은 시간이 10분 이하일 경우 시간 비활성화
 const updateDisabledTimeSlots = () => {
-	// 첫번째시도
-	// const now = dayjs(props.currentTime); // 현재시간 받아옴
-	// timeSlots.value.forEach(slot => {
-	// 	const slotTime = dayjs(props.currentTime)
-	// 		.hour(parseInt(slot.value.split(':')[0]))
-	// 		.minute(parseInt(slot.value.split(':')[1]));
-	// 	const tiemDifference = slotTime.diff(now, 'minute');
-	// 	slot.disabled = tiemDifference <= 10; // 남은 시간이 10분 이하면 비활성화
-	// });
-
 	//두번째시도
 	const now = dayjs(props.currentTime); // 현재시간 받아옴
 	timeSlots.value.forEach(slot => {
 		let slotTime = dayjs()
 			.hour(parseInt(slot.value.split(':')[0]))
 			.minute(parseInt(slot.value.split(':')[1]));
-
 		// slot.value가 다음 날 시간을 포함할 경우
 		if (slotTime.hour() >= 0 && slotTime.hour() < 3) {
 			slotTime = slotTime.add(1, 'day'); // 다음 날 시간을 현재 날짜와 구분
 		}
 		// 현재 시간과의 차이 계산 (지났으면 음수, 남은 시간은 양수)
 		const timeDifference = slotTime.diff(now, 'minute');
-
 		// 지나간 시간(음수)인 경우, 또는 남은 시간이 10분 이하인 경우 비활성화
 		slot.disabled = timeDifference <= 10 || timeDifference < 0;
-		// slot.disabled = timeDifference <= 10 && timeDifference > -60;
 	});
 };
 

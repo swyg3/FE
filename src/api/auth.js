@@ -33,3 +33,9 @@ export const fetchProductCountApi = () => {
 
 	return http.get('/api/user-activities/product-count');
 };
+export const getNotificationApi = userId =>
+	http.get(`/api/notifications/${userId}`);
+export const readNotificationApi = (userId, messageId) =>
+	http.patch(`/api/notifications/${userId}/read/${messageId}`);
+export const deleteAllNotificationApi = userId =>
+	http.delete(`/api/notifications/${userId}`);

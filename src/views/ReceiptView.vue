@@ -67,7 +67,7 @@
 						<tr class="text-baseB text-black">
 							<th scope="row" class="text-left pl-2 pt-2">합계</th>
 							<td colspan="2" class="text-right pr-2 pt-2">
-								{{ order.totalPrice }} 원
+								{{ formatNumber(order.totalPrice) }} 원
 							</td>
 						</tr>
 					</tfoot>

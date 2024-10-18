@@ -16,7 +16,7 @@
 					<span>{{ level }}</span>
 					<span class="pl-2">{{ title }}</span>
 				</div>
-				<p>{{ getUserName }}</p>
+				<p>{{ getUserName }}님</p>
 			</div>
 			<div class="flex gap-1 my-6 justify-center text-center">
 				<!-- <UserCard></UserCard> -->

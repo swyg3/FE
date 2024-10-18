@@ -67,7 +67,7 @@
 import { onMounted, ref } from 'vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import TheHeader from '@/components/common/TheHeader.vue';
-import { searchApi, goToSearchResult } from '@/api/product.js';
+import { searchApi, goToSearchResultUrl } from '@/api/product.js';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -123,7 +123,7 @@ const fetchSearchResults = async searchTerm => {
 		if (products.value.length) {
 			searchresultText.value = true;
 			router.push(
-				goToSearchResult(encodeSearchTerm.value, 'distanceDiscountScore'),
+				goToSearchResultUrl(encodeSearchTerm.value, 'distanceDiscountScore'),
 			);
 		} else {
 			searchresultText.value = false;

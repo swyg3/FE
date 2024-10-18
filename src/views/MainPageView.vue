@@ -23,7 +23,7 @@
 				<div class="mainpage-userCard">
 					<img src="/mainPage/mainLeaf.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>문코를 통해</p>
-					<p class="text-baseB">{{ orderCount || '-' }}끼의 음식을</p>
+					<p class="text-baseB">{{ orderCount || '-' }} 끼의 음식을</p>
 					<p>구출했어요!</p>
 				</div>
 				<div class="mainpage-userCard">

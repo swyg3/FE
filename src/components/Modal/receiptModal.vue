@@ -149,7 +149,7 @@ const CancelOrder = async () => {
 const isPickupTimeNear = computed(() => {
 	const currentTime = new Date().getTime();
 	const pickupTime = new Date(order.value.pickupTime).getTime();
-	const timeDifference = pickupTime - currentTime; 
+	const timeDifference = pickupTime - currentTime;
 	return timeDifference <= 5 * 60 * 1000; // 5분 이하일 경우 true
 });
 

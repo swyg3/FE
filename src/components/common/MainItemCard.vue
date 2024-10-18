@@ -11,7 +11,7 @@
 					오후 9:00 마감 ·
 					<span>{{ distanceAdjustCalc(product.distance) }}km</span>
 				</p>
-				<p>{{ product.discountedPrice }}원</p>
+				<p>{{ formatNumber(product.discountedPrice) }}원</p>
 			</div>
 		</div>
 	</div>
@@ -34,6 +34,11 @@ const fullImageUrl = imagePath => {
 const distanceAdjustCalc = number => {
 	const adjustDistance = number / 100;
 	return parseFloat(adjustDistance.toFixed(1));
+};
+
+// 숫자 포맷 (천단위 , 삽입)
+const formatNumber = number => {
+	return new Intl.NumberFormat().format(number);
 };
 </script>
 

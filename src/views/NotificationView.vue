@@ -32,10 +32,15 @@
 		</div>
 	</div>
 </template>
+
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import http from '@/api/http.js';
+import {
+	getNotificationApi,
+	readNotificationApi,
+	deleteAllNotificationApi,
+} from '@/api/auth.js';
 
 const store = useStore();
 const getUserId = computed(() => store.state.auth.userId);
@@ -52,7 +57,7 @@ const fetchNotifications = async getUserId => {
 		return;
 	}
 	try {
-		const res = await http.get(`/api/notifications/${getUserId.value}`);
+		const res = await getNotificationApi(getUserId.value);
 		notifications.value = res.data.data;
 		notificationCount.value = notifications.value.length;
 	} catch (error) {
@@ -65,9 +70,7 @@ const fetchNotifications = async getUserId => {
 // 알림 선택 시 읽음 처리
 const isNotiRead = async noti => {
 	try {
-		const res = await http.patch(
-			`/api/notifications/${getUserId.value}/read/${noti.messageId}`,
-		);
+		const response = await readNotificationApi(getUserId.value, noti.messageId);
 		await fetchNotifications(getUserId);
 	} catch (error) {
 		console.log('Error', error);
@@ -79,7 +82,7 @@ const isNotiRead = async noti => {
 // 알림 전체 삭제
 const deleteAllNotification = async () => {
 	try {
-		const res = await http.delete(`/api/notifications/${getUserId.value}`);
+		const response = await deleteAllNotificationApi(getUserId.value);
 		await fetchNotifications(getUserId);
 	} catch (error) {
 		console.log('Error', error);
@@ -88,6 +91,7 @@ const deleteAllNotification = async () => {
 	}
 };
 </script>
+
 <style lang="scss" scoped>
 .text-style {
 	top: 50%;

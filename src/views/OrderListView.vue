@@ -107,40 +107,37 @@
 	</div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router';
-import http from '@/api/http.js';
+import { orderListApi } from '@/api/product.js';
 import { onMounted, ref } from 'vue';
 import receiptModal from '@/components/Modal/receiptModal.vue';
+import { useStore } from 'vuex';
 
-const router = useRouter();
-
-// 주문 목록을 저장
+const store = useStore();
+// 주문 목록
 const orderList = ref([]);
 const selectedOrderId = ref('');
 // 모달 상태
 const isModalOpen = ref(false);
-// ref를 사용해 모달 열기
+// 모달 열기
 const openModal = orderId => {
 	selectedOrderId.value = orderId;
 	isModalOpen.value = true;
 };
-// ref를 사용해 모달 닫기
+// 모달 닫기
 const closeModal = () => {
 	isModalOpen.value = false;
 };
-// 컴포넌트가 마운트되면 주문 목록을 가져옴
+
 onMounted(() => {
 	fetchOrders();
 });
 
 const fetchOrders = async () => {
 	try {
-		const response = await http.get('/api/order');
+		const response = await orderListApi();
 
-		console.log('response', response);
 		if (response.data.success) {
 			orderList.value = response.data;
-			console.log(Boolean(orderList.value.orders));
 		} else {
 			console.error(
 				'주문 목록을 가져오는 데 실패했습니다:',
@@ -149,6 +146,8 @@ const fetchOrders = async () => {
 		}
 	} catch (error) {
 		console.error('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
@@ -168,7 +167,7 @@ const formatDate = dateString => {
 	return `${year}-${month}-${day} ${ampm} ${formattedHours}:${formattedMinutes}`;
 };
 
-// 주문 상태 메시지 반환 함수
+// 주문 상태 메시지 반환
 const getOrderStatusMessage = status => {
 	if (status === 'PENDING') {
 		return '음식을 기다리는 중';
@@ -178,7 +177,7 @@ const getOrderStatusMessage = status => {
 	return '';
 };
 
-// 이미지 경로 변환 함수
+// 이미지 경로 변환
 const fullImageUrl = imagePath => {
 	const baseUrl = import.meta.env.VITE_APP_API_URL;
 	return `${baseUrl}${imagePath}`;
@@ -206,7 +205,7 @@ const formatNumber = number => {
 	min-height: 716px;
 	background-image: url('/mainPage/mainPageBg.png');
 	color: var(--Text, #1d1d1d);
-	background-attachment: fixed; //배경고정 스크롤
+	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-position: center;
 }

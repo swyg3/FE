@@ -67,7 +67,7 @@
 						<tr class="text-baseB text-black">
 							<th scope="row" class="text-left pl-2 pt-2">합계</th>
 							<td colspan="2" class="text-right pr-2 pt-2">
-								{{ order.totalPrice }} 원
+								{{ formatNumber(order.totalPrice) }} 원
 							</td>
 						</tr>
 					</tfoot>
@@ -147,17 +147,6 @@ const CancelOrder = async () => {
 	}
 };
 
-// 주문 취소 버튼 비활성화
-// const PickupTimeDifference = computed(() => {
-// 	const currentTime = new Date().getTime();
-// 	const pickupTime = new Date(order.value.pickupTime).getTime();
-// 	const timeDifference = pickupTime - currentTime;
-// 	if (timeDifference <= 5 * 60 * 1000) {
-// 		isPickupTimeNear.value = true;
-// 	}
-// 	return isPickupTimeNear; // 5분 이하일 경우 true
-// });
-
 // 날짜 포맷
 const formatDate = dateString => {
 	if (!dateString) {
@@ -184,6 +173,7 @@ const formatNumber = number => {
 //modal
 const isModalOpen = ref(true);
 </script>
+
 <style lang="scss" scoped>
 .modal-overlay {
 	display: absolute;

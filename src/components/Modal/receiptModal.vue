@@ -124,7 +124,6 @@ const fetchOrderReceipts = async () => {
 			const timeDifference = pickupTime - currentTime;
 			if (timeDifference > 5 * 60 * 1000) {
 				isPickupTimeNear.value = true;
-				console.log(isPickupTimeNear.value);
 			}
 		} else {
 			console.error('주문 목록을 가져오는 데 실패했습니다:', res.data.message);

@@ -80,13 +80,10 @@ const fetchNotifications = async () => {
 	try {
 		const res = await http.get(`/api/notifications/${getUserId.value}`);
 		notifications.value = res.data.data;
-		// console.log('알림', notifications.value.length);
 		if (notifications.value.length) {
 			isRead.value = true;
-			// console.log('isread t-', Boolean(notifications.value.length));
 		} else {
 			isRead.value = false;
-			// console.log('isread f-', Boolean(notifications.value));
 		}
 	} catch (error) {
 		console.log('Error', error);

@@ -26,7 +26,7 @@ export default {
 /* 모달 스타일 */
 .modal-overlay {
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
@@ -38,7 +38,7 @@ export default {
 }
 
 .modal-content {
-	position: relative;
+	position: absolute;
 	border-radius: 8px;
 	max-width: 90%;
 	max-height: 90%;

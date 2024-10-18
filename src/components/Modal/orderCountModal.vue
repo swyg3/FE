@@ -56,9 +56,8 @@
 	</div>
 </template>
 <script setup>
-import { computed, defineEmits, ref } from 'vue';
+import { defineEmits, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 
 // DetailsView에서 product를 props로 받음
 const props = defineProps({
@@ -71,11 +70,7 @@ const isModalOpen = ref(true);
 
 // 부모에게 닫기 이벤트를 전달하는 emit 설정
 const emit = defineEmits(['close']);
-// 라우터 사용
 const router = useRouter();
-// store
-// const store = useStore();
-// const product = computed(() => store.state.product);
 
 // 초기 수량
 const quantity = ref(1);
@@ -126,7 +121,7 @@ const formatNumber = number => {
 	display: flex;
 	justify-content: center; /* 수평 중앙 정렬 */
 	align-items: flex-end; /* 하단 정렬 */
-	z-index: 3000; /* 다른 요소 위에 위치 */
+	z-index: 2000; /* 다른 요소 위에 위치 */
 	color: var(--Text, #1d1d1d);
 }
 .modal {

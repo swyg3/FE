@@ -78,12 +78,7 @@
 				있어요:-)
 			</p>
 		</div>
-		<button
-			@click="CancelOrder()"
-			:disabled="isPickupTimeNear"
-			class="order-btn"
-			:class="{ disabledBtn: isPickupTimeNear }"
-		>
+		<button v-if="isPickupTimeNear" @click="CancelOrder()" class="order-btn">
 			주문취소하기
 		</button>
 	</div>
@@ -94,16 +89,18 @@ import { useRouter } from 'vue-router';
 import { getReceiptApi, deleteOrderApi } from '@/api/product.js';
 import { useStore } from 'vuex';
 
-const store = useStore();
 const props = defineProps({
 	orderId: {
 		type: Text,
 		required: true,
 	},
 });
+const router = useRouter();
+const store = useStore();
+const order = ref([]);
+const product = ref([]);
+const isPickupTimeNear = ref(false);
 
-//modal
-const isModalOpen = ref(true);
 // 부모에게 닫기 이벤트를 전달하는 emit 설정
 const emit = defineEmits(['close']);
 // 부모에게 'close' 이벤트 전달 함수
@@ -111,9 +108,6 @@ const closeModal = () => {
 	emit('close');
 };
 
-const router = useRouter();
-const order = ref([]);
-const product = ref([]);
 onMounted(() => {
 	fetchOrderReceipts();
 });
@@ -124,6 +118,14 @@ const fetchOrderReceipts = async () => {
 		if (res.data.success) {
 			order.value = res.data.orders[0];
 			product.value = res.data.orderItemsInfo;
+
+			const currentTime = new Date().getTime();
+			const pickupTime = new Date(order.value.pickupTime).getTime();
+			const timeDifference = pickupTime - currentTime;
+			if (timeDifference > 5 * 60 * 1000) {
+				isPickupTimeNear.value = true;
+				console.log(isPickupTimeNear.value);
+			}
 		} else {
 			console.error('주문 목록을 가져오는 데 실패했습니다:', res.data.message);
 		}
@@ -146,12 +148,15 @@ const CancelOrder = async () => {
 };
 
 // 주문 취소 버튼 비활성화
-const isPickupTimeNear = computed(() => {
-	const currentTime = new Date().getTime();
-	const pickupTime = new Date(order.value.pickupTime).getTime();
-	const timeDifference = pickupTime - currentTime;
-	return timeDifference <= 5 * 60 * 1000; // 5분 이하일 경우 true
-});
+// const PickupTimeDifference = computed(() => {
+// 	const currentTime = new Date().getTime();
+// 	const pickupTime = new Date(order.value.pickupTime).getTime();
+// 	const timeDifference = pickupTime - currentTime;
+// 	if (timeDifference <= 5 * 60 * 1000) {
+// 		isPickupTimeNear.value = true;
+// 	}
+// 	return isPickupTimeNear; // 5분 이하일 경우 true
+// });
 
 // 날짜 포맷
 const formatDate = dateString => {
@@ -176,6 +181,8 @@ const formatDate = dateString => {
 const formatNumber = number => {
 	return new Intl.NumberFormat().format(number);
 };
+//modal
+const isModalOpen = ref(true);
 </script>
 <style lang="scss" scoped>
 .modal-overlay {
@@ -242,6 +249,6 @@ const formatNumber = number => {
 	border-top: 1px solid #e4e4e4;
 }
 .disabledBtn {
-	background-color: #BEBEBE;
+	background-color: #bebebe;
 }
 </style>

@@ -4,15 +4,15 @@
 			<p class="text-center text-sm py-[17px]">정렬 기준</p>
 			<ul>
 				<li
-					v-for="option in sortOptions"
+					v-for="option in sortByOption"
 					:key="option.value"
 					@click="setSort(option)"
 					class="flex justify-between px-6"
-					:class="{ active: selectedSort === option }"
+					:class="{ active: selectedSort === option.value }"
 				>
 					{{ option.label }}
 					<!--문코아이콘-->
-					<div v-if="selectedSort === option">
+					<div v-if="selectedSort === option.value">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="30"
@@ -49,7 +49,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-
+import { sortByOption } from '@/api/product.js';
 const props = defineProps({
 	sortBy: {
 		type: String,
@@ -57,23 +57,10 @@ const props = defineProps({
 	},
 });
 const isModalOpen = ref(false);
-const sortOptions = ref([
-	{ label: '문코 추천 순', value: 'distanceDiscountScore' },
-	{ label: '가까운 순', value: 'distance' },
-	{ label: '할인율 높은 순', value: 'discountRate' },
-]);
-const selectedSort = ref('distanceDiscountScore');
-const emit = defineEmits(['changeSort']);
 
-// const openModal = () => {
-// 	isModalOpen.value = true;
-// 	const matchingOption = sortOptions.value.find(
-// 		option => option.label === props.currentSort,
-// 	);
-// 	selectedSort.value = matchingOption
-// 		? matchingOption.value
-// 		: sortOptions.value[0].value;
-// };
+const selectedSort = ref(props.sortBy);
+const emit = defineEmits(['sortByChanged']);
+
 const openModal = () => {
 	isModalOpen.value = true;
 };
@@ -81,8 +68,8 @@ const closeModal = () => {
 	isModalOpen.value = false;
 };
 const setSort = option => {
-	selectedSort.value = option; // 선택된 정렬 기준 업데이트
-	emit('changeSort', option); // 정렬 기준을 부모 컴포넌트에 전달
+	selectedSort.value = option.value; // 선택된 정렬 기준 업데이트
+	emit('sortByChanged', option); // 정렬 기준을 부모 컴포넌트에 전달
 	closeModal();
 };
 // export

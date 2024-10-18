@@ -2,7 +2,7 @@
 	<div class="min-h-[812px] bg-white">
 		<div class="w-[375px] pb-[88px] bg-white color-black">
 			<!--img-->
-			<div class="w-full h-[240px]">
+			<div class="w-full h-[240px] relative">
 				<img
 					:src="fullImageUrl(product.productImageUrl)"
 					@click="openImageInNewTab(fullImageUrl(product.productImageUrl))"
@@ -109,12 +109,15 @@
 		></OrderCountModal>
 	</div>
 </template>
+
 <script setup>
-import http from '@/api/http.js';
 import { onMounted, ref } from 'vue';
 import OrderCountModal from '@/components/Modal/orderCountModal.vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
+import { getProductDetailAPi } from '@/api/product.js';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
 const center = ref({ lat: null, lng: null });
 
@@ -128,7 +131,7 @@ const props = defineProps({
 		required: true,
 	},
 });
-// 상품 정보를 저장할 state
+// 상품 정보
 const product = ref({});
 // 모달 상태
 const isModalOpen = ref(false);
@@ -137,15 +140,17 @@ onMounted(() => {
 	fetchProductDetail();
 });
 
-// 상품 정보 가져오기 함수
+// 상품 정보 가져오기
 const fetchProductDetail = async () => {
 	try {
-		const res = await http.get(`/api/products/get/${props.id}`);
+		const res = await getProductDetailAPi(props.id);
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
 	} catch (err) {
 		console.error(err);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 
@@ -154,13 +159,13 @@ const openImageInNewTab = src => {
 	window.open(src, '_blank');
 };
 
-// 이미지 경로 변환 함수
+// 이미지 경로 변환
 const fullImageUrl = imagePath => {
 	const baseUrl = import.meta.env.VITE_APP_API_URL;
 	return `${baseUrl}${imagePath}`;
 };
 
-// 할인율 반올림 계산 함수
+// 할인율 반올림 계산
 const roundedDiscountRate = rate => {
 	return Math.round(rate);
 };
@@ -180,6 +185,7 @@ const closeModal = () => {
 	isModalOpen.value = false;
 };
 </script>
+
 <style lang="scss" scoped>
 .back-absolute-style {
 	position: absolute;
@@ -220,7 +226,7 @@ const closeModal = () => {
 	align-items: center;
 	padding-bottom: 32px;
 	background: var(--White, #fff);
-	position: absolute;
+	position: fixed;
 }
 .order-btn {
 	width: 343px;

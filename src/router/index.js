@@ -99,6 +99,15 @@ const router = createRouter({
 			component: OrderCancel,
 		},
 	],
+	scrollBehavior(to, from, savedPosition) {
+		// savedPosition이 있으면 (뒤로 가기 또는 앞으로 가기) 그 위치로 스크롤
+		if (savedPosition) {
+			return savedPosition;
+		} else {
+			// 항상 페이지 최상단으로 스크롤
+			return { top: 0 };
+		}
+	},
 });
 
 router.beforeEach((to, from, next) => {

@@ -23,7 +23,7 @@
 						@click="gpsCancle"
 						data-modal-hide="popup-modal"
 						type="button"
-						class="btnLayout"
+						class="btnLayout border border-[#c6c6c6]"
 					>
 						취소
 					</button>
@@ -50,7 +50,7 @@
 						@click="goToLogin"
 						data-modal-hide="popup-modal"
 						type="button"
-						class="btnLayout"
+						class="btnLayout border border-[#c6c6c6]"
 					>
 						취소
 					</button>
@@ -79,7 +79,7 @@
 						@click="hide"
 						data-modal-hide="popup-modal"
 						type="button"
-						class="btnLayout"
+						class="btnLayout border border-[#c6c6c6]"
 					>
 						안할래요
 					</button>
@@ -166,7 +166,6 @@ const confirmMembership = () => {
 .btnLayout {
 	width: 136px;
 	height: 48px;
-	border: 1px solid #c6c6c6;
 	border-radius: 10px;
 }
 </style>

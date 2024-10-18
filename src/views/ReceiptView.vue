@@ -25,13 +25,13 @@
 			<div class="text-flex pb-8">
 				<p class="text-baseB pr-11">메모</p>
 				<div>
-					<p class="text-body text-base">
+					<p class="text-body">
 						개인 용기 {{ order.memo && order.memo[0] ? 'O' : 'X' }}
 					</p>
-					<p class="text-body text-base">
+					<p class="text-body">
 						개인 장바구니 {{ order.memo && order.memo[1] ? 'O' : 'X' }}
 					</p>
-					<p class="text-body text-base">
+					<p class="text-body">
 						일회용 수저 {{ order.memo && order.memo[2] ? 'O' : 'X' }}
 					</p>
 				</div>
@@ -47,15 +47,15 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="table-border">
+						<tr class="table-border text-base">
 							<td class="text-left pl-2 pt-2">{{ product.name }}</td>
 							<td class="text-center pt-2">{{ order.totalAmount }}</td>
 							<td class="text-right pr-2 pt-2">
 								{{ formatNumber(product.originalPrice * order.totalAmount) }}
 							</td>
 						</tr>
-						<tr class="table-head">
-							<th scope="row" class="text-left pl-2 pt-1 pb-2">할인금액</th>
+						<tr>
+							<th scope="row" class="text-left text-base pl-2 pt-1 pb-2">할인금액</th>
 							<td></td>
 							<td class="text-right pr-2 pt-1 pb-2">
 								-

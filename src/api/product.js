@@ -28,7 +28,7 @@ export const goTocategoryPageUrl = (category, sortBy) =>
 // 영수증 경로
 export const goToReceiptUrl = order => `/receipt/${order}`;
 // 검색 결과 경로
-export const goToSearchResult = (word, sortBy) =>
+export const goToSearchResultUrl = (word, sortBy) =>
 	`/searchResult/${word}/${sortBy}`;
 export const categoryOption = [
 	{

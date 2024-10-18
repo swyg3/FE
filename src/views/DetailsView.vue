@@ -96,7 +96,13 @@
 			</div>
 			<div id="map"></div>
 			<div class="order-btn-div">
-				<button @click="openModal" @close="closeModal" class="order-btn">
+				<button
+					:disabled="isProductExist"
+					@click="openModal"
+					@close="closeModal"
+					class="order-btn"
+					:class="{ disabledBtn: isProductExist }"
+				>
 					주문하기
 				</button>
 			</div>
@@ -120,6 +126,7 @@ import { useStore } from 'vuex';
 const store = useStore();
 const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
 const center = ref({ lat: null, lng: null });
+const isProductExist = ref(false);
 
 const props = defineProps({
 	name: {
@@ -147,6 +154,10 @@ const fetchProductDetail = async () => {
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
+		console.log('aail', product.value.availableStock);
+		if (product.value.availableStock == 0) {
+			isProductExist.value = true;
+		}
 	} catch (err) {
 		console.error(err);
 	} finally {
@@ -237,5 +248,8 @@ const closeModal = () => {
 	margin: 0 auto;
 	color: white;
 	text-align: center;
+}
+.disabledBtn {
+	background-color: #bebebe;
 }
 </style>

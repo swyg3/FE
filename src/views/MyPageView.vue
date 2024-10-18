@@ -9,7 +9,7 @@
 				<span class="pl-2">{{ title }}</span>
 			</div>
 
-			<div class="text-lgB">{{ getUserName }}</div>
+			<div class="text-lgB">{{ getUserName }}님</div>
 			<div class="text-bodyBlack mypage-period-activity">
 				{{ periodOfActivity }}부터
 			</div>

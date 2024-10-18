@@ -5,10 +5,15 @@
 			<div class="w-full h-[240px] relative">
 				<img
 					:src="fullImageUrl(product.productImageUrl)"
-					@click="openImageInNewTab(fullImageUrl(product.productImageUrl))"
+					@click="openImageModal(fullImageUrl(product.productImageUrl))"
 					alt="Product Image"
 					class="w-full h-[240px] object-cover"
 				/>
+				<ImageModal
+					v-if="isImageModalOpen"
+					:imageUrl="fullImageUrl(product.productImageUrl)"
+					@close="closeImageModal"
+				></ImageModal>
 				<!--뒤로가기버튼-->
 				<button @click="$router.go(-1)" class="back-absolute-style">
 					<svg
@@ -122,6 +127,7 @@ import OrderCountModal from '@/components/Modal/orderCountModal.vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 import { getProductDetailAPi } from '@/api/product.js';
 import { useStore } from 'vuex';
+import ImageModal from '@/components/Modal/ImageModal.vue';
 
 const store = useStore();
 const apiKey = ref(import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY);
@@ -142,6 +148,7 @@ const props = defineProps({
 const product = ref({});
 // 모달 상태
 const isModalOpen = ref(false);
+const isImageModalOpen = ref(false);
 
 onMounted(() => {
 	fetchProductDetail();
@@ -166,9 +173,9 @@ const fetchProductDetail = async () => {
 };
 
 // 클릭 시 이미지 새 탭으로 열기
-const openImageInNewTab = src => {
-	window.open(src, '_blank');
-};
+// const openImageInNewTab = src => {
+// 	window.open(src, '_blank');
+// };
 
 // 이미지 경로 변환
 const fullImageUrl = imagePath => {
@@ -184,6 +191,14 @@ const roundedDiscountRate = rate => {
 // 숫자 포맷 (천단위 , 삽입)
 const formatNumber = number => {
 	return new Intl.NumberFormat().format(number);
+};
+
+// ref를 사용해 이미지 모달 열기
+const openImageModal = () => {
+	isImageModalOpen.value = true;
+};
+const closeImageModal = () => {
+	isImageModalOpen.value = false;
 };
 
 // ref를 사용해 모달 열기

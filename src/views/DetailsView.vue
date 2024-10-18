@@ -74,7 +74,7 @@
 			<!--픽업 시간-->
 			<div class="px-4 py-[13px] flex border-y border-disabledGray">
 				<p class="text-baseB pr-6">픽업가능시간</p>
-				<p class="text-base text-bodyBlack">오후 8:00 ~ 오후 11:00</p>
+				<p class="text-base text-bodyBlack">오후 3:00 ~ 오후 11:00</p>
 			</div>
 			<!--가게 정보-->
 			<div class="px-4 py-4">
@@ -161,6 +161,7 @@ const fetchProductDetail = async () => {
 		product.value = res.data.data;
 		center.value.lat = parseFloat(product.value.locationY);
 		center.value.lng = parseFloat(product.value.locationX);
+		console.log(center.value.lng);
 		if (product.value.availableStock == 0) {
 			isProductExist.value = true;
 		}

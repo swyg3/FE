@@ -113,7 +113,6 @@ onMounted(() => {
 const fetchOrderReceipts = async () => {
 	try {
 		const response = await getReceiptApi(props.orderId);
-		console.log(response.data);
 		if (response.data.success) {
 			order.value = response.data.orders[0];
 			product.value = response.data.orderItemsInfo;

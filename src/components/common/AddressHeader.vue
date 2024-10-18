@@ -54,7 +54,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import http from '@/api/http.js';
+import { getNotificationApi } from '@/api/auth.js';
 import { ref, computed, onMounted } from 'vue';
 
 const store = useStore();
@@ -78,7 +78,7 @@ onMounted(() => {
 // 알림 가져오기
 const fetchNotifications = async () => {
 	try {
-		const res = await http.get(`/api/notifications/${getUserId.value}`);
+		const res = await getNotificationApi(getUserId.value);
 		notifications.value = res.data.data;
 		if (notifications.value.length) {
 			isRead.value = true;
@@ -87,6 +87,8 @@ const fetchNotifications = async () => {
 		}
 	} catch (error) {
 		console.log('Error', error);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
 </script>

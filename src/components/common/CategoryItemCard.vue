@@ -23,7 +23,7 @@
 			</p>
 			<div class="pt-1 text-sm text-bodyBlack">
 				<p class="distance-text-style">
-					오전 2:00 마감 ·
+					오후 11:00 마감 ·
 					<span>{{ distanceAdjustCalc(product.distance) }}km</span>
 				</p>
 			</div>

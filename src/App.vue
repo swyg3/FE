@@ -14,7 +14,7 @@
 					$route.name !== 'OrderDetails' &&
 					$route.name !== 'Receipt' &&
 					$route.name !== 'Notification' &&
-					$route.name !== 'AddressBook' 
+					$route.name !== 'AddressBook'
 						? 'router-view-content'
 						: 'router-view-content2'
 				"

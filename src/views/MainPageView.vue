@@ -30,7 +30,7 @@
 					<img src="/mainPage/mainPig.svg" class="w-6 h-4 mx-auto mb-1" />
 					<p>지금까지</p>
 					<p class="px-1 text-baseB">
-						{{ totalSavings ? totalSavings.toLocaleString() : '-' }}원의 금액을
+						{{ totalSavings ? totalSavings.toLocaleString() : '-' }} 원의 금액을
 					</p>
 					<p>절약했어요!</p>
 				</div>

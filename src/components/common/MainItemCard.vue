@@ -8,7 +8,7 @@
 			<p class="text-smB color-black pb-0.5">{{ product.name }}</p>
 			<div class="text-sm text-bodyBlack">
 				<p class="distance-text-style">
-					오후 9:00 마감 ·
+					오후 11:00 마감 ·
 					<span>{{ distanceAdjustCalc(product.distance) }}km</span>
 				</p>
 				<p>{{ formatNumber(product.discountedPrice) }}원</p>

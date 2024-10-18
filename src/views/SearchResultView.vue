@@ -6,7 +6,7 @@
 			<div class="px-4 py-[13px] flex text-sm text-bodyBlack justify-between">
 				<p class="">총 {{ searchList.length }}개</p>
 				<div class="flex">
-					<button @click="openSortModal">{{ currentSort }}</button>
+					<button @click="openSortModal">{{ selectedSort() }}</button>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -31,7 +31,8 @@
 			</div>
 		</div>
 		<CategorySortModal
-			@changeSort="changeSort"
+			@sortByChanged="changeSortBy"
+			:sortBy="sortBy"
 			ref="sortModal"
 			class="absolute"
 		></CategorySortModal>
@@ -41,120 +42,72 @@
 <script setup>
 import TheHeader from '@/components/common/TheHeader.vue';
 import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
-import http from '@/api/http.js';
+import {
+	sortByOption,
+	searchApi,
+	goToSearchResult,
+	goToproductDetailPageUrl,
+} from '@/api/product.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { computed, onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 
 const route = useRoute();
 const router = useRouter();
-const currentSort = ref('문코 추천 순'); // 기본 정렬 기준
-const category = ref('ALL'); // 기본 카테고리
-const sortBy = ref('distanceDiscountScore'); // 기본 정렬 방식
+const store = useStore();
+const currentSort = ref('문코 추천 순');
+const sortBy = ref(route.params.sort || 'distanceDiscountScore');
 const sortModal = ref(null);
 const encodeSearchTerm = ref('');
-const searchTerm = ref('');
+const searchTerm = ref(route.params.searchTerm);
 const searchList = ref([]);
 
 onMounted(() => {
-	// URL에서 카테고리와 정렬 방식 가져오기
-	category.value = route.params.category || 'ALL';
-	sortBy.value = route.params.sort || 'distanceDiscountScore';
-	// 초기 데이터 요청
-	searchTerm.value = route.params.searchTerm;
-	fetchSearchResults(searchTerm);
+	fetchSearchResults();
 });
 
-// api 연동하여 상품 가져오기
-// const fetchSearchResults = () => {
-// 	const { category, sortBy } = route.params;
-// 	const apiUrl = `/api/products/category?category=${category}&sortBy=${sortBy}&order=desc&limit=100`;
-// 	http
-// 		.get(apiUrl)
-// 		.then(res => {
-// 			products.value = res.data.items;
-// 		})
-// 		.catch(err => {
-// 			console.log(err);
-// 		});
-// };
 const fetchSearchResults = async () => {
-	const { searchTerm, sortBy } = route.params;
-	encodeSearchTerm.value = encodeURIComponent(searchTerm);
-	console.log(encodeURIComponent('딸기 타르트'));
-	console.log(encodeURIComponent('딸기타르트'));
+	encodeSearchTerm.value = encodeURIComponent(searchTerm.value);
 	try {
-		const res = await http.get(
-			`/api/products/search?searchTerm=${encodeSearchTerm.value}&sortBy=${sortBy}&order=desc&limit=100`,
-		);
+		const res = await searchApi(encodeSearchTerm.value, sortBy.value);
 		searchList.value = res.data.data;
 	} catch (err) {
 		console.log('Error', err);
+	} finally {
+		store.commit('SET_IS_LOADING', false);
 	}
 };
+// 정렬 기준 변경
+const changeSortBy = option => {
+	currentSort.value = option.label;
+	sortBy.value = option.value;
+	updateRoute();
+	fetchSearchResults();
+};
+// 선택된 정렬방식으로 label 변경
+const selectedSort = () => {
+	const selectecedSortValue = sortByOption.find(
+		option => option.value === sortBy.value,
+	);
+	return selectecedSortValue ? selectecedSortValue.label : '문코 추천 순';
+};
 
-const sortOptions = [
-	{ label: '문코 추천 순', value: 'distanceDiscountScore' },
-	{ label: '가까운 순', value: 'distance' },
-	{ label: '할인율 높은 순', value: 'discountRate' },
-];
+// url 업데이트
+const updateRoute = () => {
+	router.push(goToSearchResult(encodeSearchTerm.value, sortBy.value));
+};
+
+// 상품 상세 페이지로 이동
+const goToDetailPage = product => {
+	router.push(goToproductDetailPageUrl(product.name, product.productId));
+};
 
 // ref를 사용해 모달 열기
 const openSortModal = () => {
 	sortModal.value.openModal();
 };
-
-// 정렬 기준 변경 메소드
-const changeSort = option => {
-	currentSort.value = option.label;
-	sortBy.value = option.value;
-	updateRoute(); // route 업데이트
-	fetchSearchResults(); // 카테고리에 맞는 상품 재요청
-};
-
-// route 업데이트 메소드
-const updateRoute = () => {
-	router.push(`/searchResult/${encodeSearchTerm.value}/${sortBy.value}`);
-};
-
-// /name/id로 라우팅
-const goToDetailPage = product => {
-	router.push(`/details/${product.name}/${product.productId}`);
-};
-
-// 경로 변경 시 데이터를 불러오는 watch 함수
-watch(
-	() => route.params, // 경로 파라미터 변경 감지
-	newParams => {
-		category.value = newParams.category || 'ALL';
-		sortBy.value = newParams.sortBy || 'distanceDiscountScore';
-		fetchSearchResults();
-	},
-	{ immediate: true }, // 페이지 로드 시에도 즉시 실행
-);
-// watch(
-// 	() => route.params.sortBy,
-// 	newSortBy => {
-// 		currentSort.value = newSortBy || 'distanceDiscountScore'; // 파라미터 없을 경우 기본값 설정
-// 	},
-// 	{ immediate: true },
-// );
-watch(
-	() => route.params.sortBy,
-	newSortBy => {
-		// 기본값 설정
-		const defaultSortValue = 'distanceDiscountScore';
-		currentSort.value = newSortBy || defaultSortValue; // 파라미터 없을 경우 기본값 설정
-
-		// 선택된 sortBy value에 해당하는 label을 찾기
-		const selectedOption = sortOptions.find(
-			option => option.value === (newSortBy || defaultSortValue),
-		);
-		currentSort.value = selectedOption ? selectedOption.label : '문코 추천 순'; // label로 변환
-	},
-	{ immediate: true },
-);
 </script>
 
 <style lang="scss" scoped>

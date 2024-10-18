@@ -45,7 +45,7 @@ import CategoryItemCard from '@/components/common/CategoryItemCard.vue';
 import {
 	sortByOption,
 	searchApi,
-	goToSearchResult,
+	goToSearchResultUrl,
 	goToproductDetailPageUrl,
 } from '@/api/product.js';
 import CategorySortModal from '@/components/Modal/categorySortModal.vue';
@@ -96,7 +96,7 @@ const selectedSort = () => {
 
 // url 업데이트
 const updateRoute = () => {
-	router.push(goToSearchResult(encodeSearchTerm.value, sortBy.value));
+	router.push(goToSearchResultUrl(encodeSearchTerm.value, sortBy.value));
 };
 
 // 상품 상세 페이지로 이동

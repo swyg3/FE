@@ -38,13 +38,6 @@
 				<p class="text-baseB pb-2">환경 지키기</p>
 				<!--checkbox screenreader대비(role="checkbox")-->
 				<div class="text-base text-bodyBlack">
-					<!--checkbox1-->
-					<!-- <CheckBox
-						id="check1"
-						:checked="checkList[0]"
-						label="개인 용기를 가져갈래요"
-						@toggle="checkbox(0)"
-					></CheckBox> -->
 					<Checkbox
 						v-for="(checked, index) in checkList"
 						:key="index"
@@ -75,7 +68,7 @@
 					사장님이 기다리고 있어요 :-)
 				</p>
 				<div>
-					<label for="radio1" class="flex">
+					<label for="radio1" class="flex items-center">
 						<input type="radio" id="radio1" disabled="disabled" />
 						<p class="pl-2 text-base text-disabledTextGray">현장결제</p>
 					</label>

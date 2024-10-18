@@ -118,7 +118,7 @@ const changeCategory = newCategory => {
 	category.value = newCategory;
 	updateRoute();
 	fetchCategoryProducts();
-	location.reload(); // 강제 새로고침
+	// location.reload(); // 강제 새로고침
 };
 
 // 정렬 기준 변경
